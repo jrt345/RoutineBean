@@ -1,4 +1,4 @@
-package com.example.routinebuilder;
+package com.example.routinebean;
 
 public class Main {
 

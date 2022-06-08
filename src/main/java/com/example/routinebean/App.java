@@ -1,4 +1,4 @@
-package com.example.routinebuilder;
+package com.example.routinebean;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
