@@ -8,7 +8,10 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.GridPane;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 
 import java.net.URL;
@@ -58,6 +61,7 @@ public class RoutineController implements Initializable {
         daysOfTheWeekChoiceBox2.setValue("(None)");
         timeChoiceBox1.setValue("(None)");
         timeChoiceBox2.setValue("(None)");
+        backgroundColorPicker.setValue(Color.WHITE);
     }
 
     private int dayToNumber(String dayOfTheWeek) {
@@ -191,6 +195,9 @@ public class RoutineController implements Initializable {
             for (int day : days) {
                 for (int i : time) {
                     textFieldArray[i - 1][day - 1].setText(taskTextField.getText());
+                    textFieldArray[i - 1][day - 1].setBackground(new Background(
+                            new BackgroundFill(backgroundColorPicker.getValue(),
+                                    null, null)));
                 }
             }
         }
@@ -210,6 +217,9 @@ public class RoutineController implements Initializable {
             for (int day : days) {
                 for (int i : time) {
                     textFieldArray[i - 1][day - 1].setText("");
+                    textFieldArray[i - 1][day - 1].setBackground(new Background(
+                            new BackgroundFill(Color.WHITE,
+                                    null, null)));
                 }
             }
         }
@@ -225,6 +235,7 @@ public class RoutineController implements Initializable {
                 textField.setFont(new Font("Segoe UI",18));
                 textFieldArray[j-1][i-1] = textField;
                 routineGrid.add(textField,i,j);
+                textField.setStyle("-fx-border-color: black");
             }
         }
 
