@@ -4,10 +4,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.ColorPicker;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.GridPane;
@@ -29,6 +26,9 @@ public class RoutineController implements Initializable {
     private GridPane routineGrid;
 
     @FXML
+    private Button saveRoutine;
+
+    @FXML
     private TextField taskTextField;
 
     @FXML
@@ -48,6 +48,21 @@ public class RoutineController implements Initializable {
 
 
     private final TextField[][] textFieldArray = new TextField[24][7];
+
+    @FXML
+    private void saveRoutine(ActionEvent event) {
+
+    }
+
+    @FXML
+    private void openRoutine(ActionEvent event) {
+
+    }
+
+    @FXML
+    private void clearRoutine(ActionEvent event) {
+
+    }
 
     @FXML
     private void setTitle(ActionEvent event) {
