@@ -1,18 +1,20 @@
 package com.example.routinebean.utils;
 
+import javafx.scene.paint.Color;
+
 import java.io.Serializable;
 
 public class Routine implements Serializable {
 
     private String title;
     private String[][] tasks;
-    private String[][] backgroundColors;
+    private Color[][] backgroundColors;
 
     public Routine() {
-        this("Routine", new String[24][7], new String[24][7]);
+        this("Routine", new String[24][7], new Color[24][7]);
     }
 
-    public Routine(String title, String[][] tasks, String[][] backgroundColors) {
+    public Routine(String title, String[][] tasks, Color[][] backgroundColors) {
         this.title = title;
         this.tasks = tasks;
         this.backgroundColors = backgroundColors;
@@ -34,11 +36,11 @@ public class Routine implements Serializable {
         this.tasks = tasks;
     }
 
-    public String[][] getBackgroundColors() {
+    public Color[][] getBackgroundColors() {
         return backgroundColors;
     }
 
-    public void setBackgroundColors(String[][] backgroundColors) {
+    public void setBackgroundColors(Color[][] backgroundColors) {
         this.backgroundColors = backgroundColors;
     }
 }

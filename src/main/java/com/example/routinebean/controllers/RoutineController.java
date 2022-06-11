@@ -1,5 +1,6 @@
 package com.example.routinebean.controllers;
 
+import com.example.routinebean.utils.Routine;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -49,9 +50,18 @@ public class RoutineController implements Initializable {
 
     private final TextField[][] textFieldArray = new TextField[24][7];
 
+    private final Color[][] colorArray = new Color[24][7];
+
     @FXML
     private void saveRoutine(ActionEvent event) {
-
+        Routine routine = new Routine();
+        routine.setTitle(title.getText());
+        for (int i = 0; i < 7; i++) {
+            for (int j = 0; j < 24; j++) {
+                routine.getTasks()[j][i] = textFieldArray[j][i].getText();
+                routine.getBackgroundColors()[j][i] = colorArray[j][i];
+            }
+        }
     }
 
     @FXML
@@ -213,6 +223,7 @@ public class RoutineController implements Initializable {
                     textFieldArray[i - 1][day - 1].setBackground(new Background(
                             new BackgroundFill(backgroundColorPicker.getValue(),
                                     null, null)));
+                    colorArray[i - 1][day - 1] = backgroundColorPicker.getValue();
                 }
             }
         }
@@ -235,6 +246,7 @@ public class RoutineController implements Initializable {
                     textFieldArray[i - 1][day - 1].setBackground(new Background(
                             new BackgroundFill(Color.WHITE,
                                     null, null)));
+                    colorArray[i - 1][day - 1] = Color.WHITE;
                 }
             }
         }
@@ -249,6 +261,7 @@ public class RoutineController implements Initializable {
                 textField.setAlignment(Pos.CENTER);
                 textField.setFont(new Font("Segoe UI",18));
                 textFieldArray[j-1][i-1] = textField;
+                colorArray[j-1][i-1] = Color.WHITE;
                 routineGrid.add(textField,i,j);
                 textField.setStyle("-fx-border-color: black");
             }
