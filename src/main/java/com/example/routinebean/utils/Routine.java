@@ -10,8 +10,22 @@ public class Routine implements Serializable {
     private String[][] tasks;
     private Color[][] backgroundColors;
 
+    private static Color[][] initialColor(){
+        Color[][] colorsArray = new Color[24][7];
+        for (int i = 0; i < 7; i++) {
+            for (int j = 0; j < 24; j++) {
+                colorsArray[j][i] = Color.WHITE;
+            }
+        }
+        return colorsArray;
+    }
+
     public Routine() {
-        this("Routine", new String[24][7], new Color[24][7]);
+        this("Routine", new String[24][7], initialColor());
+    }
+
+    public Routine(String title) {
+        this(title, new String[24][7], initialColor());
     }
 
     public Routine(String title, String[][] tasks, Color[][] backgroundColors) {

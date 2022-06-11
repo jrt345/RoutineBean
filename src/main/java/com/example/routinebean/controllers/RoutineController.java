@@ -17,6 +17,16 @@ import java.util.ResourceBundle;
 
 public class RoutineController implements Initializable {
 
+    private Routine routine;
+
+    public Routine getRoutine() {
+        return routine;
+    }
+
+    public void setRoutine(Routine routine) {
+        this.routine = routine;
+    }
+
     @FXML
     private Label title;
 
@@ -252,6 +262,19 @@ public class RoutineController implements Initializable {
         }
     }
 
+    public void loadRoutine() {
+        title.setText(routine.getTitle());
+
+        for (int i = 0; i < 7; i++) {
+            for (int j = 0; j < 24; j++) {
+                textFieldArray[j][i].setBackground(new Background(
+                        new BackgroundFill(routine.getBackgroundColors()[j][i],
+                                null, null)));
+                textFieldArray[j][i].setText(routine.getTasks()[j][i]);
+            }
+        }
+    }
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         for (int i = 1; i < 8; i++) {
@@ -260,10 +283,10 @@ public class RoutineController implements Initializable {
                 textField.setPrefSize(166, 36);
                 textField.setAlignment(Pos.CENTER);
                 textField.setFont(new Font("Segoe UI",18));
+                textField.setStyle("-fx-border-color: black");
                 textFieldArray[j-1][i-1] = textField;
                 colorArray[j-1][i-1] = Color.WHITE;
                 routineGrid.add(textField,i,j);
-                textField.setStyle("-fx-border-color: black");
             }
         }
 
