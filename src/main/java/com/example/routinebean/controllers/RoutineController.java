@@ -1,17 +1,18 @@
 package com.example.routinebean.controllers;
 
+import com.example.routinebean.utils.AppData;
+import com.example.routinebean.utils.ColorUtils;
 import com.example.routinebean.utils.Routine;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -25,6 +26,16 @@ public class RoutineController implements Initializable {
 
     public void setRoutine(Routine routine) {
         this.routine = routine;
+    }
+
+    private String routineFolderName;
+
+    public String getFolderName() {
+        return routineFolderName;
+    }
+
+    public void setFolderName(String folderName) {
+        this.routineFolderName = folderName;
     }
 
     @FXML
@@ -60,18 +71,17 @@ public class RoutineController implements Initializable {
 
     private final TextField[][] textFieldArray = new TextField[24][7];
 
-    private final Color[][] colorArray = new Color[24][7];
-
     @FXML
-    private void saveRoutine(ActionEvent event) {
+    private void saveRoutine(ActionEvent event) throws IOException, ClassNotFoundException {
         Routine routine = new Routine();
         routine.setTitle(title.getText());
         for (int i = 0; i < 7; i++) {
             for (int j = 0; j < 24; j++) {
                 routine.getTasks()[j][i] = textFieldArray[j][i].getText();
-                routine.getBackgroundColors()[j][i] = colorArray[j][i];
+                routine.getBackgroundColors()[j][i] = this.routine.getBackgroundColors()[j][i];
             }
         }
+        AppData.serialize(routineFolderName, routine);
     }
 
     @FXML
@@ -230,10 +240,10 @@ public class RoutineController implements Initializable {
             for (int day : days) {
                 for (int i : time) {
                     textFieldArray[i - 1][day - 1].setText(taskTextField.getText());
-                    textFieldArray[i - 1][day - 1].setBackground(new Background(
-                            new BackgroundFill(backgroundColorPicker.getValue(),
-                                    null, null)));
-                    colorArray[i - 1][day - 1] = backgroundColorPicker.getValue();
+                    textFieldArray[i - 1][day - 1].setStyle("-fx-background-color: " +
+                            ColorUtils.colorToRGBA(backgroundColorPicker.getValue()) +
+                            "; -fx-border-color: black;");
+                    routine.getBackgroundColors()[i - 1][day - 1] = ColorUtils.colorToRGBA(backgroundColorPicker.getValue());
                 }
             }
         }
@@ -253,10 +263,10 @@ public class RoutineController implements Initializable {
             for (int day : days) {
                 for (int i : time) {
                     textFieldArray[i - 1][day - 1].setText("");
-                    textFieldArray[i - 1][day - 1].setBackground(new Background(
-                            new BackgroundFill(Color.WHITE,
-                                    null, null)));
-                    colorArray[i - 1][day - 1] = Color.WHITE;
+                    textFieldArray[i - 1][day - 1].setStyle("-fx-background-color: " +
+                            ColorUtils.colorToRGBA(Color.WHITE) +
+                            "; -fx-border-color: black;");
+                    routine.getBackgroundColors()[i - 1][day - 1] = ColorUtils.colorToRGBA(backgroundColorPicker.getValue());
                 }
             }
         }
@@ -267,9 +277,9 @@ public class RoutineController implements Initializable {
 
         for (int i = 0; i < 7; i++) {
             for (int j = 0; j < 24; j++) {
-                textFieldArray[j][i].setBackground(new Background(
-                        new BackgroundFill(routine.getBackgroundColors()[j][i],
-                                null, null)));
+                textFieldArray[j][i].setStyle("-fx-background-color: " +
+                        routine.getBackgroundColors()[j][i] +
+                        "; -fx-border-color: black;");
                 textFieldArray[j][i].setText(routine.getTasks()[j][i]);
             }
         }
@@ -285,7 +295,6 @@ public class RoutineController implements Initializable {
                 textField.setFont(new Font("Segoe UI",18));
                 textField.setStyle("-fx-border-color: black");
                 textFieldArray[j-1][i-1] = textField;
-                colorArray[j-1][i-1] = Color.WHITE;
                 routineGrid.add(textField,i,j);
             }
         }

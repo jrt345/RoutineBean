@@ -15,7 +15,7 @@ public class AppData {
     }
 
     public static Routine deserialize(String folder) throws IOException, ClassNotFoundException {
-        FileInputStream fileIn = new FileInputStream(userDataDir.concat("player.dat"));
+        FileInputStream fileIn = new FileInputStream(userDataDir.concat(folder + "\\routine.dat"));
         ObjectInputStream in = new ObjectInputStream(fileIn);
         Routine routine = (Routine) in.readObject();
         in.close();
