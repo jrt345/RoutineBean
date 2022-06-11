@@ -8,13 +8,13 @@ public class Routine implements Serializable {
 
     private String title;
     private String[][] tasks;
-    private Color[][] backgroundColors;
+    private String[][] backgroundColors;
 
-    private static Color[][] initialColor(){
-        Color[][] colorsArray = new Color[24][7];
+    private static String[][] initialColor(){
+        String[][] colorsArray = new String[24][7];
         for (int i = 0; i < 7; i++) {
             for (int j = 0; j < 24; j++) {
-                colorsArray[j][i] = Color.WHITE;
+                colorsArray[j][i] = ColorUtils.colorToRGBA(Color.WHITE);
             }
         }
         return colorsArray;
@@ -28,7 +28,7 @@ public class Routine implements Serializable {
         this(title, new String[24][7], initialColor());
     }
 
-    public Routine(String title, String[][] tasks, Color[][] backgroundColors) {
+    public Routine(String title, String[][] tasks, String[][] backgroundColors) {
         this.title = title;
         this.tasks = tasks;
         this.backgroundColors = backgroundColors;
@@ -50,11 +50,11 @@ public class Routine implements Serializable {
         this.tasks = tasks;
     }
 
-    public Color[][] getBackgroundColors() {
+    public String[][] getBackgroundColors() {
         return backgroundColors;
     }
 
-    public void setBackgroundColors(Color[][] backgroundColors) {
+    public void setBackgroundColors(String[][] backgroundColors) {
         this.backgroundColors = backgroundColors;
     }
 }
