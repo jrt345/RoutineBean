@@ -39,6 +39,9 @@ public class Controller {
         boolean routineFolder = false;
 
         if (isRoutinesDirCreated) {
+            //Replaces any illegal characters in routineFolderName with underscores
+            routineFolderName = routineFolderName.replaceAll("[^a-zA-Z0-9\\.\\-]", "_");
+
             File file = new File(AppData.userDataDir.concat(routineFolderName));
 
             //If the new routine folder does not exist, the folder will be created
