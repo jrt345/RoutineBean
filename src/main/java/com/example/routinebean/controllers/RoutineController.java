@@ -72,6 +72,16 @@ public class RoutineController implements Initializable {
     private final TextField[][] textFieldArray = new TextField[24][7];
 
     @FXML
+    private void createRoutine(ActionEvent event) {
+
+    }
+
+    @FXML
+    private void openRoutine(ActionEvent event) {
+
+    }
+
+    @FXML
     private void saveRoutine(ActionEvent event) throws IOException, ClassNotFoundException {
         Routine routine = new Routine();
         routine.setTitle(title.getText());
@@ -85,12 +95,12 @@ public class RoutineController implements Initializable {
     }
 
     @FXML
-    private void openRoutine(ActionEvent event) {
+    private void closeRoutine(ActionEvent event) {
 
     }
 
     @FXML
-    private void clearRoutine(ActionEvent event) {
+    private void quitProgram(ActionEvent event) {
 
     }
 
