@@ -1,16 +1,21 @@
 package com.example.routinebean.controllers;
 
 import com.example.routinebean.utils.AppData;
+import com.example.routinebean.utils.AppUtils;
 import com.example.routinebean.utils.ColorUtils;
 import com.example.routinebean.utils.Routine;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
-import javafx.scene.control.*;
+import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.ColorPicker;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
@@ -38,6 +43,16 @@ public class RoutineController implements Initializable {
         this.routineFolderName = folderName;
     }
 
+    private Stage stage;
+
+    public Stage getStage() {
+        return stage;
+    }
+
+    public void setStage(Stage stage) {
+        this.stage = stage;
+    }
+
     @FXML
     private Label title;
 
@@ -46,9 +61,6 @@ public class RoutineController implements Initializable {
 
     @FXML
     private GridPane routineGrid;
-
-    @FXML
-    private Button saveRoutine;
 
     @FXML
     private TextField taskTextField;
@@ -72,13 +84,13 @@ public class RoutineController implements Initializable {
     private final TextField[][] textFieldArray = new TextField[24][7];
 
     @FXML
-    private void createRoutine(ActionEvent event) {
-
+    private void createRoutine(ActionEvent event) throws IOException {
+        AppUtils.newRoutine();
     }
 
     @FXML
-    private void openRoutine(ActionEvent event) {
-
+    private void openRoutine(ActionEvent event) throws IOException, ClassNotFoundException {
+        AppUtils.openRoutine(stage);
     }
 
     @FXML

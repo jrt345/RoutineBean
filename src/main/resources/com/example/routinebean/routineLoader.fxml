@@ -4,7 +4,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
-<AnchorPane prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/null" xmlns:fx="http://javafx.com/fxml/null" fx:controller="com.example.routinebean.controllers.RoutineController">
+<AnchorPane prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/null" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.routinebean.controllers.RoutineController">
     <children>
         <BorderPane prefHeight="600.0" prefWidth="900.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <top>
@@ -41,24 +41,8 @@
                               <MenuItem mnemonicParsing="false" text="Clear Routine" />
                            </items>
                         </Menu>
-                      <Menu mnemonicParsing="false" text="View">
-                           <items>
-                              <Menu mnemonicParsing="false" text="Hour Format">
-                                <items>
-                                    <RadioMenuItem mnemonicParsing="false" selected="true" text="12-Hour Format">
-                                       <toggleGroup>
-                                          <ToggleGroup fx:id="hourFormat" />
-                                       </toggleGroup>
-                                    </RadioMenuItem>
-                                    <RadioMenuItem mnemonicParsing="false" text="24-Hour Format" toggleGroup="$hourFormat" />
-                                </items>
-                              </Menu>
-                           </items>
-                      </Menu>
                       <Menu mnemonicParsing="false" text="Help">
                         <items>
-                              <CheckMenuItem mnemonicParsing="false" selected="true" text="Check for Updates" />
-                              <SeparatorMenuItem mnemonicParsing="false" />
                           <MenuItem mnemonicParsing="false" text="Check for Update..." />
                               <MenuItem mnemonicParsing="false" text="About" />
                         </items>
