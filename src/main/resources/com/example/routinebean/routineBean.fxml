@@ -5,7 +5,7 @@
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.routinebean.controllers.Controller">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/null" xmlns:fx="http://javafx.com/fxml/null" fx:controller="com.example.routinebean.controllers.Controller">
    <children>
       <BorderPane prefHeight="600.0" prefWidth="900.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <top>
@@ -30,6 +30,11 @@
                         <Insets left="10.0" />
                      </padding>
                   </Label>
+                  <Button fx:id="updateButton" focusTraversable="false" layoutX="745.0" layoutY="6.0" mnemonicParsing="false" onAction="#updateApp" text="Update Available" AnchorPane.bottomAnchor="5.5" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="5.5">
+                     <font>
+                        <Font name="Segoe UI Bold" size="15.0" />
+                     </font>
+                  </Button>
                </children>
             </AnchorPane>
          </bottom>

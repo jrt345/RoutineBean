@@ -6,21 +6,28 @@ import com.example.routinebean.utils.Routine;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.TextInputDialog;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.ResourceBundle;
 
-public class Controller {
+public class Controller implements Initializable {
 
     //Name of the routine folder inside the "routines" directory
     private String routineFolderName;
+
+    @FXML
+    private Button updateButton;
 
     //Creates a new routine folder, based on the user's text input
     private void createNewRoutineFolder(String title, Routine routine) throws IOException {
@@ -132,5 +139,16 @@ public class Controller {
         Runtime rt = Runtime.getRuntime();
         String url = "https://github.com/jrt345/RoutineBean";
         rt.exec("rundll32 url.dll,FileProtocolHandler " + url);
+    }
+
+    @FXML
+    private void updateApp(ActionEvent event) {
+
+    }
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        updateButton.setDisable(true);
+        updateButton.setOpacity(0);
     }
 }
