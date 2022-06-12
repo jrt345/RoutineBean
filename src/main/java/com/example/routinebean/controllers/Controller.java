@@ -125,7 +125,9 @@ public class Controller {
     }
 
     @FXML
-    private void openSettings(ActionEvent event) {
-
+    private void openGithub(ActionEvent event) throws IOException {
+        Runtime rt = Runtime.getRuntime();
+        String url = "https://github.com/jrt345/RoutineBean";
+        rt.exec("rundll32 url.dll,FileProtocolHandler " + url);
     }
 }
