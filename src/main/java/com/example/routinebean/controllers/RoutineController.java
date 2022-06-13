@@ -94,7 +94,7 @@ public class RoutineController implements Initializable {
     }
 
     @FXML
-    private void saveRoutine(ActionEvent event) throws IOException, ClassNotFoundException {
+    private void saveRoutine(ActionEvent event) throws IOException {
         Routine routine = new Routine();
         routine.setTitle(title.getText());
         for (int i = 0; i < 7; i++) {
@@ -248,50 +248,46 @@ public class RoutineController implements Initializable {
         return selectedTime;
     }
 
-    @FXML
-    private void addTasks(ActionEvent event) {
+    private void modifyTasks(boolean delete) {
         int day1 = dayToNumber(daysOfTheWeekChoiceBox1.getValue());
         int day2 = dayToNumber(daysOfTheWeekChoiceBox2.getValue());
         int time1 = timeToNumber(timeChoiceBox1.getValue());
         int time2 = timeToNumber(timeChoiceBox2.getValue());
 
+        String task;
+        String backgroundColor;
+
+        if (delete) {
+            task = "";
+            backgroundColor = ColorUtils.colorToRGBA(Color.WHITE);
+        } else {
+            task = taskTextField.getText();
+            backgroundColor = ColorUtils.colorToRGBA(backgroundColorPicker.getValue());
+        }
+
+        //If day and time have at least one selected value, set the tasks
         if (!(day1 == 0 && day2 == 0) && !(time1 == 0 && time2 == 0)){
             int[] days = selectedDays(day1, day2);
             int[] time = selectedTime(time1, time2);
 
             for (int day : days) {
                 for (int i : time) {
-                    textFieldArray[i - 1][day - 1].setText(taskTextField.getText());
-                    textFieldArray[i - 1][day - 1].setStyle("-fx-background-color: " +
-                            ColorUtils.colorToRGBA(backgroundColorPicker.getValue()) +
-                            "; -fx-border-color: black;");
-                    routine.getBackgroundColors()[i - 1][day - 1] = ColorUtils.colorToRGBA(backgroundColorPicker.getValue());
+                    textFieldArray[i - 1][day - 1].setText(task);
+                    textFieldArray[i - 1][day - 1].setStyle("-fx-background-color: " + backgroundColor + "; -fx-border-color: black;");
+                    routine.getBackgroundColors()[i - 1][day - 1] = backgroundColor;
                 }
             }
         }
     }
 
     @FXML
+    private void addTasks(ActionEvent event) {
+        modifyTasks(false);
+    }
+
+    @FXML
     private void deleteTasks(ActionEvent event) {
-        int day1 = dayToNumber(daysOfTheWeekChoiceBox1.getValue());
-        int day2 = dayToNumber(daysOfTheWeekChoiceBox2.getValue());
-        int time1 = timeToNumber(timeChoiceBox1.getValue());
-        int time2 = timeToNumber(timeChoiceBox2.getValue());
-
-        if (!(day1 == 0 && day2 == 0) && !(time1 == 0 && time2 == 0)){
-            int[] days = selectedDays(day1, day2);
-            int[] time = selectedTime(time1, time2);
-
-            for (int day : days) {
-                for (int i : time) {
-                    textFieldArray[i - 1][day - 1].setText("");
-                    textFieldArray[i - 1][day - 1].setStyle("-fx-background-color: " +
-                            ColorUtils.colorToRGBA(Color.WHITE) +
-                            "; -fx-border-color: black;");
-                    routine.getBackgroundColors()[i - 1][day - 1] = ColorUtils.colorToRGBA(backgroundColorPicker.getValue());
-                }
-            }
-        }
+        modifyTasks(true);
     }
 
     public void loadRoutine() {
@@ -309,15 +305,15 @@ public class RoutineController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        for (int i = 1; i < 8; i++) {
-            for (int j = 1; j < 25; j++) {
+        for (int i = 0; i < 7; i++) {
+            for (int j = 0; j < 24; j++) {
                 TextField textField = new TextField();
                 textField.setPrefSize(166, 36);
                 textField.setAlignment(Pos.CENTER);
                 textField.setFont(new Font("Segoe UI",18));
                 textField.setStyle("-fx-border-color: black");
-                textFieldArray[j-1][i-1] = textField;
-                routineGrid.add(textField,i,j);
+                textFieldArray[j][i] = textField;
+                routineGrid.add(textField,i+1,j+1);
             }
         }
 
