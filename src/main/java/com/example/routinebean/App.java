@@ -21,13 +21,12 @@ public class App extends Application {
         FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("routineBean.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 900, 600);
         stage.setTitle("RoutineBean");
-        stage.setMinHeight(600);
-        stage.setMinWidth(900);
         stage.setScene(scene);
+        stage.setMinHeight(639);
+        stage.setMinWidth(916);
         AppProperties.setWindowSizeFromProperties(stage, true);
         stage.show();
         App.stage = stage;
-
         stage.setOnCloseRequest(e -> {
             AppProperties.saveProperties(stage, true);
         });

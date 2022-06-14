@@ -65,8 +65,8 @@ public class AppProperties {
         try {
             properties = AppProperties.readProperties();
         } catch (IOException e) {
-            AppProperties.setMainWindowSize(900, 600);
-            AppProperties.setRoutineWindowSize(900, 600);
+            AppProperties.setMainWindowSize(916, 639);
+            AppProperties.setRoutineWindowSize(916, 639);
             try {
                 AppProperties.writeProperties();
             } catch (IOException ex) {
