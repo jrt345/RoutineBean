@@ -1,9 +1,7 @@
 package com.example.routinebean.controllers;
 
-import com.example.routinebean.utils.AppData;
-import com.example.routinebean.utils.AppUtils;
-import com.example.routinebean.utils.ColorUtils;
-import com.example.routinebean.utils.Routine;
+import com.example.routinebean.utils.*;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -85,11 +83,13 @@ public class RoutineController implements Initializable {
 
     @FXML
     private void createRoutine(ActionEvent event) throws IOException {
+        AppProperties.saveProperties(stage, false);
         AppUtils.newRoutine();
     }
 
     @FXML
     private void openRoutine(ActionEvent event) throws IOException, ClassNotFoundException {
+        AppProperties.saveProperties(stage, false);
         AppUtils.openRoutine(stage);
     }
 
@@ -113,7 +113,7 @@ public class RoutineController implements Initializable {
 
     @FXML
     private void quitProgram(ActionEvent event) {
-
+        Platform.exit();
     }
 
     @FXML

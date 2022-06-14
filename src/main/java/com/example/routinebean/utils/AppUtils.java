@@ -93,11 +93,19 @@ public class AppUtils {
         controller.setFolderName(routineFolderName);
 
         Stage stage = new Stage();
-        controller.setStage(stage);
         stage.setTitle(controller.getRoutine().getTitle());
+        stage.setMinHeight(600);
+        stage.setMinWidth(900);
+        controller.setStage(stage);
+
         Scene scene = new Scene(root, 900, 600);
         stage.setScene(scene);
+        AppProperties.setWindowSizeFromProperties(stage, false);
         stage.show();
+
+        stage.setOnCloseRequest(e -> {
+            AppProperties.saveProperties(stage, false);
+        });
     }
 
     public static void newRoutine() throws IOException {
