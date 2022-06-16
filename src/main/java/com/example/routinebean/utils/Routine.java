@@ -3,6 +3,8 @@ package com.example.routinebean.utils;
 import javafx.scene.paint.Color;
 
 import java.io.Serializable;
+import java.util.Arrays;
+import java.util.Objects;
 
 public class Routine implements Serializable {
 
@@ -56,5 +58,25 @@ public class Routine implements Serializable {
 
     public void setBackgroundColors(String[][] backgroundColors) {
         this.backgroundColors = backgroundColors;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Routine routine = (Routine) o;
+
+        if (!Objects.equals(title, routine.title)) return false;
+        if (!Arrays.deepEquals(tasks, routine.tasks)) return false;
+        return Arrays.deepEquals(backgroundColors, routine.backgroundColors);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = title != null ? title.hashCode() : 0;
+        result = 31 * result + Arrays.deepHashCode(tasks);
+        result = 31 * result + Arrays.deepHashCode(backgroundColors);
+        return result;
     }
 }
