@@ -19,11 +19,11 @@
                     <menus>
                       <Menu mnemonicParsing="false" text="File">
                         <items>
-                          <MenuItem mnemonicParsing="false" onAction="#createRoutine" text="New" />
-                              <MenuItem mnemonicParsing="false" onAction="#openRoutine" text="Open..." />
+                          <MenuItem fx:id="newRoutineButton" mnemonicParsing="false" onAction="#createRoutine" text="New" />
+                              <MenuItem fx:id="openButton" mnemonicParsing="false" onAction="#openRoutine" text="Open..." />
                               <SeparatorMenuItem mnemonicParsing="false" />
-                              <MenuItem mnemonicParsing="false" onAction="#saveRoutine" text="Save" />
-                              <MenuItem mnemonicParsing="false" onAction="#closeRoutine" text="Close Window" />
+                              <MenuItem fx:id="saveButton" mnemonicParsing="false" onAction="#saveRoutine" text="Save" />
+                              <MenuItem fx:id="closeButton" mnemonicParsing="false" onAction="#closeRoutine" text="Close Window" />
                               <SeparatorMenuItem mnemonicParsing="false" />
                               <MenuItem mnemonicParsing="false" onAction="#quitProgram" text="Quit" />
                         </items>

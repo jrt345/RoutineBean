@@ -7,6 +7,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
+import javafx.scene.control.*;
+import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -50,6 +52,18 @@ public class RoutineController implements Initializable {
 
     @FXML
     private Label title;
+
+    @FXML
+    private MenuItem newRoutineButton;
+
+    @FXML
+    private MenuItem openButton;
+
+    @FXML
+    private MenuItem saveButton;
+
+    @FXML
+    private MenuItem closeButton;
 
     @FXML
     private MenuItem undoButton;
@@ -113,7 +127,7 @@ public class RoutineController implements Initializable {
 
     @FXML
     private void closeRoutine(ActionEvent event) {
-
+        stage.close();
     }
 
     @FXML
@@ -371,6 +385,13 @@ public class RoutineController implements Initializable {
                 routineGrid.add(textField,i+1,j+1);
             }
         }
+
+        newRoutineButton.setAccelerator(KeyCombination.keyCombination("Ctrl+N"));
+        openButton.setAccelerator(KeyCombination.keyCombination("Ctrl+O"));
+        saveButton.setAccelerator(KeyCombination.keyCombination("Ctrl+S"));
+        closeButton.setAccelerator(KeyCombination.keyCombination("Ctrl+W"));
+        undoButton.setAccelerator(KeyCombination.keyCombination("Ctrl+Z"));
+        redoButton.setAccelerator(KeyCombination.keyCombination("Ctrl+Y"));
 
         daysOfTheWeekChoiceBox1.getItems().add("(None)");
         daysOfTheWeekChoiceBox1.getItems().add("Monday");
