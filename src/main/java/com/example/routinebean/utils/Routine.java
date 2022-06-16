@@ -2,9 +2,13 @@ package com.example.routinebean.utils;
 
 import javafx.scene.paint.Color;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 public class Routine implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID = 2128630904469519447L;
 
     private String title;
     private String[][] tasks;
