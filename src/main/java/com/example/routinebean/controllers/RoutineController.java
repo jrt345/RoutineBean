@@ -6,10 +6,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.ColorPicker;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -17,42 +14,48 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class RoutineController implements Initializable {
 
     private Routine routine;
-
     public Routine getRoutine() {
         return routine;
     }
-
     public void setRoutine(Routine routine) {
         this.routine = routine;
     }
 
     private String routineFolderName;
-
     public String getFolderName() {
         return routineFolderName;
     }
-
     public void setFolderName(String folderName) {
         this.routineFolderName = folderName;
     }
 
     private Stage stage;
-
     public Stage getStage() {
         return stage;
     }
-
     public void setStage(Stage stage) {
         this.stage = stage;
     }
 
+    private final TextField[][] textFieldArray = new TextField[24][7];
+
+    private final ArrayList<Routine> saveStates = new ArrayList<>();
+    private int saveStatesIndex = 0;
+
     @FXML
     private Label title;
+
+    @FXML
+    private MenuItem undoButton;
+
+    @FXML
+    private MenuItem redoButton;
 
     @FXML
     private TextField titleTextField;
@@ -78,9 +81,6 @@ public class RoutineController implements Initializable {
     @FXML
     private ColorPicker backgroundColorPicker;
 
-
-    private final TextField[][] textFieldArray = new TextField[24][7];
-
     @FXML
     private void createRoutine(ActionEvent event) throws IOException {
         AppProperties.saveProperties(stage, false);
@@ -93,8 +93,7 @@ public class RoutineController implements Initializable {
         AppUtils.openRoutine(stage);
     }
 
-    @FXML
-    private void saveRoutine(ActionEvent event) throws IOException {
+    private Routine getCurrentRoutineObject() {
         Routine routine = new Routine();
         routine.setTitle(title.getText());
         for (int i = 0; i < 7; i++) {
@@ -103,7 +102,13 @@ public class RoutineController implements Initializable {
                 routine.getBackgroundColors()[j][i] = this.routine.getBackgroundColors()[j][i];
             }
         }
-        AppData.serialize(routineFolderName, routine);
+
+        return routine;
+    }
+
+    @FXML
+    private void saveRoutine(ActionEvent event) throws IOException {
+        AppData.serialize(routineFolderName, getCurrentRoutineObject());
     }
 
     @FXML
@@ -114,6 +119,52 @@ public class RoutineController implements Initializable {
     @FXML
     private void quitProgram(ActionEvent event) {
         Platform.exit();
+    }
+
+    private void updateUndoRedoButtons() {
+        undoButton.setDisable(saveStatesIndex <= 1);
+        redoButton.setDisable(saveStatesIndex >= saveStates.size());
+    }
+
+    private void updateSavedStates() {
+        if (saveStates.size() == 0){
+            saveStates.add(getCurrentRoutineObject());
+            saveStatesIndex++;
+        }
+
+        if (saveStatesIndex < saveStates.size()){
+            int dif = saveStates.size() - saveStatesIndex;
+
+            for (int i = 0; i < dif; i++) {
+                saveStates.remove(saveStates.size() - 1);
+            }
+        } else if (!(saveStates.get(saveStatesIndex - 1).equals(getCurrentRoutineObject()))) {
+            saveStates.add(getCurrentRoutineObject());
+            saveStatesIndex++;
+        }
+
+        updateUndoRedoButtons();
+    }
+
+    private void loadUndoRedo(boolean isUndo) {
+        if (isUndo) {
+            saveStatesIndex--;
+        } else {
+            saveStatesIndex++;
+        }
+
+        loadRoutine(saveStates.get(saveStatesIndex - 1));
+        updateUndoRedoButtons();
+    }
+
+    @FXML
+    private void undoChange(ActionEvent event) {
+        loadUndoRedo(true);
+    }
+
+    @FXML
+    private void redoChange(ActionEvent event) {
+        loadUndoRedo(false);
     }
 
     @FXML
@@ -249,6 +300,8 @@ public class RoutineController implements Initializable {
     }
 
     private void modifyTasks(boolean delete) {
+        updateSavedStates();
+
         int day1 = dayToNumber(daysOfTheWeekChoiceBox1.getValue());
         int day2 = dayToNumber(daysOfTheWeekChoiceBox2.getValue());
         int time1 = timeToNumber(timeChoiceBox1.getValue());
@@ -278,6 +331,8 @@ public class RoutineController implements Initializable {
                 }
             }
         }
+
+        updateSavedStates();
     }
 
     @FXML
@@ -290,7 +345,7 @@ public class RoutineController implements Initializable {
         modifyTasks(true);
     }
 
-    public void loadRoutine() {
+    public void loadRoutine(Routine routine) {
         title.setText(routine.getTitle());
 
         for (int i = 0; i < 7; i++) {
@@ -347,5 +402,8 @@ public class RoutineController implements Initializable {
         daysOfTheWeekChoiceBox2.setValue("(None)");
         timeChoiceBox1.setValue("(None)");
         timeChoiceBox2.setValue("(None)");
+
+        undoButton.setDisable(true);
+        redoButton.setDisable(true);
     }
 }

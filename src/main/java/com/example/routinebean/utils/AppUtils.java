@@ -84,7 +84,7 @@ public class AppUtils {
 
         RoutineController controller = fxmlLoader.getController();
         controller.setRoutine(Objects.requireNonNullElseGet(routine, () -> new Routine(title)));
-        controller.loadRoutine();
+        controller.loadRoutine(controller.getRoutine());
 
         if (title != null) {
             createNewRoutineFolder(title, controller.getRoutine());
