@@ -7,7 +7,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
-import javafx.scene.control.*;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
@@ -21,31 +20,18 @@ import java.util.ResourceBundle;
 
 public class RoutineController implements Initializable {
 
-    private Routine routine;
-    public Routine getRoutine() {
-        return routine;
-    }
-    public void setRoutine(Routine routine) {
-        this.routine = routine;
-    }
-
     private String routineFolderName;
-    public String getFolderName() {
-        return routineFolderName;
-    }
     public void setFolderName(String folderName) {
         this.routineFolderName = folderName;
     }
 
     private Stage stage;
-    public Stage getStage() {
-        return stage;
-    }
     public void setStage(Stage stage) {
         this.stage = stage;
     }
 
     private final TextField[][] textFieldArray = new TextField[24][7];
+    private final String[][] backgroundColorsArray = new String[24][7];
 
     private final ArrayList<Routine> saveStates = new ArrayList<>();
     private int saveStatesIndex = 0;
@@ -107,17 +93,18 @@ public class RoutineController implements Initializable {
         AppUtils.openRoutine(stage);
     }
 
-    private Routine getCurrentRoutineObject() {
-        Routine routine = new Routine();
-        routine.setTitle(title.getText());
+    public Routine getCurrentRoutineObject(){
+        String title = this.title.getText();
+        String[][] tasks = new String[24][7];
+        String[][] backgroundColors = new String[24][7];
+
         for (int i = 0; i < 7; i++) {
             for (int j = 0; j < 24; j++) {
-                routine.getTasks()[j][i] = textFieldArray[j][i].getText();
-                routine.getBackgroundColors()[j][i] = this.routine.getBackgroundColors()[j][i];
+                tasks[j][i] = textFieldArray[j][i].getText();
+                backgroundColors[j][i] = backgroundColorsArray[j][i];
             }
         }
-
-        return routine;
+        return new Routine(title, tasks, backgroundColors);
     }
 
     @FXML
@@ -145,7 +132,6 @@ public class RoutineController implements Initializable {
             saveStates.add(getCurrentRoutineObject());
             saveStatesIndex++;
         }
-
         if (saveStatesIndex < saveStates.size()){
             int dif = saveStates.size() - saveStatesIndex;
 
@@ -160,30 +146,29 @@ public class RoutineController implements Initializable {
         updateUndoRedoButtons();
     }
 
-    private void loadUndoRedo(boolean isUndo) {
-        if (isUndo) {
-            saveStatesIndex--;
-        } else {
-            saveStatesIndex++;
-        }
-
-        loadRoutine(saveStates.get(saveStatesIndex - 1));
+    private void loadSaveSave(int index) {
+        loadRoutine(saveStates.get(index - 1));
         updateUndoRedoButtons();
     }
 
     @FXML
     private void undoChange(ActionEvent event) {
-        loadUndoRedo(true);
+        saveStatesIndex--;
+        loadSaveSave(saveStatesIndex);
     }
 
     @FXML
     private void redoChange(ActionEvent event) {
-        loadUndoRedo(false);
+        saveStatesIndex++;
+        loadSaveSave(saveStatesIndex);
     }
 
     @FXML
     private void setTitle(ActionEvent event) {
+        updateSavedStates();
         title.setText(titleTextField.getText());
+        loadRoutine(getCurrentRoutineObject());
+        updateSavedStates();
     }
 
     @FXML
@@ -339,11 +324,12 @@ public class RoutineController implements Initializable {
 
             for (int day : days) {
                 for (int i : time) {
-                    textFieldArray[i - 1][day - 1].setText(task);
-                    textFieldArray[i - 1][day - 1].setStyle("-fx-background-color: " + backgroundColor + "; -fx-border-color: black;");
-                    routine.getBackgroundColors()[i - 1][day - 1] = backgroundColor;
+                    textFieldArray[i -1][day - 1].setText(task);
+                    backgroundColorsArray[i - 1][day - 1] = backgroundColor;
                 }
             }
+
+            loadRoutine(getCurrentRoutineObject());
         }
 
         updateSavedStates();
@@ -364,9 +350,11 @@ public class RoutineController implements Initializable {
 
         for (int i = 0; i < 7; i++) {
             for (int j = 0; j < 24; j++) {
+                backgroundColorsArray[j][i] = routine.getBackgroundColors()[j][i];
+
                 textFieldArray[j][i].setStyle("-fx-background-color: " +
-                        routine.getBackgroundColors()[j][i] +
-                        "; -fx-border-color: black;");
+                        backgroundColorsArray[j][i] + "; -fx-border-color: black;");
+
                 textFieldArray[j][i].setText(routine.getTasks()[j][i]);
             }
         }

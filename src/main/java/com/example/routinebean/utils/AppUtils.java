@@ -83,17 +83,16 @@ public class AppUtils {
         Parent root = fxmlLoader.load();
 
         RoutineController controller = fxmlLoader.getController();
-        controller.setRoutine(Objects.requireNonNullElseGet(routine, () -> new Routine(title)));
-        controller.loadRoutine(controller.getRoutine());
+        controller.loadRoutine(Objects.requireNonNullElseGet(routine, () -> new Routine(title)));
 
         if (title != null) {
-            createNewRoutineFolder(title, controller.getRoutine());
+            createNewRoutineFolder(title, controller.getCurrentRoutineObject());
         }
 
         controller.setFolderName(routineFolderName);
 
         Stage stage = new Stage();
-        stage.setTitle(controller.getRoutine().getTitle());
+        stage.setTitle(controller.getCurrentRoutineObject().getTitle());
         stage.setMinHeight(600);
         stage.setMinWidth(900);
         controller.setStage(stage);
@@ -103,9 +102,7 @@ public class AppUtils {
         AppProperties.setWindowSizeFromProperties(stage, false);
         stage.show();
 
-        stage.setOnCloseRequest(e -> {
-            AppProperties.saveProperties(stage, false);
-        });
+        stage.setOnCloseRequest(e -> AppProperties.saveProperties(stage, false));
     }
 
     public static void newRoutine() throws IOException {

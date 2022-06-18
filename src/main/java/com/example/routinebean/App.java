@@ -27,9 +27,7 @@ public class App extends Application {
         AppProperties.setWindowSizeFromProperties(stage, true);
         stage.show();
         App.stage = stage;
-        stage.setOnCloseRequest(e -> {
-            AppProperties.saveProperties(stage, true);
-        });
+        stage.setOnCloseRequest(e -> AppProperties.saveProperties(stage, true));
     }
 
     public static void main(String[] args) {
