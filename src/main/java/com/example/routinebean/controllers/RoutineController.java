@@ -369,6 +369,9 @@ public class RoutineController implements Initializable {
                 textField.setAlignment(Pos.CENTER);
                 textField.setFont(new Font("Segoe UI",18));
                 textField.setStyle("-fx-border-color: black");
+
+                textField.setOnKeyReleased(e -> updateSavedStates());
+
                 textFieldArray[j][i] = textField;
                 routineGrid.add(textField,i+1,j+1);
             }
