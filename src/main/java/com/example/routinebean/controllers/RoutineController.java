@@ -132,7 +132,7 @@ public class RoutineController implements Initializable {
             saveStates.add(getCurrentRoutineObject());
             saveStatesIndex++;
         }
-        if (saveStatesIndex < saveStates.size()){
+        if (saveStatesIndex < saveStates.size() && !(saveStates.get(saveStatesIndex - 1).equals(getCurrentRoutineObject()))){
             int dif = saveStates.size() - saveStatesIndex;
 
             for (int i = 0; i < dif; i++) {
@@ -358,6 +358,10 @@ public class RoutineController implements Initializable {
                 textFieldArray[j][i].setText(routine.getTasks()[j][i]);
             }
         }
+    }
+
+    public void initializeSaveState(){
+        updateSavedStates();
     }
 
     @Override

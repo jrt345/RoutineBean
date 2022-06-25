@@ -100,6 +100,7 @@ public class AppUtils {
         Scene scene = new Scene(root, 900, 600);
         stage.setScene(scene);
         AppProperties.setWindowSizeFromProperties(stage, false);
+        controller.initializeSaveState();
         stage.show();
 
         stage.setOnCloseRequest(e -> AppProperties.saveProperties(stage, false));
