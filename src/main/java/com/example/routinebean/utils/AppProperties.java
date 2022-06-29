@@ -13,17 +13,17 @@ public class AppProperties {
     private static double routineWindowWidth;
     private static double routineWindowHeight;
 
-    public static void setMainWindowSize(double width, double height) {
+    private static void setMainWindowSize(double width, double height) {
         mainWindowWidth = width;
         mainWindowHeight = height;
     }
 
-    public static void setRoutineWindowSize(double width, double height) {
+    private static void setRoutineWindowSize(double width, double height) {
         routineWindowWidth = width;
         routineWindowHeight = height;
     }
 
-    public static void writeProperties() throws IOException {
+    private static void writeProperties() throws IOException {
         Properties properties = new Properties();
         OutputStream os = new FileOutputStream("RoutineBean.properties");
 
@@ -35,7 +35,7 @@ public class AppProperties {
         properties.store(os, null);
     }
 
-    public static Properties readProperties() throws IOException {
+    private static Properties readProperties() throws IOException {
         Properties properties = new Properties();
         InputStream inputStream = new FileInputStream("RoutineBean.properties");
         properties.load(inputStream);
