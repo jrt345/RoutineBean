@@ -93,8 +93,8 @@ public class AppUtils {
 
         Stage stage = new Stage();
         stage.setTitle(controller.getCurrentRoutineObject().getTitle());
-        stage.setMinHeight(600);
-        stage.setMinWidth(900);
+        stage.setMinHeight(639);
+        stage.setMinWidth(916);
         controller.setStage(stage);
 
         Scene scene = new Scene(root, 900, 600);
