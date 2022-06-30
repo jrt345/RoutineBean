@@ -17,7 +17,7 @@ public class App extends Application {
         return stage;
     }
 
-    private void writeProperties() {
+    private static void writeProperties() {
         AppProperties.setWidth(stage.getWidth());
         AppProperties.setHeight(stage.getHeight());
 
@@ -28,7 +28,7 @@ public class App extends Application {
         }
     }
 
-    private void loadProperties() throws IOException {
+    private static void loadProperties() throws IOException {
         if (new File(System.getProperty("user.dir").concat("\\RoutineBean.properties")).exists()) {
             try {
                 AppProperties.load();
