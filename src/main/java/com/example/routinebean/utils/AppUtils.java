@@ -139,6 +139,7 @@ public class AppUtils {
         TextInputDialog textDialog = new TextInputDialog("Routine");
         textDialog.setTitle("New Routine");
         textDialog.setHeaderText("Routine Name:");
+        textDialog.getDialogPane().setPrefWidth(300);
 
         Optional<String> result = textDialog.showAndWait();
 
