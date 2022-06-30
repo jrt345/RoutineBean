@@ -18,63 +18,7 @@ import java.util.regex.Pattern;
 
 public class AppUtils {
 
-    //Name of the routine folder inside the "routines" directory
     private static String routineFolderName;
-
-    private static void createNewRoutineFolder(String title, Routine routine) throws IOException {
-        routineFolderName = title;
-
-        //Is the "routines" directory created?
-        boolean isRoutinesDirCreated = new File(AppData.ROUTINE_DIRECTORY).exists();
-
-        if (!isRoutinesDirCreated) {
-            isRoutinesDirCreated = new File(AppData.ROUTINE_DIRECTORY).mkdirs();
-        }
-
-        //The new routine folder has not been created yet
-        boolean routineFolder = false;
-
-        if (isRoutinesDirCreated) {
-            //Replaces any illegal characters in routineFolderName with underscores
-            routineFolderName = routineFolderName.replaceAll("[<>:\"/\\\\|?.*]", "_");
-
-            //Removes any spaces before and after routineFolderName
-            routineFolderName = routineFolderName.trim();
-
-            //Adds underscores before and after any illegal folder names in Windows
-            if (Pattern.matches("CON$|PRN$|AUX$|NUL$|COM1$|COM2$|COM3$|COM4$|COM5$|COM6$|COM7$|COM8$|COM9$|LPT1$|LPT2$|LPT3$|LPT4$|LPT5$|LPT6$|LPT7$|LPT8$|LPT9$", routineFolderName)) {
-                routineFolderName = "_" + routineFolderName + "_";
-            }
-
-            //Current new routine folder file object
-            File file = new File(AppData.ROUTINE_DIRECTORY.concat(routineFolderName));
-
-            //If the new routine folder does not exist, the folder will be created
-            if (!file.exists()){
-                routineFolder = new File(AppData.ROUTINE_DIRECTORY.concat(routineFolderName)).mkdirs();
-            }
-
-            int index = 0;
-
-            /*If the new routine folder already exists, add "(index)" to the end of the
-             * folder name until such folder does not exist and then the folder,
-             * with the modified folder name, will be created*/
-            while (file.exists() && !routineFolder){
-                index++;
-                String modifiedFolderName = routineFolderName + " (" + index + ")";
-
-                file = new File(AppData.ROUTINE_DIRECTORY.concat(modifiedFolderName));
-                if (!file.exists()){
-                    routineFolderName = modifiedFolderName;
-                    routineFolder = file.mkdirs();
-                }
-            }
-        }
-
-        if (routineFolder) {
-            AppData.serialize(routineFolderName, routine);
-        }
-    }
 
     private static void writeProperties(Stage stage) {
         RoutineProperties.setWidth(stage.getWidth());
@@ -96,6 +40,64 @@ public class AppUtils {
             }
         } else {
             RoutineProperties.loadDefaultProperties(routineFolderName);
+        }
+    }
+
+    private static String getDuplicateFolderName(String name) {
+        int index = 0;
+        String duplicateFolderName = name;
+        File file = new File(AppData.ROUTINE_DIRECTORY.concat(name));
+
+        while (file.exists()){
+            index++;
+            duplicateFolderName = name + " (" + index + ")";
+
+            file = new File(AppData.ROUTINE_DIRECTORY.concat(duplicateFolderName));
+        }
+
+        return duplicateFolderName;
+    }
+
+    private static String filterFolderName(String name) {
+        String filteredFolderName = name;
+
+        filteredFolderName = filteredFolderName.replaceAll("[<>:\"/\\\\|?.*]", "_");
+
+        filteredFolderName = filteredFolderName.trim();
+
+        if (filteredFolderName.equals("")){
+            filteredFolderName = "Routine";
+        }
+
+        if (Pattern.matches("CON$|PRN$|AUX$|NUL$|COM1$|COM2$|COM3$|COM4$|COM5$|COM6$|COM7$|COM8$|COM9$|LPT1$|LPT2$|LPT3$|LPT4$|LPT5$|LPT6$|LPT7$|LPT8$|LPT9$", filteredFolderName)) {
+            filteredFolderName = "_" + filteredFolderName + "_";
+        }
+
+        if (new File(AppData.ROUTINE_DIRECTORY.concat(filteredFolderName)).exists()){
+            filteredFolderName = getDuplicateFolderName(filteredFolderName);
+        }
+
+        return filteredFolderName;
+    }
+
+    private static void createNewRoutineFolder(String title, Routine routine) throws IOException {
+        String filteredFolderName = filterFolderName(title);
+
+        boolean isRoutinesDirCreated = new File(AppData.ROUTINE_DIRECTORY).exists();
+
+        if (!isRoutinesDirCreated) {
+            isRoutinesDirCreated = new File(AppData.ROUTINE_DIRECTORY).mkdirs();
+        }
+
+        boolean newRoutineFolder = false;
+
+        if (isRoutinesDirCreated) {
+            newRoutineFolder = new File(AppData.ROUTINE_DIRECTORY.concat(filteredFolderName)).mkdirs();
+        }
+
+        if (newRoutineFolder) {
+            AppData.serialize(filteredFolderName, routine);
+            routineFolderName = filteredFolderName;
         }
     }
 
