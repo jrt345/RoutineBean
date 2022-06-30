@@ -2,6 +2,7 @@ package com.example.routinebean.utils;
 
 import com.example.routinebean.App;
 import com.example.routinebean.controllers.RoutineController;
+import com.example.routinebean.utils.properties.RoutineProperties;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -75,6 +76,29 @@ public class AppUtils {
         }
     }
 
+    private static void writeProperties(Stage stage) {
+        RoutineProperties.setWidth(stage.getWidth());
+        RoutineProperties.setHeight(stage.getHeight());
+
+        try {
+            RoutineProperties.write(routineFolderName);
+        } catch (IOException ex) {
+            throw new RuntimeException(ex);
+        }
+    }
+
+    private static void loadProperties() throws IOException {
+        if (new File(AppData.ROUTINE_DIRECTORY.concat(routineFolderName + "\\Routine.properties")).exists()) {
+            try {
+                RoutineProperties.load(routineFolderName);
+            } catch (IOException | NullPointerException | NumberFormatException e) {
+                RoutineProperties.loadDefaultProperties(routineFolderName);
+            }
+        } else {
+            RoutineProperties.loadDefaultProperties(routineFolderName);
+        }
+    }
+
     private static void runRoutineLoader(String title, Routine routine) throws IOException {
         /*If title is null and routine is not, then it is loading an existing routine
          * If routine is null and title is not, then it is creating a new routine*/
@@ -91,19 +115,22 @@ public class AppUtils {
 
         controller.setFolderName(routineFolderName);
 
+        Scene scene = new Scene(root, 900, 600);
         Stage stage = new Stage();
         stage.setTitle(controller.getCurrentRoutineObject().getTitle());
         stage.setMinHeight(639);
         stage.setMinWidth(916);
-        controller.setStage(stage);
-
-        Scene scene = new Scene(root, 900, 600);
         stage.setScene(scene);
-        //AppProperties.setWindowSizeFromProperties(stage, false);
+
+        controller.setStage(stage);
         controller.initializeSaveState();
+
+        RoutineProperties.setStage(stage);
+        loadProperties();
+
         stage.show();
 
-        //stage.setOnCloseRequest(e -> AppProperties.saveProperties(stage, false));
+        stage.setOnCloseRequest(e -> writeProperties(stage));
     }
 
     public static void newRoutine() throws IOException {
