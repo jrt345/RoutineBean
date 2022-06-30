@@ -24,10 +24,10 @@ public class AppUtils {
         routineFolderName = title;
 
         //Is the "routines" directory created?
-        boolean isRoutinesDirCreated = new File(AppData.userDataDir).exists();
+        boolean isRoutinesDirCreated = new File(AppData.ROUTINE_DIRECTORY).exists();
 
         if (!isRoutinesDirCreated) {
-            isRoutinesDirCreated = new File(AppData.userDataDir).mkdirs();
+            isRoutinesDirCreated = new File(AppData.ROUTINE_DIRECTORY).mkdirs();
         }
 
         //The new routine folder has not been created yet
@@ -46,11 +46,11 @@ public class AppUtils {
             }
 
             //Current new routine folder file object
-            File file = new File(AppData.userDataDir.concat(routineFolderName));
+            File file = new File(AppData.ROUTINE_DIRECTORY.concat(routineFolderName));
 
             //If the new routine folder does not exist, the folder will be created
             if (!file.exists()){
-                routineFolder = new File(AppData.userDataDir.concat(routineFolderName)).mkdirs();
+                routineFolder = new File(AppData.ROUTINE_DIRECTORY.concat(routineFolderName)).mkdirs();
             }
 
             int index = 0;
@@ -62,7 +62,7 @@ public class AppUtils {
                 index++;
                 String modifiedFolderName = routineFolderName + " (" + index + ")";
 
-                file = new File(AppData.userDataDir.concat(modifiedFolderName));
+                file = new File(AppData.ROUTINE_DIRECTORY.concat(modifiedFolderName));
                 if (!file.exists()){
                     routineFolderName = modifiedFolderName;
                     routineFolder = file.mkdirs();
@@ -120,7 +120,7 @@ public class AppUtils {
 
     public static void openRoutine(Stage currentStage) throws IOException, ClassNotFoundException {
         DirectoryChooser directoryChooser = new DirectoryChooser();
-        directoryChooser.setInitialDirectory(new File(AppData.userDataDir));
+        directoryChooser.setInitialDirectory(new File(AppData.ROUTINE_DIRECTORY));
         directoryChooser.setTitle("Open Routine");
 
         File selectedDirectory = directoryChooser.showDialog(currentStage);
