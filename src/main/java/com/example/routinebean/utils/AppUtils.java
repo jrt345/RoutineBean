@@ -2,7 +2,6 @@ package com.example.routinebean.utils;
 
 import com.example.routinebean.App;
 import com.example.routinebean.controllers.RoutineController;
-import com.example.routinebean.utils.properties.AppProperties;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -100,11 +99,11 @@ public class AppUtils {
 
         Scene scene = new Scene(root, 900, 600);
         stage.setScene(scene);
-        AppProperties.setWindowSizeFromProperties(stage, false);
+        //AppProperties.setWindowSizeFromProperties(stage, false);
         controller.initializeSaveState();
         stage.show();
 
-        stage.setOnCloseRequest(e -> AppProperties.saveProperties(stage, false));
+        //stage.setOnCloseRequest(e -> AppProperties.saveProperties(stage, false));
     }
 
     public static void newRoutine() throws IOException {

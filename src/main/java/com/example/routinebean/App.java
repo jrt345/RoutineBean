@@ -1,6 +1,5 @@
 package com.example.routinebean;
 
-import com.example.routinebean.utils.properties.AppProperties;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -22,12 +21,12 @@ public class App extends Application {
         Scene scene = new Scene(fxmlLoader.load(), 900, 600);
         stage.setTitle("RoutineBean");
         stage.setScene(scene);
-        stage.setMinHeight(639);
         stage.setMinWidth(916);
-        AppProperties.setWindowSizeFromProperties(stage, true);
+        stage.setMinHeight(639);
         stage.show();
+
         App.stage = stage;
-        stage.setOnCloseRequest(e -> AppProperties.saveProperties(stage, true));
+        stage.setOnCloseRequest(e -> {});
     }
 
     public static void main(String[] args) {
