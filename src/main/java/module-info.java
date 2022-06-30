@@ -8,4 +8,5 @@ module com.example.routinebuilder {
     exports com.example.routinebean.utils;
     exports com.example.routinebean.controllers;
     opens com.example.routinebean.controllers to javafx.fxml;
+    exports com.example.routinebean.utils.properties;
 }

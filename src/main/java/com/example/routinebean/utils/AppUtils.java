@@ -2,6 +2,7 @@ package com.example.routinebean.utils;
 
 import com.example.routinebean.App;
 import com.example.routinebean.controllers.RoutineController;
+import com.example.routinebean.utils.properties.AppProperties;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;

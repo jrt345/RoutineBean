@@ -1,6 +1,10 @@
 package com.example.routinebean.controllers;
 
-import com.example.routinebean.utils.*;
+import com.example.routinebean.utils.AppData;
+import com.example.routinebean.utils.AppUtils;
+import com.example.routinebean.utils.ColorUtils;
+import com.example.routinebean.utils.Routine;
+import com.example.routinebean.utils.properties.AppProperties;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
