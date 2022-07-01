@@ -127,6 +127,7 @@ public class RoutineController implements Initializable {
 
     @FXML
     private void closeRoutine(ActionEvent event) {
+        AppUtils.writeProperties(routineFolderName, stage);
         stage.close();
     }
 
@@ -137,6 +138,7 @@ public class RoutineController implements Initializable {
 
     @FXML
     private void quitProgram(ActionEvent event) {
+        AppUtils.writeProperties(routineFolderName, stage);
         Platform.exit();
     }
 
