@@ -2,8 +2,10 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.*?>
 <AnchorPane prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/null" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.routinebean.controllers.RoutineExplorer">
    <children>
       <BorderPane prefHeight="600.0" prefWidth="900.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
@@ -51,7 +53,22 @@
          <left>
             <AnchorPane prefHeight="200.0" prefWidth="250.0" BorderPane.alignment="CENTER">
                <children>
-                  <Button layoutX="52.0" layoutY="14.0" mnemonicParsing="false" onAction="#returnToMainMenu" prefHeight="50.0" text="Return to Main Menu" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="0.0" />
+                  <Button alignment="CENTER" layoutX="52.0" layoutY="14.0" mnemonicParsing="false" onAction="#returnToMainMenu" prefHeight="50.0" text="Return to Main Menu" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="0.0">
+                     <font>
+                        <Font name="Segoe UI Bold" size="13.0" />
+                     </font></Button>
+                  <Button alignment="CENTER" contentDisplay="TOP" layoutX="14.0" layoutY="61.0" mnemonicParsing="false" onAction="#newRoutine" prefHeight="110.0" prefWidth="110.0" text="New Routine" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0">
+                     <font>
+                        <Font name="Segoe UI Bold" size="13.0" />
+                     </font>
+                     <graphic>
+                        <ImageView fitHeight="79.0" fitWidth="79.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@images/add.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
                </children></AnchorPane>
          </left>
          <right>

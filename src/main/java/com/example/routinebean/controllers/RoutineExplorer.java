@@ -42,6 +42,11 @@ public class RoutineExplorer implements Initializable {
         stage.show();
     }
 
+    @FXML
+    private void newRoutine(ActionEvent event) throws IOException, ClassNotFoundException {
+        AppUtils.newRoutine();
+    }
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         File file = new File(AppData.ROUTINE_DIRECTORY);
