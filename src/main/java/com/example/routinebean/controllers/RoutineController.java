@@ -132,7 +132,7 @@ public class RoutineController implements Initializable {
 
     @FXML
     private void openExplorer(ActionEvent event) throws IOException {
-        Runtime.getRuntime().exec("explorer.exe /select," + AppData.ROUTINE_DIRECTORY.concat(routineFolderName) + "\\routine.dat");
+        AppUtils.openExplorer(routineFolderName);
     }
 
     @FXML
