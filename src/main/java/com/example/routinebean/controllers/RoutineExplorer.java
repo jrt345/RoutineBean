@@ -1,6 +1,8 @@
 package com.example.routinebean.controllers;
 
 import com.example.routinebean.App;
+import com.example.routinebean.utils.AppData;
+import com.example.routinebean.utils.Routine;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -13,8 +15,10 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
@@ -40,6 +44,19 @@ public class RoutineExplorer implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        File file = new File(AppData.ROUTINE_DIRECTORY);
 
+        File[] files = file.listFiles(File::isDirectory);
+
+        ArrayList<Routine> routines = new ArrayList<>();
+        for (int i = 0; i < Objects.requireNonNull(files).length; i++) {
+            try {
+                routines.add(AppData.deserialize(files[i].getName()));
+            } catch (IOException | ClassNotFoundException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        updateButton.setOpacity(0.0);
     }
 }
