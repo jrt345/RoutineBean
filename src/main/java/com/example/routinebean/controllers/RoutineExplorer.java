@@ -53,7 +53,7 @@ public class RoutineExplorer implements Initializable {
             try {
                 routines.add(AppData.deserialize(files[i].getName()));
             } catch (IOException | ClassNotFoundException e) {
-                throw new RuntimeException(e);
+                routines.add(null);
             }
         }
 
