@@ -2,6 +2,7 @@ package com.example.routinebean.controllers;
 
 import com.example.routinebean.App;
 import com.example.routinebean.utils.AppData;
+import com.example.routinebean.utils.AppUtils;
 import com.example.routinebean.utils.Routine;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -41,7 +42,6 @@ public class RoutineExplorer implements Initializable {
         stage.show();
     }
 
-
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         File file = new File(AppData.ROUTINE_DIRECTORY);
@@ -54,6 +54,25 @@ public class RoutineExplorer implements Initializable {
                 routines.add(AppData.deserialize(files[i].getName()));
             } catch (IOException | ClassNotFoundException e) {
                 routines.add(null);
+            }
+        }
+
+        for (int i = 0; i < files.length; i++) {
+            if (routines.get(i) != null){
+                Button button = new Button(routines.get(i).getTitle());
+                button.setMinHeight(40);
+                button.setPrefSize(Double.MAX_VALUE, 40);
+                int index = i;
+                button.setOnAction(event -> {
+                    try {
+                        AppUtils.openRoutine(files[index].getName());
+                    } catch (IOException | ClassNotFoundException e) {
+                        throw new RuntimeException(e);
+                    }
+                });
+
+                routineVBox.getChildren().add(button);
+                routineVBox.setFillWidth(true);
             }
         }
 
