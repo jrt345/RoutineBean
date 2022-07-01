@@ -97,6 +97,10 @@ public class AppUtils {
         }
     }
 
+    public static void openExplorer(String directory) throws IOException {
+        Runtime.getRuntime().exec("explorer.exe /select," + AppData.ROUTINE_DIRECTORY.concat(directory) + "\\routine.dat");
+    }
+
     private static void runRoutineLoader(String directory) throws IOException, ClassNotFoundException {
         FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("routineLoader.fxml"));
         Parent root = fxmlLoader.load();
