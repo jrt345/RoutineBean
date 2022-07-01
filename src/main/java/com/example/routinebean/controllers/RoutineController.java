@@ -90,7 +90,7 @@ public class RoutineController implements Initializable {
     private Label changesSaved;
 
     @FXML
-    private void createRoutine(ActionEvent event) throws IOException {
+    private void createRoutine(ActionEvent event) throws IOException, ClassNotFoundException {
         AppUtils.newRoutine();
     }
 

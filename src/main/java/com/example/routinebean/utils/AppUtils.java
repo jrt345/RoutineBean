@@ -12,34 +12,31 @@ import javafx.stage.Stage;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.regex.Pattern;
 
 public class AppUtils {
 
-    private static String routineFolderName;
-
-    private static void writeProperties(Stage stage) {
+    private static void writeProperties(String directory, Stage stage) {
         RoutineProperties.setWidth(stage.getWidth());
         RoutineProperties.setHeight(stage.getHeight());
 
         try {
-            RoutineProperties.write(routineFolderName);
+            RoutineProperties.write(directory);
         } catch (IOException ex) {
             throw new RuntimeException(ex);
         }
     }
 
-    private static void loadProperties() throws IOException {
-        if (new File(AppData.ROUTINE_DIRECTORY.concat(routineFolderName + "\\Routine.properties")).exists()) {
+    private static void loadProperties(String directory) throws IOException {
+        if (new File(AppData.ROUTINE_DIRECTORY.concat(directory + "\\Routine.properties")).exists()) {
             try {
-                RoutineProperties.load(routineFolderName);
+                RoutineProperties.load(directory);
             } catch (IOException | NullPointerException | NumberFormatException e) {
-                RoutineProperties.loadDefaultProperties(routineFolderName);
+                RoutineProperties.loadDefaultProperties(directory);
             }
         } else {
-            RoutineProperties.loadDefaultProperties(routineFolderName);
+            RoutineProperties.loadDefaultProperties(directory);
         }
     }
 
@@ -80,7 +77,7 @@ public class AppUtils {
         return filteredFolderName;
     }
 
-    private static void createNewRoutineFolder(String title, Routine routine) throws IOException {
+    private static void createNewRoutine(String title) throws IOException, ClassNotFoundException {
         String filteredFolderName = filterFolderName(title);
 
         boolean isRoutinesDirCreated = new File(AppData.ROUTINE_DIRECTORY).exists();
@@ -96,26 +93,18 @@ public class AppUtils {
         }
 
         if (newRoutineFolder) {
-            AppData.serialize(filteredFolderName, routine);
-            routineFolderName = filteredFolderName;
+            AppData.serialize(filteredFolderName, new Routine(title));
+            runRoutineLoader(filteredFolderName);
         }
     }
 
-    private static void runRoutineLoader(String title, Routine routine) throws IOException {
-        /*If title is null and routine is not, then it is loading an existing routine
-         * If routine is null and title is not, then it is creating a new routine*/
-
+    private static void runRoutineLoader(String directory) throws IOException, ClassNotFoundException {
         FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("routineLoader.fxml"));
         Parent root = fxmlLoader.load();
 
         RoutineController controller = fxmlLoader.getController();
-        controller.loadRoutine(Objects.requireNonNullElseGet(routine, () -> new Routine(title)));
-
-        if (title != null) {
-            createNewRoutineFolder(title, controller.getCurrentRoutineObject());
-        }
-
-        controller.setFolderName(routineFolderName);
+        controller.loadRoutine(AppData.deserialize(directory));
+        controller.setFolderName(directory);
 
         Scene scene = new Scene(root, 900, 600);
         Stage stage = new Stage();
@@ -128,14 +117,14 @@ public class AppUtils {
         controller.initializeSaveState();
 
         RoutineProperties.setStage(stage);
-        loadProperties();
+        loadProperties(directory);
 
         stage.show();
 
-        stage.setOnCloseRequest(e -> writeProperties(stage));
+        stage.setOnCloseRequest(e -> writeProperties(directory, stage));
     }
 
-    public static void newRoutine() throws IOException {
+    public static void newRoutine() throws IOException, ClassNotFoundException {
         TextInputDialog textDialog = new TextInputDialog("Routine");
         textDialog.setTitle("New Routine");
         textDialog.setHeaderText("Routine Name:");
@@ -144,7 +133,7 @@ public class AppUtils {
         Optional<String> result = textDialog.showAndWait();
 
         if (result.isPresent()) {
-            runRoutineLoader(result.get(), null);
+            createNewRoutine(result.get());
         }
     }
 
@@ -156,11 +145,7 @@ public class AppUtils {
         File selectedDirectory = directoryChooser.showDialog(currentStage);
 
         if (selectedDirectory != null){
-            routineFolderName = selectedDirectory.getName();
-
-            Routine routine = AppData.deserialize(selectedDirectory.getName());
-
-            runRoutineLoader(null, routine);
+            runRoutineLoader(selectedDirectory.getName());
         }
     }
 }

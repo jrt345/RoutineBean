@@ -17,7 +17,7 @@ public class Controller implements Initializable {
     private Button updateButton;
 
     @FXML
-    private void newRoutine(ActionEvent event) throws IOException {
+    private void newRoutine(ActionEvent event) throws IOException, ClassNotFoundException {
         AppUtils.newRoutine();
     }
 
