@@ -17,7 +17,7 @@ import java.util.regex.Pattern;
 
 public class AppUtils {
 
-    private static void writeProperties(String directory, Stage stage) {
+    public static void writeProperties(String directory, Stage stage) {
         RoutineProperties.setWidth(stage.getWidth());
         RoutineProperties.setHeight(stage.getHeight());
 
