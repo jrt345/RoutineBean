@@ -117,9 +117,18 @@ public class RoutineExplorer implements Initializable {
         return button;
     }
 
+    private void loadRoutineVBoxButtons(ArrayList<Button> buttons) {
+        for (Button button : buttons) {
+            routineVBox.getChildren().add(button);
+            routineVBox.setFillWidth(true);
+        }
+    }
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         File file = new File(AppData.ROUTINE_DIRECTORY);
+
+        ArrayList<Button> buttons = new ArrayList<>();
 
         files = file.listFiles(File::isDirectory);
         routines = getRoutines(files);
@@ -128,12 +137,11 @@ public class RoutineExplorer implements Initializable {
             if (routines.get(i) != null){
                 String directory = files[i].getName();
                 String title = routines.get(i).getTitle();
-                routineVBox.getChildren().add(generateButton(title, directory, i));
-                routineVBox.setFillWidth(true);
+                buttons.add(generateButton(title, directory, i));
             }
-
         }
 
+        loadRoutineVBoxButtons(buttons);
         updateButton.setOpacity(0.0);
     }
 }
