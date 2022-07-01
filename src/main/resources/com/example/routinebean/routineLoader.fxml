@@ -110,6 +110,11 @@
                         </Label>
                         <Button layoutX="123.0" layoutY="339.0" mnemonicParsing="false" onAction="#deleteTasks" prefHeight="50.0" prefWidth="85.0" text="Delete" AnchorPane.rightAnchor="15.0" />
                         <Button layoutX="13.0" layoutY="306.0" mnemonicParsing="false" onAction="#clearSelections" text="Clear Selections" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="15.0" />
+                  <Label fx:id="changesSaved" layoutX="10.0" layoutY="476.0" text="Changes saved" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="10.0">
+                     <font>
+                        <Font name="Segoe UI" size="15.0" />
+                     </font>
+                  </Label>
                     </children>
                 </AnchorPane>
             </left>
