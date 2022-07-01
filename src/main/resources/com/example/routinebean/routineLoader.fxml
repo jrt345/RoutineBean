@@ -25,6 +25,8 @@
                               <MenuItem fx:id="saveButton" mnemonicParsing="false" onAction="#saveRoutine" text="Save" />
                               <MenuItem fx:id="closeButton" mnemonicParsing="false" onAction="#closeRoutine" text="Close Window" />
                               <SeparatorMenuItem mnemonicParsing="false" />
+                              <MenuItem mnemonicParsing="false" onAction="#openExplorer" text="Open in Explorer" />
+                              <SeparatorMenuItem mnemonicParsing="false" />
                               <MenuItem mnemonicParsing="false" onAction="#quitProgram" text="Quit" />
                         </items>
                       </Menu>
