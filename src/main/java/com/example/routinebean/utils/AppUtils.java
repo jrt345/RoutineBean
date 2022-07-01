@@ -11,6 +11,7 @@ import javafx.stage.Stage;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Optional;
 import java.util.regex.Pattern;
 
@@ -142,5 +143,25 @@ public class AppUtils {
 
     public static void openRoutine(String directory) throws IOException, ClassNotFoundException {
         runRoutineLoader(directory);
+    }
+    
+    public static boolean deleteRoutine(String directory) {
+        File file = new File(AppData.ROUTINE_DIRECTORY.concat(directory));
+        File[] fileContents = file.listFiles(File::isFile);
+        boolean isRoutineDeleted = false;
+
+        if (fileContents != null) {
+            Boolean[] areFileContentsDeleted = new Boolean[fileContents.length];
+
+            for (int i = 0;i < fileContents.length;i++) {
+                areFileContentsDeleted[i] = fileContents[i].delete();
+            }
+
+            if (!(Arrays.asList(areFileContentsDeleted).contains(false))){
+                isRoutineDeleted = file.delete();
+            }
+        }
+
+        return isRoutineDeleted;
     }
 }
