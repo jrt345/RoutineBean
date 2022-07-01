@@ -4,6 +4,7 @@ import com.example.routinebean.utils.AppData;
 import com.example.routinebean.utils.AppUtils;
 import com.example.routinebean.utils.ColorUtils;
 import com.example.routinebean.utils.Routine;
+import javafx.animation.FadeTransition;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -15,6 +16,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 import java.io.IOException;
 import java.net.URL;
@@ -85,6 +87,9 @@ public class RoutineController implements Initializable {
     private ColorPicker backgroundColorPicker;
 
     @FXML
+    private Label changesSaved;
+
+    @FXML
     private void createRoutine(ActionEvent event) throws IOException {
         AppUtils.newRoutine();
     }
@@ -109,8 +114,15 @@ public class RoutineController implements Initializable {
     }
 
     @FXML
-    private void saveRoutine(ActionEvent event) throws IOException {
-        AppData.serialize(routineFolderName, getCurrentRoutineObject());
+    private void saveRoutine(ActionEvent event) throws IOException, ClassNotFoundException {
+        if (!AppData.deserialize(routineFolderName).equals(getCurrentRoutineObject())){
+            AppData.serialize(routineFolderName, getCurrentRoutineObject());
+
+            changesSaved.setOpacity(1.0);
+            FadeTransition fadeTransition = new FadeTransition(Duration.seconds(2.5), changesSaved);
+            fadeTransition.setToValue(0.0);
+            fadeTransition.play();
+        }
     }
 
     @FXML
@@ -419,6 +431,8 @@ public class RoutineController implements Initializable {
         daysOfTheWeekChoiceBox2.setValue("(None)");
         timeChoiceBox1.setValue("(None)");
         timeChoiceBox2.setValue("(None)");
+
+        changesSaved.setOpacity(0.0);
 
         undoButton.setDisable(true);
         redoButton.setDisable(true);
