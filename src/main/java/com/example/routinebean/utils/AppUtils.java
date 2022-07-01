@@ -7,7 +7,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.TextInputDialog;
-import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
 
 import java.io.File;
@@ -137,15 +136,7 @@ public class AppUtils {
         }
     }
 
-    public static void openRoutine(Stage currentStage) throws IOException, ClassNotFoundException {
-        DirectoryChooser directoryChooser = new DirectoryChooser();
-        directoryChooser.setInitialDirectory(new File(AppData.ROUTINE_DIRECTORY));
-        directoryChooser.setTitle("Open Routine");
-
-        File selectedDirectory = directoryChooser.showDialog(currentStage);
-
-        if (selectedDirectory != null){
-            runRoutineLoader(selectedDirectory.getName());
-        }
+    public static void openRoutine(String directory) throws IOException, ClassNotFoundException {
+        runRoutineLoader(directory);
     }
 }

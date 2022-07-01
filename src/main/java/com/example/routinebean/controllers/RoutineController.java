@@ -95,8 +95,8 @@ public class RoutineController implements Initializable {
     }
 
     @FXML
-    private void openRoutine(ActionEvent event) throws IOException, ClassNotFoundException {
-        AppUtils.openRoutine(stage);
+    private void openRoutine(ActionEvent event) {
+
     }
 
     public Routine getCurrentRoutineObject(){
