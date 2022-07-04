@@ -1,5 +1,6 @@
 package com.example.routinebean;
 
+import com.example.routinebean.utils.AppUtils;
 import com.example.routinebean.utils.properties.AppProperties;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -48,6 +49,7 @@ public class App extends Application {
         stage.setScene(scene);
         stage.setMinWidth(916);
         stage.setMinHeight(639);
+        stage.getIcons().add(AppUtils.ICON);
 
         App.stage = stage;
         AppProperties.setStage(stage);
