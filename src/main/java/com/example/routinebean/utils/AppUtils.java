@@ -7,6 +7,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.TextInputDialog;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 import java.io.File;
@@ -16,6 +17,8 @@ import java.util.Optional;
 import java.util.regex.Pattern;
 
 public class AppUtils {
+
+    public static final Image ICON = new Image(Objects.requireNonNull(App.class.getResourceAsStream("images/routinebean-logo.png")));
 
     public static void writeProperties(String directory, Stage stage) {
         RoutineProperties.setWidth(stage.getWidth());
@@ -116,6 +119,7 @@ public class AppUtils {
         stage.setMinHeight(639);
         stage.setMinWidth(916);
         stage.setScene(scene);
+        stage.getIcons().add(ICON);
 
         controller.setStage(stage);
         controller.initializeSaveState();
@@ -133,6 +137,7 @@ public class AppUtils {
         textDialog.setTitle("New Routine");
         textDialog.setHeaderText("Routine Name:");
         textDialog.getDialogPane().setPrefWidth(300);
+        ((Stage) textDialog.getDialogPane().getScene().getWindow()).getIcons().add(ICON);
 
         Optional<String> result = textDialog.showAndWait();
 
@@ -144,7 +149,7 @@ public class AppUtils {
     public static void openRoutine(String directory) throws IOException, ClassNotFoundException {
         runRoutineLoader(directory);
     }
-    
+
     public static boolean deleteRoutine(String directory) {
         File file = new File(AppData.ROUTINE_DIRECTORY.concat(directory));
         File[] fileContents = file.listFiles(File::isFile);
