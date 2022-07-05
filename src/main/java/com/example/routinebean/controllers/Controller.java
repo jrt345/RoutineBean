@@ -136,6 +136,7 @@ public class Controller implements Initializable {
         ArrayList<Button> buttons = new ArrayList<>();
 
         files = file.listFiles(File::isDirectory);
+        Arrays.sort(files, Comparator.comparingLong(File::lastModified).reversed());
         routines = getRoutines(files);
 
         for (int i = 0; i < files.length; i++) {
