@@ -30,6 +30,7 @@ public class Controller implements Initializable {
     @FXML
     private void newRoutine(ActionEvent event) throws IOException, ClassNotFoundException {
         AppUtils.createNewRoutineWithDialog();
+        refreshVBox();
     }
 
     @FXML
@@ -62,13 +63,23 @@ public class Controller implements Initializable {
         return routines;
     }
 
-    private void deleteRoutine(String directory, int index) {
+    private void deleteRoutine(String directory) {
         boolean isRoutineDeleted = AppUtils.deleteRoutine(directory);
 
         if (isRoutineDeleted) {
+            refreshVBox();
+        }
+    }
+
+    private void refreshVBox() {
+        files = new File(AppData.ROUTINE_DIRECTORY).listFiles(File::isDirectory);
+
+        if (files != null) {
+            Arrays.sort(files, Comparator.comparingLong(File::lastModified).reversed());
             routines = getRoutines(files);
-            files = new File(AppData.ROUTINE_DIRECTORY).listFiles(File::isDirectory);
-            routineVBox.getChildren().remove(index);
+            routineVBox.getChildren().clear();
+
+            loadRoutineVBoxButtons(getRoutineButtons(files, getRoutines(files)));
         }
     }
 
@@ -94,8 +105,11 @@ public class Controller implements Initializable {
             } catch (IOException | ClassNotFoundException e) {
                 throw new RuntimeException(e);
             }
+
+            refreshVBox();
+
         });
-        delete.setOnAction(event -> deleteRoutine(directory, index));
+        delete.setOnAction(event -> deleteRoutine(directory));
 
         contextMenu.getItems().add(open);
         contextMenu.getItems().add(explorer);
@@ -155,7 +169,7 @@ public class Controller implements Initializable {
         if (hasRoutineDirectory) {
             files = file.listFiles(File::isDirectory);
 
-            if (Objects.requireNonNull(files).length != 0) {
+            if (files != null) {
                 Arrays.sort(files, Comparator.comparingLong(File::lastModified).reversed());
                 routines = getRoutines(files);
 
