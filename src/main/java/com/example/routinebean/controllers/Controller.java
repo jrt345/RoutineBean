@@ -129,15 +129,8 @@ public class Controller implements Initializable {
         }
     }
 
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-        File file = new File(AppData.ROUTINE_DIRECTORY);
-
+    private ArrayList<Button> getRoutineButtons(File[] files, ArrayList<Routine> routines) {
         ArrayList<Button> buttons = new ArrayList<>();
-
-        files = file.listFiles(File::isDirectory);
-        Arrays.sort(files, Comparator.comparingLong(File::lastModified).reversed());
-        routines = getRoutines(files);
 
         for (int i = 0; i < files.length; i++) {
             if (routines.get(i) != null){
@@ -147,7 +140,28 @@ public class Controller implements Initializable {
             }
         }
 
-        loadRoutineVBoxButtons(buttons);
+        return buttons;
+    }
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        File file = new File(AppData.ROUTINE_DIRECTORY);
+
+        boolean hasRoutineDirectory = file.exists();
+        if (!hasRoutineDirectory){
+            hasRoutineDirectory = new File(AppData.ROUTINE_DIRECTORY).mkdirs();
+        }
+
+        if (hasRoutineDirectory) {
+            files = file.listFiles(File::isDirectory);
+
+            if (Objects.requireNonNull(files).length != 0) {
+                Arrays.sort(files, Comparator.comparingLong(File::lastModified).reversed());
+
+                loadRoutineVBoxButtons(getRoutineButtons(files, getRoutines(files)));
+            }
+
+        }
 
         updateButton.setDisable(true);
         updateButton.setOpacity(0.0);
