@@ -77,6 +77,7 @@ public class Controller implements Initializable {
 
         MenuItem open = new MenuItem("Open");
         MenuItem explorer = new MenuItem("Open in Explorer");
+        MenuItem duplicate = new MenuItem("Duplicate");
         MenuItem delete = new MenuItem("Delete");
 
         open.setOnAction(event -> button.fire());
@@ -87,10 +88,18 @@ public class Controller implements Initializable {
                 throw new RuntimeException(e);
             }
         });
+        duplicate.setOnAction(event -> {
+            try {
+                AppUtils.createNewRoutine(files[index].getName(), routines.get(index));
+            } catch (IOException | ClassNotFoundException e) {
+                throw new RuntimeException(e);
+            }
+        });
         delete.setOnAction(event -> deleteRoutine(directory, index));
 
         contextMenu.getItems().add(open);
         contextMenu.getItems().add(explorer);
+        contextMenu.getItems().add(duplicate);
         contextMenu.getItems().add(delete);
 
         return contextMenu;
