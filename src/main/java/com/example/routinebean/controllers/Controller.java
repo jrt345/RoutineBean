@@ -14,9 +14,7 @@ import javafx.scene.layout.VBox;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Objects;
-import java.util.ResourceBundle;
+import java.util.*;
 
 public class Controller implements Initializable {
 
@@ -31,7 +29,7 @@ public class Controller implements Initializable {
 
     @FXML
     private void newRoutine(ActionEvent event) throws IOException, ClassNotFoundException {
-        AppUtils.newRoutine();
+        AppUtils.createNewRoutineWithDialog();
     }
 
     @FXML

@@ -91,7 +91,7 @@ public class RoutineController implements Initializable {
 
     @FXML
     private void createRoutine(ActionEvent event) throws IOException, ClassNotFoundException {
-        AppUtils.newRoutine();
+        AppUtils.createNewRoutineWithDialog();
     }
 
     @FXML

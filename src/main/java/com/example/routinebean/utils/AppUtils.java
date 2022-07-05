@@ -133,7 +133,7 @@ public class AppUtils {
         stage.setOnCloseRequest(e -> writeProperties(directory, stage));
     }
 
-    public static void newRoutine() throws IOException, ClassNotFoundException {
+    public static void createNewRoutineWithDialog() throws IOException, ClassNotFoundException {
         TextInputDialog textDialog = new TextInputDialog("Routine");
         textDialog.setTitle("New Routine");
         textDialog.setHeaderText("Routine Name:");
