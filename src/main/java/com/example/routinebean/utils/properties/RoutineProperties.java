@@ -45,23 +45,27 @@ public class RoutineProperties {
 
     public static void write(String folder) throws IOException {
         Properties properties = new Properties();
-        OutputStream os = new FileOutputStream(AppData.ROUTINE_DIRECTORY.concat(folder + "\\Routine.properties"));
+        OutputStream outputStream = new FileOutputStream(AppData.ROUTINE_DIRECTORY.concat(folder + "\\Routine.properties"));
 
         properties.setProperty("routine-window-width", String.valueOf(width));
         properties.setProperty("routine-window-height", String.valueOf(height));
 
-        properties.store(os, null);
+        properties.store(outputStream, null);
+        outputStream.close();
     }
 
     public static void load(String folder) throws IOException, NullPointerException, NumberFormatException {
         Properties properties = new Properties();
         InputStream inputStream = new FileInputStream(AppData.ROUTINE_DIRECTORY.concat(folder + "\\Routine.properties"));
+
         properties.load(inputStream);
+        inputStream.close();
 
         width = Double.parseDouble(properties.getProperty("routine-window-width"));
         height = Double.parseDouble(properties.getProperty("routine-window-height"));
 
         stage.setWidth(width);
         stage.setHeight(height);
+
     }
 }
