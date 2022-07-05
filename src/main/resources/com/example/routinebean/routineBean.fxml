@@ -1,110 +1,122 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
+<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/null" xmlns:fx="http://javafx.com/fxml/null" fx:controller="com.example.routinebean.controllers.Controller">
+<AnchorPane prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/null" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.routinebean.controllers.Controller">
    <children>
       <BorderPane prefHeight="600.0" prefWidth="900.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-         <top>
-            <AnchorPane BorderPane.alignment="CENTER">
-               <children>
-                  <Label alignment="CENTER" prefHeight="80.0" prefWidth="900.0" text="RoutineBean" textAlignment="CENTER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                     <font>
-                        <Font name="Segoe UI Bold" size="64.0" />
-                     </font>
-                  </Label>
-               </children>
-            </AnchorPane>
-         </top>
-         <bottom>
-            <AnchorPane BorderPane.alignment="CENTER">
-               <children>
-                  <Label prefHeight="40.0" prefWidth="900.0" text="RoutineBean 1.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                     <font>
-                        <Font name="Segoe UI Bold" size="30.0" />
-                     </font>
-                     <padding>
-                        <Insets left="10.0" />
-                     </padding>
-                  </Label>
-                  <Button fx:id="updateButton" focusTraversable="false" layoutX="745.0" layoutY="6.0" mnemonicParsing="false" onAction="#updateApp" text="Update Available" AnchorPane.bottomAnchor="5.5" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="5.5">
-                     <font>
-                        <Font name="Segoe UI Bold" size="15.0" />
-                     </font>
-                  </Button>
-               </children>
-            </AnchorPane>
-         </bottom>
          <center>
             <AnchorPane BorderPane.alignment="CENTER">
                <children>
-                  <GridPane prefHeight="480.0" prefWidth="900.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                    <columnConstraints>
-                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                    </columnConstraints>
-                    <rowConstraints>
-                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                    </rowConstraints>
-                     <children>
-                        <AnchorPane GridPane.columnIndex="1" GridPane.rowIndex="1">
-                           <children>
-                              <Button alignment="CENTER" contentDisplay="TOP" layoutX="50.0" layoutY="20.0" mnemonicParsing="false" onAction="#newRoutine" prefHeight="200.0" prefWidth="200.0" text="New Routine" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="20.0">
-                                 <font>
-                                    <Font name="Segoe UI Bold" size="25.0" />
-                                 </font>
-                                 <graphic>
-                                    <ImageView fitHeight="145.0" fitWidth="145.0" pickOnBounds="true" preserveRatio="true">
-                                       <image>
-                                          <Image url="@images/add.png" />
-                                       </image>
-                                    </ImageView>
-                                 </graphic>
-                              </Button>
-                           </children>
-                        </AnchorPane>
-                        <AnchorPane layoutX="310.0" layoutY="250.0">
-                           <children>
-                              <Button alignment="CENTER" contentDisplay="TOP" layoutX="50.0" layoutY="20.0" mnemonicParsing="false" onAction="#openRoutine" prefHeight="200.0" prefWidth="200.0" text="Open Routine" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="20.0">
-                                 <font>
-                                    <Font name="Segoe UI Bold" size="25.0" />
-                                 </font>
-                                 <graphic>
-                                    <ImageView fitHeight="145.0" fitWidth="145.0" pickOnBounds="true" preserveRatio="true">
-                                       <image>
-                                          <Image url="@images/folder.png" />
-                                       </image>
-                                    </ImageView>
-                                 </graphic>
-                              </Button>
-                           </children>
-                        </AnchorPane>
-                        <AnchorPane layoutX="10.0" layoutY="10.0" GridPane.columnIndex="2">
-                           <children>
-                              <Button alignment="CENTER" contentDisplay="TOP" layoutX="50.0" layoutY="20.0" mnemonicParsing="false" onAction="#openGithub" prefHeight="200.0" prefWidth="200.0" text="GitHub" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="20.0">
-                                 <font>
-                                    <Font name="Segoe UI Bold" size="25.0" />
-                                 </font>
-                                 <graphic>
-                                    <ImageView fitHeight="145.0" fitWidth="145.0" pickOnBounds="true" preserveRatio="true">
-                                       <image>
-                                          <Image url="@images/github.png" />
-                                       </image>
-                                    </ImageView>
-                                 </graphic>
-                              </Button>
-                           </children>
-                        </AnchorPane>
-                     </children>
-                  </GridPane>
+                  <ScrollPane fitToWidth="true" layoutX="242.0" prefHeight="467.0" prefWidth="417.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
+                     <content>
+                        <VBox fx:id="routineVBox" prefHeight="80.0" prefWidth="398.0" />
+                     </content>
+                  </ScrollPane>
                </children>
             </AnchorPane>
          </center>
+         <left>
+            <AnchorPane BorderPane.alignment="CENTER">
+               <children>
+                  <VBox prefHeight="260.0" prefWidth="250.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                     <children>
+                        <AnchorPane>
+                           <children>
+                              <Label alignment="CENTER" contentDisplay="CENTER" layoutX="67.0" layoutY="-2.0" prefHeight="50.0" text="RoutineBean" textAlignment="CENTER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="60.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                 <font>
+                                    <Font name="Segoe UI Bold" size="30.0" />
+                                 </font>
+                              </Label>
+                              <ImageView fitHeight="50.0" fitWidth="50.0" layoutX="37.0" layoutY="-2.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="0.0">
+                                 <image>
+                                    <Image url="@images/routinebean-logo.png" />
+                                 </image>
+                              </ImageView>
+                           </children>
+                           <VBox.margin>
+                              <Insets />
+                           </VBox.margin>
+                           <padding>
+                              <Insets top="10.0" />
+                           </padding>
+                        </AnchorPane>
+                        <Button alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#newRoutine" prefHeight="50.0" prefWidth="252.0" text="New Routine">
+                           <font>
+                              <Font name="Segoe UI Bold" size="20.0" />
+                           </font>
+                           <graphic>
+                              <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@images/add.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                           <VBox.margin>
+                              <Insets />
+                           </VBox.margin>
+                           <padding>
+                              <Insets left="10.0" />
+                           </padding>
+                        </Button>
+                        <Button alignment="BASELINE_LEFT" layoutX="10.0" layoutY="110.0" mnemonicParsing="false" onAction="#openSettings" prefHeight="50.0" prefWidth="252.0" text="Settings">
+                           <font>
+                              <Font name="Segoe UI Bold" size="20.0" />
+                           </font>
+                           <graphic>
+                              <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@images/settings.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                           <padding>
+                              <Insets left="10.0" />
+                           </padding>
+                        </Button>
+                        <Button alignment="BASELINE_LEFT" layoutX="10.0" layoutY="60.0" mnemonicParsing="false" onAction="#openGithub" prefHeight="50.0" prefWidth="252.0" text="GitHub">
+                           <font>
+                              <Font name="Segoe UI Bold" size="20.0" />
+                           </font>
+                           <graphic>
+                              <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@images/github.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                           <padding>
+                              <Insets left="10.0" />
+                           </padding>
+                        </Button>
+                        <Button fx:id="updateButton" alignment="BASELINE_LEFT" layoutX="10.0" layoutY="170.0" mnemonicParsing="false" onAction="#updateApp" prefHeight="50.0" prefWidth="252.0" text="Update Available">
+                           <font>
+                              <Font name="Segoe UI Bold" size="20.0" />
+                           </font>
+                           <graphic>
+                              <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true" />
+                           </graphic>
+                           <padding>
+                              <Insets left="10.0" />
+                           </padding>
+                        </Button>
+                        <AnchorPane prefWidth="250.0" />
+                     </children>
+                  </VBox>
+                  <Label contentDisplay="CENTER" layoutX="20.0" layoutY="549.0" prefHeight="0.0" prefWidth="127.0" text="Version 1.0" textAlignment="CENTER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0">
+                     <font>
+                        <Font name="Segoe UI Bold" size="20.0" />
+                     </font>
+                     <padding>
+                        <Insets bottom="5.0" left="10.0" />
+                     </padding>
+                  </Label>
+               </children>
+            </AnchorPane>
+         </left>
       </BorderPane>
    </children>
 </AnchorPane>
