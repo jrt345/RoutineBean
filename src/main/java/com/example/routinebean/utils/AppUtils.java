@@ -81,7 +81,7 @@ public class AppUtils {
         return filteredFolderName;
     }
 
-    private static void createNewRoutine(String title) throws IOException, ClassNotFoundException {
+    public static void createNewRoutine(String title, Routine routine) throws IOException, ClassNotFoundException {
         String filteredFolderName = filterFolderName(title);
 
         boolean isRoutinesDirCreated = new File(AppData.ROUTINE_DIRECTORY).exists();
@@ -97,7 +97,7 @@ public class AppUtils {
         }
 
         if (newRoutineFolder) {
-            AppData.serialize(filteredFolderName, new Routine(title));
+            AppData.serialize(filteredFolderName, routine);
             runRoutineLoader(filteredFolderName);
         }
     }
@@ -143,7 +143,7 @@ public class AppUtils {
         Optional<String> result = textDialog.showAndWait();
 
         if (result.isPresent()) {
-            createNewRoutine(result.get());
+            createNewRoutine(result.get(), new Routine(result.get()));
         }
     }
 
