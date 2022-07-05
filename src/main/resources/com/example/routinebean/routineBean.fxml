@@ -97,7 +97,10 @@
                               <Font name="Segoe UI Bold" size="20.0" />
                            </font>
                            <graphic>
-                              <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true" />
+                              <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@images/download.png" />
+                                 </image></ImageView>
                            </graphic>
                            <padding>
                               <Insets left="10.0" />
