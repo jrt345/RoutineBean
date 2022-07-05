@@ -14,12 +14,12 @@ import javafx.scene.layout.VBox;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.ResourceBundle;
 
 public class Controller implements Initializable {
-
-    private File[] files;
-    private ArrayList<Routine> routines;
 
     @FXML
     private VBox routineVBox;
@@ -52,9 +52,10 @@ public class Controller implements Initializable {
 
     private ArrayList<Routine> getRoutines(File[] files) {
         ArrayList<Routine> routines = new ArrayList<>();
-        for (int i = 0; i < Objects.requireNonNull(files).length; i++) {
+
+        for (File file : files) {
             try {
-                routines.add(AppData.deserialize(files[i].getName()));
+                routines.add(AppData.deserialize(file.getName()));
             } catch (IOException | ClassNotFoundException e) {
                 routines.add(null);
             }
@@ -63,27 +64,40 @@ public class Controller implements Initializable {
         return routines;
     }
 
-    private void deleteRoutine(String directory) {
-        boolean isRoutineDeleted = AppUtils.deleteRoutine(directory);
+    private ArrayList<Button> getRoutineButtons(File[] files, ArrayList<Routine> routines) {
+        ArrayList<Button> buttons = new ArrayList<>();
 
-        if (isRoutineDeleted) {
-            refreshVBox();
+        for (int i = 0; i < files.length; i++) {
+            if (routines.get(i) != null){
+                String directory = files[i].getName();
+                String title = routines.get(i).getTitle();
+                buttons.add(generateButton(title, directory, routines.get(i)));
+            }
+        }
+
+        return buttons;
+    }
+
+    private Button generateButton(String title, String directory, Routine routine) {
+        Button button = new Button(title);
+        button.setPrefSize(Double.MAX_VALUE, 40);
+        button.setMinHeight(40);
+        button.setOnAction(event -> openRoutine(directory));
+
+        button.setContextMenu(generateContextMenu(button, directory, routine));
+
+        return button;
+    }
+
+    private void openRoutine(String directory) {
+        try {
+            AppUtils.openRoutine(directory);
+        } catch (IOException | ClassNotFoundException e) {
+            throw new RuntimeException(e);
         }
     }
 
-    private void refreshVBox() {
-        files = new File(AppData.ROUTINE_DIRECTORY).listFiles(File::isDirectory);
-
-        if (files != null) {
-            Arrays.sort(files, Comparator.comparingLong(File::lastModified).reversed());
-            routines = getRoutines(files);
-            routineVBox.getChildren().clear();
-
-            loadRoutineVBoxButtons(getRoutineButtons(files, getRoutines(files)));
-        }
-    }
-
-    private ContextMenu generateContextMenu(Button button, String directory, int index) {
+    private ContextMenu generateContextMenu(Button button, String directory, Routine routine) {
         ContextMenu contextMenu = new ContextMenu();
 
         MenuItem open = new MenuItem("Open");
@@ -92,23 +106,8 @@ public class Controller implements Initializable {
         MenuItem delete = new MenuItem("Delete");
 
         open.setOnAction(event -> button.fire());
-        explorer.setOnAction(event -> {
-            try {
-                AppUtils.openExplorer(directory);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        });
-        duplicate.setOnAction(event -> {
-            try {
-                AppUtils.createNewRoutine(files[index].getName(), routines.get(index));
-            } catch (IOException | ClassNotFoundException e) {
-                throw new RuntimeException(e);
-            }
-
-            refreshVBox();
-
-        });
+        explorer.setOnAction(event -> openRoutineInExplorer(directory));
+        duplicate.setOnAction(event -> duplicateRoutine(directory, routine));
         delete.setOnAction(event -> deleteRoutine(directory));
 
         contextMenu.getItems().add(open);
@@ -119,21 +118,42 @@ public class Controller implements Initializable {
         return contextMenu;
     }
 
-    private Button generateButton(String title, String directory, int index) {
-        Button button = new Button(title);
-        button.setPrefSize(Double.MAX_VALUE, 40);
-        button.setMinHeight(40);
-        button.setOnAction(event -> {
-            try {
-                AppUtils.openRoutine(directory);
-            } catch (IOException | ClassNotFoundException e) {
-                throw new RuntimeException(e);
-            }
-        });
+    private void refreshVBox() {
+        File[] files = new File(AppData.ROUTINE_DIRECTORY).listFiles(File::isDirectory);
 
-        button.setContextMenu(generateContextMenu(button, directory, index));
+        if (files != null) {
+            Arrays.sort(files, Comparator.comparingLong(File::lastModified).reversed());
 
-        return button;
+            routineVBox.getChildren().clear();
+            loadRoutineVBoxButtons(getRoutineButtons(files, getRoutines(files)));
+        }
+    }
+
+    private void openRoutineInExplorer(String directory) {
+        try {
+            AppUtils.openExplorer(directory);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private void duplicateRoutine(String directory, Routine routine) {
+        try {
+            routine.setTitle(routine.getTitle().concat(" - Copy"));
+            AppUtils.createNewRoutine(directory, routine);
+        } catch (IOException | ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+
+        refreshVBox();
+    }
+
+    private void deleteRoutine(String directory) {
+        boolean isRoutineDeleted = AppUtils.deleteRoutine(directory);
+
+        if (isRoutineDeleted) {
+            refreshVBox();
+        }
     }
 
     private void loadRoutineVBoxButtons(ArrayList<Button> buttons) {
@@ -141,20 +161,6 @@ public class Controller implements Initializable {
             routineVBox.getChildren().add(button);
             routineVBox.setFillWidth(true);
         }
-    }
-
-    private ArrayList<Button> getRoutineButtons(File[] files, ArrayList<Routine> routines) {
-        ArrayList<Button> buttons = new ArrayList<>();
-
-        for (int i = 0; i < files.length; i++) {
-            if (routines.get(i) != null){
-                String directory = files[i].getName();
-                String title = routines.get(i).getTitle();
-                buttons.add(generateButton(title, directory, i));
-            }
-        }
-
-        return buttons;
     }
 
     @Override
@@ -167,11 +173,11 @@ public class Controller implements Initializable {
         }
 
         if (hasRoutineDirectory) {
-            files = file.listFiles(File::isDirectory);
+            File[] files = file.listFiles(File::isDirectory);
 
             if (files != null) {
                 Arrays.sort(files, Comparator.comparingLong(File::lastModified).reversed());
-                routines = getRoutines(files);
+                ArrayList<Routine> routines = getRoutines(files);
 
                 loadRoutineVBoxButtons(getRoutineButtons(files, routines));
             }
