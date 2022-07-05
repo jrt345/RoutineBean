@@ -157,8 +157,9 @@ public class Controller implements Initializable {
 
             if (Objects.requireNonNull(files).length != 0) {
                 Arrays.sort(files, Comparator.comparingLong(File::lastModified).reversed());
+                routines = getRoutines(files);
 
-                loadRoutineVBoxButtons(getRoutineButtons(files, getRoutines(files)));
+                loadRoutineVBoxButtons(getRoutineButtons(files, routines));
             }
 
         }
