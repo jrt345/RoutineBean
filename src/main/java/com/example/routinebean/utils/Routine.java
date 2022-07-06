@@ -83,4 +83,13 @@ public class Routine implements Serializable {
         result = 31 * result + Arrays.deepHashCode(backgroundColors);
         return result;
     }
+
+    @Override
+    public String toString() {
+        return "Routine{" +
+                "title='" + title + '\'' +
+                ", tasks=" + Arrays.toString(tasks) +
+                ", backgroundColors=" + Arrays.toString(backgroundColors) +
+                '}';
+    }
 }
