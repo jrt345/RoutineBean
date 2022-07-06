@@ -45,12 +45,6 @@ public class RoutineController implements Initializable {
     private Label title;
 
     @FXML
-    private MenuItem newRoutineButton;
-
-    @FXML
-    private MenuItem openButton;
-
-    @FXML
     private MenuItem saveButton;
 
     @FXML
@@ -88,16 +82,6 @@ public class RoutineController implements Initializable {
 
     @FXML
     private Label changesSaved;
-
-    @FXML
-    private void createRoutine(ActionEvent event) throws IOException, ClassNotFoundException {
-        AppUtils.createNewRoutineWithDialog();
-    }
-
-    @FXML
-    private void openRoutine(ActionEvent event) {
-
-    }
 
     public Routine getCurrentRoutineObject(){
         String title = this.title.getText();
@@ -401,8 +385,6 @@ public class RoutineController implements Initializable {
             }
         }
 
-        newRoutineButton.setAccelerator(KeyCombination.keyCombination("Ctrl+N"));
-        openButton.setAccelerator(KeyCombination.keyCombination("Ctrl+O"));
         saveButton.setAccelerator(KeyCombination.keyCombination("Ctrl+S"));
         closeButton.setAccelerator(KeyCombination.keyCombination("Ctrl+W"));
         undoButton.setAccelerator(KeyCombination.keyCombination("Ctrl+Z"));

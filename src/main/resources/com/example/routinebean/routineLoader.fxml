@@ -19,9 +19,6 @@
                     <menus>
                       <Menu mnemonicParsing="false" text="File">
                         <items>
-                          <MenuItem fx:id="newRoutineButton" mnemonicParsing="false" onAction="#createRoutine" text="New" />
-                              <MenuItem fx:id="openButton" mnemonicParsing="false" onAction="#openRoutine" text="Open..." />
-                              <SeparatorMenuItem mnemonicParsing="false" />
                               <MenuItem fx:id="saveButton" mnemonicParsing="false" onAction="#saveRoutine" text="Save" />
                               <MenuItem fx:id="closeButton" mnemonicParsing="false" onAction="#closeRoutine" text="Close Window" />
                               <SeparatorMenuItem mnemonicParsing="false" />
@@ -34,11 +31,6 @@
                            <items>
                               <MenuItem fx:id="undoButton" mnemonicParsing="false" onAction="#undoChange" text="Undo" />
                               <MenuItem fx:id="redoButton" mnemonicParsing="false" onAction="#redoChange" text="Redo" />
-                              <SeparatorMenuItem mnemonicParsing="false" />
-                              <MenuItem mnemonicParsing="false" text="Cut" />
-                              <MenuItem mnemonicParsing="false" text="Copy" />
-                              <MenuItem mnemonicParsing="false" text="Paste" />
-                              <MenuItem mnemonicParsing="false" text="Delete" />
                               <SeparatorMenuItem mnemonicParsing="false" />
                               <MenuItem mnemonicParsing="false" text="Clear Routine" />
                            </items>
