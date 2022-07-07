@@ -123,7 +123,7 @@ public class AppUtils {
         stage.getIcons().add(ICON);
 
         controller.setStage(stage);
-        controller.initializeSaveState();
+        controller.initializeMemento();
 
         RoutineProperties.setStage(stage);
         loadProperties(directory);
