@@ -1,4 +1,4 @@
-module com.example.routinebuilder {
+module com.example.routinebean {
     requires javafx.controls;
     requires javafx.fxml;
 
