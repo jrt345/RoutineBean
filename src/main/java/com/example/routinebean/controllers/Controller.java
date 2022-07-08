@@ -34,11 +34,6 @@ public class Controller implements Initializable {
     }
 
     @FXML
-    private void openSettings(ActionEvent event) {
-
-    }
-
-    @FXML
     private void openGithub(ActionEvent event) throws IOException {
         Runtime rt = Runtime.getRuntime();
         String url = "https://github.com/jrt345/RoutineBean";
