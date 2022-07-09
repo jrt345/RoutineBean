@@ -20,6 +20,8 @@ import java.util.*;
 
 public class Controller implements Initializable {
 
+    private ArrayList<RoutineLoader> loaders = new ArrayList<>();
+
     @FXML
     private VBox routineVBox;
 
@@ -136,13 +138,14 @@ public class Controller implements Initializable {
     }
 
     private void duplicateRoutine(String directory, Routine routine) {
+        String title = routine.getTitle();
         directory = AppUtils.filterFolderName(directory.concat(" - Copy"));
-        routine.setTitle(routine.getTitle().concat(" - Copy"));
+        routine.setTitle(title.concat(" - Copy"));
 
         boolean isRoutineDuplicated = AppUtils.createNewRoutine(directory, routine);
 
         if (isRoutineDuplicated) {
-            Button button = generateButton(routine.getTitle(), directory, routine);
+            Button button = generateButton(title, directory, routine);
 
             loaders.add(0, new RoutineLoader(directory, routine, button));
             routineVBox.getChildren().add(0, button);
@@ -175,17 +178,7 @@ public class Controller implements Initializable {
                 }
             }
         }
-
     }
-
-    private void loadRoutineVBoxButtons(ArrayList<RoutineLoader> loaders) {
-        for (RoutineLoader loader : loaders) {
-            routineVBox.getChildren().add(loader.getButton());
-            routineVBox.setFillWidth(true);
-        }
-    }
-
-    private ArrayList<RoutineLoader> loaders = new ArrayList<>();
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -202,7 +195,11 @@ public class Controller implements Initializable {
             if (files != null) {
                 Arrays.sort(files, Comparator.comparingLong(File::lastModified).reversed());
                 loaders = generateRoutineLoaders(files, getRoutines(files));
-                loadRoutineVBoxButtons(loaders);
+
+                for (RoutineLoader loader : loaders) {
+                    routineVBox.getChildren().add(loader.getButton());
+                    routineVBox.setFillWidth(true);
+                }
             }
         }
 
