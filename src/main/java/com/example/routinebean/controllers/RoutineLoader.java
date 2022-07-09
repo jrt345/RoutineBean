@@ -27,16 +27,17 @@ class RoutineLoader {
         button.setOnAction(e -> {
             try {
                 run();
-            } catch (IOException ex) {
+            } catch (IOException | ClassNotFoundException ex) {
                 throw new RuntimeException(ex);
             }
         });
     }
 
-    public void run() throws IOException {
+    public void run() throws IOException, ClassNotFoundException {
         FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("routineLoader.fxml"));
         Parent root = fxmlLoader.load();
 
+        routine = AppData.deserialize(directory);
         RoutineController controller = fxmlLoader.getController();
         controller.loadRoutine(routine);
         controller.setFolderName(directory);

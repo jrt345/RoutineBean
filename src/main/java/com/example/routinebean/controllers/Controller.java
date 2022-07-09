@@ -118,8 +118,8 @@ public class Controller implements Initializable {
 
         open.setOnAction(event -> button.fire());
         explorer.setOnAction(event -> openRoutineInExplorer(directory));
-        duplicate.setOnAction(event -> duplicateRoutine(directory, routine));
-        delete.setOnAction(event -> deleteRoutine(directory, routine));
+        duplicate.setOnAction(event -> duplicateRoutine(directory));
+        delete.setOnAction(event -> deleteRoutine(directory));
 
         contextMenu.getItems().add(open);
         contextMenu.getItems().add(explorer);
@@ -137,10 +137,19 @@ public class Controller implements Initializable {
         }
     }
 
-    private void duplicateRoutine(String directory, Routine routine) {
+    private void duplicateRoutine(String directory) {
+        Routine routine;
+        try {
+            routine = AppData.deserialize(directory);
+        } catch (IOException | ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+        routine.setTitle(routine.getTitle().concat(" - Copy"));
         String title = routine.getTitle();
+
         directory = AppUtils.filterFolderName(directory.concat(" - Copy"));
-        routine.setTitle(title.concat(" - Copy"));
+
+
 
         boolean isRoutineDuplicated = AppUtils.createNewRoutine(directory, routine);
 
@@ -153,7 +162,7 @@ public class Controller implements Initializable {
         }
     }
 
-    private void deleteRoutine(String directory, Routine routine) {
+    private void deleteRoutine(String directory) {
         File file = new File(AppData.ROUTINE_DIRECTORY.concat(directory));
         File[] fileContents = file.listFiles(File::isFile);
 
@@ -169,7 +178,7 @@ public class Controller implements Initializable {
 
                 if (isRoutineDeleted) {
                     for (int i = 0; i < loaders.size(); i++) {
-                        if (loaders.get(i).getDirectory().equals(directory) && loaders.get(i).getRoutine().equals(routine)) {
+                        if (loaders.get(i).getDirectory().equals(directory)) {
                             routineVBox.getChildren().remove(i);
                             loaders.remove(i);
                             break;
