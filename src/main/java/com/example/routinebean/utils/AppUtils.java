@@ -1,11 +1,7 @@
 package com.example.routinebean.utils;
 
 import com.example.routinebean.App;
-import com.example.routinebean.controllers.RoutineController;
 import com.example.routinebean.utils.properties.RoutineProperties;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
@@ -81,7 +77,7 @@ public class AppUtils {
         return filteredFolderName;
     }
 
-    public static void createNewRoutine(String title, Routine routine) throws IOException, ClassNotFoundException {
+    public static boolean createNewRoutine(String title, Routine routine) {
         String filteredFolderName = filterFolderName(title);
 
         boolean isRoutinesDirCreated = new File(AppData.ROUTINE_DIRECTORY).exists();
@@ -90,50 +86,30 @@ public class AppUtils {
             isRoutinesDirCreated = new File(AppData.ROUTINE_DIRECTORY).mkdirs();
         }
 
-        boolean newRoutineFolder = false;
+        boolean isRoutineCreated = false;
 
         if (isRoutinesDirCreated) {
-            newRoutineFolder = new File(AppData.ROUTINE_DIRECTORY.concat(filteredFolderName)).mkdirs();
+            isRoutineCreated = new File(AppData.ROUTINE_DIRECTORY.concat(filteredFolderName)).mkdirs();
         }
 
-        if (newRoutineFolder) {
-            AppData.serialize(filteredFolderName, routine);
-            runRoutineLoader(filteredFolderName);
+        if (isRoutineCreated) {
+            try {
+                AppData.serialize(filteredFolderName, routine);
+            } catch (IOException e) {
+                isRoutineCreated = false;
+            }
         }
+
+        return isRoutineCreated;
     }
 
     public static void openExplorer(String directory) throws IOException {
         Runtime.getRuntime().exec("explorer.exe /select," + AppData.ROUTINE_DIRECTORY.concat(directory) + "\\routine.dat");
     }
 
-    private static void runRoutineLoader(String directory) throws IOException, ClassNotFoundException {
-        FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("routineLoader.fxml"));
-        Parent root = fxmlLoader.load();
+    public static boolean createNewRoutineWithDialog() {
+        boolean isRoutineCreated = false;
 
-        RoutineController controller = fxmlLoader.getController();
-        controller.loadRoutine(AppData.deserialize(directory));
-        controller.setFolderName(directory);
-
-        Scene scene = new Scene(root, 900, 600);
-        Stage stage = new Stage();
-        stage.setTitle(controller.getCurrentRoutineObject().getTitle());
-        stage.setMinHeight(639);
-        stage.setMinWidth(916);
-        stage.setScene(scene);
-        stage.getIcons().add(ICON);
-
-        controller.setStage(stage);
-        controller.initializeMemento();
-
-        RoutineProperties.setStage(stage);
-        loadProperties(directory);
-
-        stage.show();
-
-        stage.setOnCloseRequest(e -> writeProperties(directory, stage));
-    }
-
-    public static void createNewRoutineWithDialog() throws IOException, ClassNotFoundException {
         TextInputDialog textDialog = new TextInputDialog("Routine");
         textDialog.setTitle("New Routine");
         textDialog.setHeaderText("Routine Name:");
@@ -143,18 +119,23 @@ public class AppUtils {
         Optional<String> result = textDialog.showAndWait();
 
         if (result.isPresent()) {
-            createNewRoutine(result.get(), new Routine(result.get()));
+            isRoutineCreated = createNewRoutine(result.get(), new Routine(result.get()));
         }
+
+        return isRoutineCreated;
     }
 
-    public static void openRoutine(String directory) throws IOException, ClassNotFoundException {
-        runRoutineLoader(directory);
+    public static boolean duplicateRoutine(String directory, Routine routine) {
+        routine.setTitle(routine.getTitle().concat(" - Copy"));
+
+        return createNewRoutine(directory.concat(" - Copy"), routine);
     }
 
     public static boolean deleteRoutine(String directory) {
+        boolean isRoutineDeleted = false;
+
         File file = new File(AppData.ROUTINE_DIRECTORY.concat(directory));
         File[] fileContents = file.listFiles(File::isFile);
-        boolean isRoutineDeleted = false;
 
         if (fileContents != null) {
             Boolean[] areFileContentsDeleted = new Boolean[fileContents.length];

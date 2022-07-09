@@ -36,6 +36,14 @@ public class RoutineController implements Initializable {
         this.stage = stage;
     }
 
+    private Button button;
+    public Button getButton() {
+        return button;
+    }
+    public void setButton(Button button) {
+        this.button = button;
+    }
+
     private final Originator originator = new Originator();
     private final Caretaker caretaker = new Caretaker();
 
@@ -118,6 +126,7 @@ public class RoutineController implements Initializable {
     private void closeRoutine(ActionEvent event) {
         AppUtils.writeProperties(routineFolderName, stage);
         stage.close();
+        button.setDisable(false);
     }
 
     @FXML
