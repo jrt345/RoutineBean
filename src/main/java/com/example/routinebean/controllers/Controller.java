@@ -9,15 +9,14 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.ResourceBundle;
+import java.util.*;
 
 public class Controller implements Initializable {
 
@@ -29,12 +28,28 @@ public class Controller implements Initializable {
 
     @FXML
     private void newRoutine(ActionEvent event) {
-        boolean isRoutineCreated = AppUtils.createNewRoutineWithDialog();
+        TextInputDialog textDialog = new TextInputDialog("Routine");
+        textDialog.setTitle("New Routine");
+        textDialog.setHeaderText("Routine Name:");
+        textDialog.getDialogPane().setPrefWidth(300);
+        ((Stage) textDialog.getDialogPane().getScene().getWindow()).getIcons().add(AppUtils.ICON);
 
-        if (isRoutineCreated) {
-            refreshVBox();
+        Optional<String> result = textDialog.showAndWait();
 
-            ((Button) routineVBox.getChildren().get(routineVBox.getChildren().size() - 1)).fire();
+        if (result.isPresent()) {
+            String title = result.get();
+            String directory = AppUtils.filterFolderName(title);
+            Routine routine = new Routine(title);
+
+            boolean isRoutineCreated = AppUtils.createNewRoutine(directory, routine);
+
+            if (isRoutineCreated) {
+                Button button = generateButton(title, directory, routine);
+
+                loaders.add(0, new RoutineLoader(directory, routine, button));
+                routineVBox.getChildren().add(0, button);
+                button.fire();
+            }
         }
     }
 
@@ -102,7 +117,7 @@ public class Controller implements Initializable {
         open.setOnAction(event -> button.fire());
         explorer.setOnAction(event -> openRoutineInExplorer(directory));
         duplicate.setOnAction(event -> duplicateRoutine(directory, routine));
-        delete.setOnAction(event -> deleteRoutine(directory));
+        delete.setOnAction(event -> deleteRoutine(directory, routine));
 
         contextMenu.getItems().add(open);
         contextMenu.getItems().add(explorer);
@@ -110,19 +125,6 @@ public class Controller implements Initializable {
         contextMenu.getItems().add(delete);
 
         return contextMenu;
-    }
-
-    private void refreshVBox() {
-        File routinesDirectory = new File(AppData.ROUTINE_DIRECTORY);
-        File[] files = routinesDirectory.listFiles(File::isDirectory);
-
-        if (files != null) {
-            Arrays.sort(files, Comparator.comparingLong(File::lastModified).reversed());
-            ArrayList<RoutineLoader> loaders = generateRoutineLoaders(files, getRoutines(files));
-
-            routineVBox.getChildren().clear();
-            loadRoutineVBoxButtons(loaders);
-        }
     }
 
     private void openRoutineInExplorer(String directory) {
@@ -134,19 +136,46 @@ public class Controller implements Initializable {
     }
 
     private void duplicateRoutine(String directory, Routine routine) {
-        boolean isRoutineDuplicated = AppUtils.duplicateRoutine(directory, routine);
+        directory = AppUtils.filterFolderName(directory.concat(" - Copy"));
+        routine.setTitle(routine.getTitle().concat(" - Copy"));
+
+        boolean isRoutineDuplicated = AppUtils.createNewRoutine(directory, routine);
 
         if (isRoutineDuplicated) {
-            refreshVBox();
+            Button button = generateButton(routine.getTitle(), directory, routine);
+
+            loaders.add(0, new RoutineLoader(directory, routine, button));
+            routineVBox.getChildren().add(0, button);
+            button.fire();
         }
     }
 
-    private void deleteRoutine(String directory) {
-        boolean isRoutineDeleted = AppUtils.deleteRoutine(directory);
+    private void deleteRoutine(String directory, Routine routine) {
+        File file = new File(AppData.ROUTINE_DIRECTORY.concat(directory));
+        File[] fileContents = file.listFiles(File::isFile);
 
-        if (isRoutineDeleted) {
-            refreshVBox();
+        if (fileContents != null) {
+            Boolean[] areFileContentsDeleted = new Boolean[fileContents.length];
+
+            for (int i = 0;i < fileContents.length;i++) {
+                areFileContentsDeleted[i] = fileContents[i].delete();
+            }
+
+            if (!(Arrays.asList(areFileContentsDeleted).contains(false))){
+                boolean isRoutineDeleted = file.delete();
+
+                if (isRoutineDeleted) {
+                    for (int i = 0; i < loaders.size(); i++) {
+                        if (loaders.get(i).getDirectory().equals(directory) && loaders.get(i).getRoutine().equals(routine)) {
+                            routineVBox.getChildren().remove(i);
+                            loaders.remove(i);
+                            break;
+                        }
+                    }
+                }
+            }
         }
+
     }
 
     private void loadRoutineVBoxButtons(ArrayList<RoutineLoader> loaders) {
@@ -155,6 +184,8 @@ public class Controller implements Initializable {
             routineVBox.setFillWidth(true);
         }
     }
+
+    private ArrayList<RoutineLoader> loaders = new ArrayList<>();
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -170,7 +201,8 @@ public class Controller implements Initializable {
 
             if (files != null) {
                 Arrays.sort(files, Comparator.comparingLong(File::lastModified).reversed());
-                loadRoutineVBoxButtons(generateRoutineLoaders(files, getRoutines(files)));
+                loaders = generateRoutineLoaders(files, getRoutines(files));
+                loadRoutineVBoxButtons(loaders);
             }
         }
 

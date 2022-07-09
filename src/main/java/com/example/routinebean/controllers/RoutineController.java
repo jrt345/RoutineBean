@@ -6,6 +6,7 @@ import com.example.routinebean.utils.AppData;
 import com.example.routinebean.utils.AppUtils;
 import com.example.routinebean.utils.ColorUtils;
 import com.example.routinebean.utils.Routine;
+import com.example.routinebean.utils.properties.RoutineProperties;
 import javafx.animation.FadeTransition;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -95,6 +96,17 @@ public class RoutineController implements Initializable {
     @FXML
     private Label changesSaved;
 
+    public static void writeProperties(String directory, Stage stage) {
+        RoutineProperties.setWidth(stage.getWidth());
+        RoutineProperties.setHeight(stage.getHeight());
+
+        try {
+            RoutineProperties.write(directory);
+        } catch (IOException ex) {
+            throw new RuntimeException(ex);
+        }
+    }
+
     public Routine getCurrentRoutineObject() {
         String title = this.title.getText();
         String[][] tasks = new String[24][7];
@@ -114,6 +126,7 @@ public class RoutineController implements Initializable {
     private void saveRoutine(ActionEvent event) throws IOException, ClassNotFoundException {
         if (!AppData.deserialize(routineFolderName).equals(getCurrentRoutineObject())){
             AppData.serialize(routineFolderName, getCurrentRoutineObject());
+            button.setText(titleTextField.getText());
 
             changesSaved.setOpacity(1.0);
             FadeTransition fadeTransition = new FadeTransition(Duration.seconds(2.5), changesSaved);
@@ -124,7 +137,7 @@ public class RoutineController implements Initializable {
 
     @FXML
     private void closeRoutine(ActionEvent event) {
-        AppUtils.writeProperties(routineFolderName, stage);
+        writeProperties(routineFolderName, stage);
         stage.close();
         button.setDisable(false);
     }
@@ -136,7 +149,7 @@ public class RoutineController implements Initializable {
 
     @FXML
     private void quitProgram(ActionEvent event) {
-        AppUtils.writeProperties(routineFolderName, stage);
+        writeProperties(routineFolderName, stage);
         Platform.exit();
     }
 

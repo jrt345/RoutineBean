@@ -1,44 +1,16 @@
 package com.example.routinebean.utils;
 
 import com.example.routinebean.App;
-import com.example.routinebean.utils.properties.RoutineProperties;
-import javafx.scene.control.TextInputDialog;
 import javafx.scene.image.Image;
-import javafx.stage.Stage;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.regex.Pattern;
 
 public class AppUtils {
 
     public static final Image ICON = new Image(Objects.requireNonNull(App.class.getResourceAsStream("images/routinebean-logo.png")));
-
-    public static void writeProperties(String directory, Stage stage) {
-        RoutineProperties.setWidth(stage.getWidth());
-        RoutineProperties.setHeight(stage.getHeight());
-
-        try {
-            RoutineProperties.write(directory);
-        } catch (IOException ex) {
-            throw new RuntimeException(ex);
-        }
-    }
-
-    private static void loadProperties(String directory) throws IOException {
-        if (new File(AppData.ROUTINE_DIRECTORY.concat(directory + "\\Routine.properties")).exists()) {
-            try {
-                RoutineProperties.load(directory);
-            } catch (IOException | NullPointerException | NumberFormatException e) {
-                RoutineProperties.loadDefaultProperties(directory);
-            }
-        } else {
-            RoutineProperties.loadDefaultProperties(directory);
-        }
-    }
 
     private static String getDuplicateFolderName(String name) {
         int index = 0;
@@ -55,7 +27,7 @@ public class AppUtils {
         return duplicateFolderName;
     }
 
-    private static String filterFolderName(String name) {
+    public static String filterFolderName(String name) {
         String filteredFolderName = name;
 
         filteredFolderName = filteredFolderName.replaceAll("[<>:\"/\\\\|?.*]", "_");
@@ -105,50 +77,5 @@ public class AppUtils {
 
     public static void openExplorer(String directory) throws IOException {
         Runtime.getRuntime().exec("explorer.exe /select," + AppData.ROUTINE_DIRECTORY.concat(directory) + "\\routine.dat");
-    }
-
-    public static boolean createNewRoutineWithDialog() {
-        boolean isRoutineCreated = false;
-
-        TextInputDialog textDialog = new TextInputDialog("Routine");
-        textDialog.setTitle("New Routine");
-        textDialog.setHeaderText("Routine Name:");
-        textDialog.getDialogPane().setPrefWidth(300);
-        ((Stage) textDialog.getDialogPane().getScene().getWindow()).getIcons().add(ICON);
-
-        Optional<String> result = textDialog.showAndWait();
-
-        if (result.isPresent()) {
-            isRoutineCreated = createNewRoutine(result.get(), new Routine(result.get()));
-        }
-
-        return isRoutineCreated;
-    }
-
-    public static boolean duplicateRoutine(String directory, Routine routine) {
-        routine.setTitle(routine.getTitle().concat(" - Copy"));
-
-        return createNewRoutine(directory.concat(" - Copy"), routine);
-    }
-
-    public static boolean deleteRoutine(String directory) {
-        boolean isRoutineDeleted = false;
-
-        File file = new File(AppData.ROUTINE_DIRECTORY.concat(directory));
-        File[] fileContents = file.listFiles(File::isFile);
-
-        if (fileContents != null) {
-            Boolean[] areFileContentsDeleted = new Boolean[fileContents.length];
-
-            for (int i = 0;i < fileContents.length;i++) {
-                areFileContentsDeleted[i] = fileContents[i].delete();
-            }
-
-            if (!(Arrays.asList(areFileContentsDeleted).contains(false))){
-                isRoutineDeleted = file.delete();
-            }
-        }
-
-        return isRoutineDeleted;
     }
 }
