@@ -27,22 +27,17 @@ import java.util.ResourceBundle;
 
 public class RoutineController implements Initializable {
 
-    private String routineFolderName;
-    public void setFolderName(String folderName) {
-        this.routineFolderName = folderName;
+    private RoutineLoader loader;
+    public RoutineLoader getLoader() {
+        return loader;
+    }
+    public void setLoader(RoutineLoader loader) {
+        this.loader = loader;
     }
 
     private Stage stage;
     public void setStage(Stage stage) {
         this.stage = stage;
-    }
-
-    private Button button;
-    public Button getButton() {
-        return button;
-    }
-    public void setButton(Button button) {
-        this.button = button;
     }
 
     private final Originator originator = new Originator();
@@ -124,9 +119,13 @@ public class RoutineController implements Initializable {
 
     @FXML
     private void saveRoutine(ActionEvent event) throws IOException, ClassNotFoundException {
-        if (!AppData.deserialize(routineFolderName).equals(getCurrentRoutineObject())){
-            AppData.serialize(routineFolderName, getCurrentRoutineObject());
-            button.setText(titleTextField.getText());
+        Routine currentRoutine = getCurrentRoutineObject();
+        Routine savedRoutine = AppData.deserialize(loader.getDirectory());
+
+        if (!savedRoutine.equals(currentRoutine)){
+            loader.setRoutine(currentRoutine);
+            loader.getButton().setText(currentRoutine.getTitle());
+            AppData.serialize(loader.getDirectory(), currentRoutine);
 
             changesSaved.setOpacity(1.0);
             FadeTransition fadeTransition = new FadeTransition(Duration.seconds(2.5), changesSaved);
@@ -137,19 +136,19 @@ public class RoutineController implements Initializable {
 
     @FXML
     private void closeRoutine(ActionEvent event) {
-        writeProperties(routineFolderName, stage);
+        writeProperties(loader.getDirectory(), stage);
         stage.close();
-        button.setDisable(false);
+        loader.getButton().setDisable(false);
     }
 
     @FXML
     private void openExplorer(ActionEvent event) throws IOException {
-        AppUtils.openExplorer(routineFolderName);
+        AppUtils.openExplorer(loader.getDirectory());
     }
 
     @FXML
     private void quitProgram(ActionEvent event) {
-        writeProperties(routineFolderName, stage);
+        writeProperties(loader.getDirectory(), stage);
         Platform.exit();
     }
 

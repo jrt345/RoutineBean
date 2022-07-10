@@ -1,11 +1,16 @@
 package com.example.routinebean.controllers;
 
+import com.example.routinebean.App;
 import com.example.routinebean.utils.AppData;
 import com.example.routinebean.utils.AppUtils;
 import com.example.routinebean.utils.Routine;
+import com.example.routinebean.utils.properties.RoutineProperties;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
@@ -28,6 +33,34 @@ public class Controller implements Initializable {
     @FXML
     private Button updateButton;
 
+    public void runRoutine(RoutineLoader loader) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("routineLoader.fxml"));
+        Parent root = fxmlLoader.load();
+
+        RoutineController controller = fxmlLoader.getController();
+        controller.setLoader(loader);
+        controller.loadRoutine(loader.getRoutine());
+
+        Scene scene = new Scene(root, 900, 600);
+        Stage stage = new Stage();
+        stage.setTitle(controller.getCurrentRoutineObject().getTitle());
+        stage.setMinHeight(639);
+        stage.setMinWidth(916);
+        stage.setScene(scene);
+        stage.getIcons().add(AppUtils.ICON);
+
+        controller.setStage(stage);
+        controller.initializeMemento();
+
+        RoutineProperties.setStage(stage);
+
+        stage.show();
+
+        stage.setOnCloseRequest(e -> {
+            controller.getLoader().getButton().setDisable(false);
+        });
+    }
+
     @FXML
     private void newRoutine(ActionEvent event) {
         TextInputDialog textDialog = new TextInputDialog("Routine");
@@ -47,10 +80,18 @@ public class Controller implements Initializable {
 
             if (isRoutineCreated) {
                 Button button = generateButton(title, directory, routine);
+                RoutineLoader loader = new RoutineLoader(directory, routine, button);
+                loader.getButton().setOnAction(e -> {
+                    try {
+                        loader.getButton().setDisable(true);
+                        runRoutine(loader);
+                    } catch (IOException ex) {
+                        throw new RuntimeException(ex);
+                    }
+                });
 
-                loaders.add(0, new RoutineLoader(directory, routine, button));
+                loaders.add(0, loader);
                 routineVBox.getChildren().add(0, button);
-                button.fire();
             }
         }
     }
@@ -89,8 +130,17 @@ public class Controller implements Initializable {
                 String title = routines.get(i).getTitle();
                 String directory = files[i].getName();
                 Routine routine = routines.get(i);
+
                 Button button = generateButton(title, directory, routine);
                 RoutineLoader loader = new RoutineLoader(directory, routine, button);
+                loader.getButton().setOnAction(event -> {
+                    try {
+                        loader.getButton().setDisable(true);
+                        runRoutine(loader);
+                    } catch (IOException ex) {
+                        throw new RuntimeException(ex);
+                    }
+                });
                 routineLoaders.add(loader);
             }
         }
@@ -103,7 +153,7 @@ public class Controller implements Initializable {
         button.setPrefSize(Double.MAX_VALUE, 40);
         button.setMinHeight(40);
 
-        button.setContextMenu(generateContextMenu(button, directory, routine));
+        //button.setContextMenu(generateContextMenu(button, directory, routine));
 
         return button;
     }
@@ -138,7 +188,7 @@ public class Controller implements Initializable {
     }
 
     private void duplicateRoutine(String directory) {
-        Routine routine;
+        /*Routine routine;
         try {
             routine = AppData.deserialize(directory);
         } catch (IOException | ClassNotFoundException e) {
@@ -159,11 +209,11 @@ public class Controller implements Initializable {
             loaders.add(0, new RoutineLoader(directory, routine, button));
             routineVBox.getChildren().add(0, button);
             button.fire();
-        }
+        }*/
     }
 
     private void deleteRoutine(String directory) {
-        File file = new File(AppData.ROUTINE_DIRECTORY.concat(directory));
+        /*File file = new File(AppData.ROUTINE_DIRECTORY.concat(directory));
         File[] fileContents = file.listFiles(File::isFile);
 
         if (fileContents != null) {
@@ -186,7 +236,7 @@ public class Controller implements Initializable {
                     }
                 }
             }
-        }
+        }*/
     }
 
     @Override
