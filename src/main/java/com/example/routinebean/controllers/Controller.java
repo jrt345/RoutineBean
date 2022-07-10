@@ -79,8 +79,10 @@ public class Controller implements Initializable {
             boolean isRoutineCreated = AppUtils.createNewRoutine(directory, routine);
 
             if (isRoutineCreated) {
-                Button button = generateButton(title, directory, routine);
+                Button button = generateButton(title);
+
                 RoutineLoader loader = new RoutineLoader(directory, routine, button);
+                loader.getButton().setContextMenu(generateContextMenu(loader));
                 loader.getButton().setOnAction(e -> {
                     try {
                         loader.getButton().setDisable(true);
@@ -131,8 +133,10 @@ public class Controller implements Initializable {
                 String directory = files[i].getName();
                 Routine routine = routines.get(i);
 
-                Button button = generateButton(title, directory, routine);
+                Button button = generateButton(title);
+
                 RoutineLoader loader = new RoutineLoader(directory, routine, button);
+                loader.getButton().setContextMenu(generateContextMenu(loader));
                 loader.getButton().setOnAction(event -> {
                     try {
                         loader.getButton().setDisable(true);
@@ -141,6 +145,7 @@ public class Controller implements Initializable {
                         throw new RuntimeException(ex);
                     }
                 });
+
                 routineLoaders.add(loader);
             }
         }
@@ -148,17 +153,15 @@ public class Controller implements Initializable {
         return routineLoaders;
     }
 
-    private Button generateButton(String title, String directory, Routine routine) {
+    private Button generateButton(String title) {
         Button button = new Button(title);
         button.setPrefSize(Double.MAX_VALUE, 40);
         button.setMinHeight(40);
 
-        //button.setContextMenu(generateContextMenu(button, directory, routine));
-
         return button;
     }
 
-    private ContextMenu generateContextMenu(Button button, String directory, Routine routine) {
+    private ContextMenu generateContextMenu(RoutineLoader loader) {
         ContextMenu contextMenu = new ContextMenu();
 
         MenuItem open = new MenuItem("Open");
@@ -166,10 +169,10 @@ public class Controller implements Initializable {
         MenuItem duplicate = new MenuItem("Duplicate");
         MenuItem delete = new MenuItem("Delete");
 
-        open.setOnAction(event -> button.fire());
-        explorer.setOnAction(event -> openRoutineInExplorer(directory));
-        duplicate.setOnAction(event -> duplicateRoutine(directory));
-        delete.setOnAction(event -> deleteRoutine(directory));
+        open.setOnAction(event -> loader.getButton().fire());
+        explorer.setOnAction(event -> openRoutineInExplorer(loader));
+        duplicate.setOnAction(event -> duplicateRoutine(loader));
+        delete.setOnAction(event -> deleteRoutine(loader));
 
         contextMenu.getItems().add(open);
         contextMenu.getItems().add(explorer);
@@ -179,41 +182,44 @@ public class Controller implements Initializable {
         return contextMenu;
     }
 
-    private void openRoutineInExplorer(String directory) {
+    private void openRoutineInExplorer(RoutineLoader loader) {
         try {
-            AppUtils.openExplorer(directory);
+            AppUtils.openExplorer(loader.getDirectory());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
-    private void duplicateRoutine(String directory) {
-        /*Routine routine;
-        try {
-            routine = AppData.deserialize(directory);
-        } catch (IOException | ClassNotFoundException e) {
-            throw new RuntimeException(e);
-        }
-        routine.setTitle(routine.getTitle().concat(" - Copy"));
-        String title = routine.getTitle();
+    private void duplicateRoutine(RoutineLoader loader) {
+        String directory = loader.getDirectory();
+        Routine routine = loader.getRoutine();
 
         directory = AppUtils.filterFolderName(directory.concat(" - Copy"));
-
-
+        routine.setTitle(routine.getTitle().concat(" - Copy"));
 
         boolean isRoutineDuplicated = AppUtils.createNewRoutine(directory, routine);
 
         if (isRoutineDuplicated) {
-            Button button = generateButton(title, directory, routine);
+            Button button = generateButton(routine.getTitle());
 
-            loaders.add(0, new RoutineLoader(directory, routine, button));
+            RoutineLoader duplicatedLoader = new RoutineLoader(directory, routine, button);
+            duplicatedLoader.getButton().setContextMenu(generateContextMenu(duplicatedLoader));
+            duplicatedLoader.getButton().setOnAction(e -> {
+                try {
+                    duplicatedLoader.getButton().setDisable(true);
+                    runRoutine(duplicatedLoader);
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
+            });
+
+            loaders.add(0, duplicatedLoader);
             routineVBox.getChildren().add(0, button);
-            button.fire();
-        }*/
+        }
     }
 
-    private void deleteRoutine(String directory) {
-        /*File file = new File(AppData.ROUTINE_DIRECTORY.concat(directory));
+    private void deleteRoutine(RoutineLoader loader) {
+        File file = new File(AppData.ROUTINE_DIRECTORY.concat(loader.getDirectory()));
         File[] fileContents = file.listFiles(File::isFile);
 
         if (fileContents != null) {
@@ -227,16 +233,11 @@ public class Controller implements Initializable {
                 boolean isRoutineDeleted = file.delete();
 
                 if (isRoutineDeleted) {
-                    for (int i = 0; i < loaders.size(); i++) {
-                        if (loaders.get(i).getDirectory().equals(directory)) {
-                            routineVBox.getChildren().remove(i);
-                            loaders.remove(i);
-                            break;
-                        }
-                    }
+                    routineVBox.getChildren().remove(loader.getButton());
+                    loaders.remove(loader);
                 }
             }
-        }*/
+        }
     }
 
     @Override
