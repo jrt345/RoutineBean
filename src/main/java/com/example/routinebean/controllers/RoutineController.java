@@ -3,7 +3,6 @@ package com.example.routinebean.controllers;
 import com.example.routinebean.commands.Caretaker;
 import com.example.routinebean.commands.Originator;
 import com.example.routinebean.utils.AppData;
-import com.example.routinebean.utils.AppUtils;
 import com.example.routinebean.utils.ColorUtils;
 import com.example.routinebean.utils.Routine;
 import com.example.routinebean.utils.properties.RoutineProperties;
@@ -143,7 +142,7 @@ public class RoutineController implements Initializable {
 
     @FXML
     private void openExplorer(ActionEvent event) throws IOException {
-        AppUtils.openExplorer(loader.getDirectory());
+        Runtime.getRuntime().exec("explorer.exe /select," + AppData.ROUTINE_DIRECTORY.concat(loader.getDirectory()) + "\\routine.dat");
     }
 
     @FXML

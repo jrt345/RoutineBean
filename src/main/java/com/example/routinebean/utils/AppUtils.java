@@ -74,8 +74,4 @@ public class AppUtils {
 
         return isRoutineCreated;
     }
-
-    public static void openExplorer(String directory) throws IOException {
-        Runtime.getRuntime().exec("explorer.exe /select," + AppData.ROUTINE_DIRECTORY.concat(directory) + "\\routine.dat");
-    }
 }

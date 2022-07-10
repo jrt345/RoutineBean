@@ -56,9 +56,7 @@ public class Controller implements Initializable {
 
         stage.show();
 
-        stage.setOnCloseRequest(e -> {
-            controller.getLoader().getButton().setDisable(false);
-        });
+        stage.setOnCloseRequest(e -> controller.getLoader().getButton().setDisable(false));
     }
 
     @FXML
@@ -72,30 +70,35 @@ public class Controller implements Initializable {
         Optional<String> result = textDialog.showAndWait();
 
         if (result.isPresent()) {
-            String title = result.get();
-            String directory = AppUtils.filterFolderName(title);
-            Routine routine = new Routine(title);
+            String directory = AppUtils.filterFolderName(result.get());
+            Routine routine = new Routine(result.get());
 
             boolean isRoutineCreated = AppUtils.createNewRoutine(directory, routine);
 
             if (isRoutineCreated) {
-                Button button = generateButton(title);
-
-                RoutineLoader loader = new RoutineLoader(directory, routine, button);
-                loader.getButton().setContextMenu(generateContextMenu(loader));
-                loader.getButton().setOnAction(e -> {
-                    try {
-                        loader.getButton().setDisable(true);
-                        runRoutine(loader);
-                    } catch (IOException ex) {
-                        throw new RuntimeException(ex);
-                    }
-                });
+                RoutineLoader loader = generateRoutineLoader(directory, routine);
 
                 loaders.add(0, loader);
-                routineVBox.getChildren().add(0, button);
+                routineVBox.getChildren().add(0, loader.getButton());
             }
         }
+    }
+
+    private RoutineLoader generateRoutineLoader(String directory, Routine routine) {
+        Button button = generateButton(routine.getTitle());
+
+        RoutineLoader loader = new RoutineLoader(directory, routine, button);
+        loader.getButton().setContextMenu(generateContextMenu(loader));
+        loader.getButton().setOnAction(e -> {
+            try {
+                loader.getButton().setDisable(true);
+                runRoutine(loader);
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+        });
+
+        return loader;
     }
 
     @FXML
@@ -129,24 +132,10 @@ public class Controller implements Initializable {
 
         for (int i = 0; i < files.length; i++) {
             if (routines.get(i) != null) {
-                String title = routines.get(i).getTitle();
                 String directory = files[i].getName();
                 Routine routine = routines.get(i);
 
-                Button button = generateButton(title);
-
-                RoutineLoader loader = new RoutineLoader(directory, routine, button);
-                loader.getButton().setContextMenu(generateContextMenu(loader));
-                loader.getButton().setOnAction(event -> {
-                    try {
-                        loader.getButton().setDisable(true);
-                        runRoutine(loader);
-                    } catch (IOException ex) {
-                        throw new RuntimeException(ex);
-                    }
-                });
-
-                routineLoaders.add(loader);
+                routineLoaders.add(generateRoutineLoader(directory, routine));
             }
         }
 
@@ -184,7 +173,7 @@ public class Controller implements Initializable {
 
     private void openRoutineInExplorer(RoutineLoader loader) {
         try {
-            AppUtils.openExplorer(loader.getDirectory());
+            Runtime.getRuntime().exec("explorer.exe /select," + AppData.ROUTINE_DIRECTORY.concat(loader.getDirectory()) + "\\routine.dat");
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -200,21 +189,10 @@ public class Controller implements Initializable {
         boolean isRoutineDuplicated = AppUtils.createNewRoutine(directory, routine);
 
         if (isRoutineDuplicated) {
-            Button button = generateButton(routine.getTitle());
-
-            RoutineLoader duplicatedLoader = new RoutineLoader(directory, routine, button);
-            duplicatedLoader.getButton().setContextMenu(generateContextMenu(duplicatedLoader));
-            duplicatedLoader.getButton().setOnAction(e -> {
-                try {
-                    duplicatedLoader.getButton().setDisable(true);
-                    runRoutine(duplicatedLoader);
-                } catch (IOException ex) {
-                    throw new RuntimeException(ex);
-                }
-            });
+            RoutineLoader duplicatedLoader = generateRoutineLoader(directory, routine);
 
             loaders.add(0, duplicatedLoader);
-            routineVBox.getChildren().add(0, button);
+            routineVBox.getChildren().add(0, duplicatedLoader.getButton());
         }
     }
 
