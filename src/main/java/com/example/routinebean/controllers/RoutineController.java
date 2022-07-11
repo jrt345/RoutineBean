@@ -373,6 +373,19 @@ public class RoutineController implements Initializable {
         modifyTasks(true);
     }
 
+    @FXML
+    private void clearRoutine(ActionEvent event) {
+        for (int i = 0; i < 7; i++) {
+            for (int j = 0; j < 24; j++) {
+                textFieldArray[j][i].setText("");
+                backgroundColorsArray[j][i] = ColorUtils.colorToRGBA(Color.WHITE);
+            }
+        }
+
+        loadRoutine(getCurrentRoutineObject());
+        updateMemento();
+    }
+
     public void loadRoutine(Routine routine) {
         title.setText(routine.getTitle());
 

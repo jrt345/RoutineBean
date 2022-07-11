@@ -32,7 +32,7 @@
                               <MenuItem fx:id="undoButton" mnemonicParsing="false" onAction="#undoChange" text="Undo" />
                               <MenuItem fx:id="redoButton" mnemonicParsing="false" onAction="#redoChange" text="Redo" />
                               <SeparatorMenuItem mnemonicParsing="false" />
-                              <MenuItem mnemonicParsing="false" text="Clear Routine" />
+                              <MenuItem mnemonicParsing="false" onAction="#clearRoutine" text="Clear Routine" />
                            </items>
                         </Menu>
                       <Menu mnemonicParsing="false" text="Help">
