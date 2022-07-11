@@ -22,7 +22,7 @@
          <left>
             <AnchorPane BorderPane.alignment="CENTER">
                <children>
-                  <VBox prefHeight="260.0" prefWidth="250.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <VBox prefHeight="406.0" prefWidth="250.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <children>
                         <AnchorPane>
                            <children>
@@ -62,6 +62,21 @@
                               <Insets left="10.0" />
                            </padding>
                         </Button>
+                        <Button alignment="BASELINE_LEFT" layoutX="10.0" layoutY="70.0" mnemonicParsing="false" onAction="#openSettings" prefHeight="50.0" prefWidth="252.0" text="Settings">
+                           <font>
+                              <Font name="Segoe UI Bold" size="20.0" />
+                           </font>
+                           <graphic>
+                              <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@images/settings.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                           <padding>
+                              <Insets left="10.0" />
+                           </padding>
+                        </Button>
                         <Button alignment="BASELINE_LEFT" layoutX="10.0" layoutY="60.0" mnemonicParsing="false" onAction="#openGithub" prefHeight="50.0" prefWidth="252.0" text="GitHub">
                            <font>
                               <Font name="Segoe UI Bold" size="20.0" />
@@ -70,6 +85,21 @@
                               <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@images/github.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                           <padding>
+                              <Insets left="10.0" />
+                           </padding>
+                        </Button>
+                        <Button alignment="BASELINE_LEFT" layoutX="10.0" layoutY="170.0" mnemonicParsing="false" onAction="#openAboutBox" prefHeight="50.0" prefWidth="252.0" text="About">
+                           <font>
+                              <Font name="Segoe UI Bold" size="20.0" />
+                           </font>
+                           <graphic>
+                              <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@images/about.png" />
                                  </image>
                               </ImageView>
                            </graphic>

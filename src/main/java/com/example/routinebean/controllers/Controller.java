@@ -89,6 +89,28 @@ public class Controller implements Initializable {
         }
     }
 
+    @FXML
+    private void openGithub(ActionEvent event) throws IOException {
+        Runtime rt = Runtime.getRuntime();
+        String url = "https://github.com/jrt345/RoutineBean";
+        rt.exec("rundll32 url.dll,FileProtocolHandler " + url);
+    }
+
+    @FXML
+    public void openSettings(ActionEvent event) {
+
+    }
+
+    @FXML
+    public void openAboutBox(ActionEvent event) {
+
+    }
+
+    @FXML
+    private void updateApp(ActionEvent event) {
+
+    }
+
     private RoutineLoader generateRoutineLoader(String directory, Routine routine) {
         Button button = generateButton(routine.getTitle());
 
@@ -104,18 +126,6 @@ public class Controller implements Initializable {
         });
 
         return loader;
-    }
-
-    @FXML
-    private void openGithub(ActionEvent event) throws IOException {
-        Runtime rt = Runtime.getRuntime();
-        String url = "https://github.com/jrt345/RoutineBean";
-        rt.exec("rundll32 url.dll,FileProtocolHandler " + url);
-    }
-
-    @FXML
-    private void updateApp(ActionEvent event) {
-
     }
 
     private ArrayList<Routine> getRoutines(File[] files) {
