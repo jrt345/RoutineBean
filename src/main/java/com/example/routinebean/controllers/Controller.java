@@ -161,6 +161,8 @@ public class Controller implements Initializable {
         Button button = new Button(title);
         button.setPrefSize(Double.MAX_VALUE, 40);
         button.setMinHeight(40);
+        button.setId("routineButton");
+        button.getStylesheets().add(Objects.requireNonNull(App.class.getResource("stylesheet.css")).toExternalForm());
 
         return button;
     }

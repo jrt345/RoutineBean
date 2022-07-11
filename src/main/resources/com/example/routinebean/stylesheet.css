@@ -1,0 +1,23 @@
+#leftSideBar { -fx-background-color: #B2BEC3;}
+
+#leftSideBarButton { -fx-background-color: #B2BEC3; }
+#leftSideBarButton:hover { -fx-background-color: #D1D8DB; }
+#leftSideBarButton:pressed { -fx-background-color: #B2BEC3; }
+
+#routineButton { -fx-background-color: #DFE6E9; }
+#routineButton:hover { -fx-background-color: #F3F6F7; }
+#routineButton:pressed { -fx-background-color: #DFE6E9; }
+
+#rbButton { -fx-background-color: #B2BEC3;}
+#rbButton:hover { -fx-background-color: #D1D8DB; }
+#rbButton:pressed { -fx-background-color: #B2BEC3; }
+
+#centerAnchorPane { -fx-background-color: #DFE6E9; }
+
+#centerScrollPane .scroll-bar:vertical .track { -fx-background-color: #DFE6E9; }
+#centerScrollPane .scroll-bar:vertical .thumb { -fx-background-color: #636E72; }
+#centerScrollPane .scroll-bar:vertical *.increment-button,
+#centerScrollPane .scroll-bar:vertical *.decrement-button{  -fx-background-color: #DFE6E9; }
+#centerScrollPane .scroll-bar:vertical *.increment-arrow,
+#centerScrollPane .scroll-bar:vertical *.decrement-arrow{ -fx-background-color: #636E72; }
+
