@@ -2,7 +2,10 @@ package com.example.routinebean.utils;
 
 import com.example.routinebean.App;
 import com.example.routinebean.utils.properties.RoutineProperties;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.image.Image;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.File;
@@ -107,4 +110,20 @@ public class AppUtils {
             }
         }
     }
+
+    public static void openAboutBox() throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("aboutBox.fxml"));
+        Scene scene = new Scene(fxmlLoader.load());
+        Stage stage = new Stage();
+        stage.setTitle("About");
+        stage.setScene(scene);
+        stage.setMinWidth(516);
+        stage.setMinHeight(389);
+        stage.setResizable(false);
+        stage.getIcons().add(AppUtils.ICON);
+        stage.initModality(Modality.APPLICATION_MODAL);
+
+        stage.show();
+    }
+
 }

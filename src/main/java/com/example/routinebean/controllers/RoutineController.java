@@ -386,6 +386,11 @@ public class RoutineController implements Initializable {
         updateMemento();
     }
 
+    @FXML
+    private void openAboutBox(ActionEvent event) throws IOException {
+        AppUtils.openAboutBox();
+    }
+
     public void loadRoutine(Routine routine) {
         title.setText(routine.getTitle());
 

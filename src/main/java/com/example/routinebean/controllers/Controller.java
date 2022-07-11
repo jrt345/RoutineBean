@@ -102,8 +102,8 @@ public class Controller implements Initializable {
     }
 
     @FXML
-    public void openAboutBox(ActionEvent event) {
-
+    public void openAboutBox(ActionEvent event) throws IOException {
+        AppUtils.openAboutBox();
     }
 
     @FXML
