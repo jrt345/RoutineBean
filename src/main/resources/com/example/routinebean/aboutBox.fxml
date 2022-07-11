@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+<AnchorPane id="aboutBoxBackground" prefHeight="350.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/null" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.routinebean.controllers.AboutBoxController">
+    <children>
+        <BorderPane id="aboutBoxBackground" layoutY="-5.0" prefHeight="380.0" prefWidth="500.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <center>
+                <AnchorPane id="aboutBoxBackground" prefHeight="251.0" prefWidth="500.0" BorderPane.alignment="CENTER">
+                    <children>
+                        <Separator id="separator" layoutX="199.0" layoutY="4.0" prefWidth="200.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="0.0" />
+                        <TextArea id="textArea" editable="false" focusTraversable="false" layoutX="50.0" layoutY="21.0" prefHeight="184.0" prefWidth="400.0" text="RoutineBean&#10;Version 1.0.0&#10;&#10;Build with:&#10;Java 17, OpenJDK.&#10;JavaFX 17, Gluon.&#10;&#10;Copyright © 2022 jrt345. All rights reserved.&#10;&#10;RoutineBean is licensed under the GNU General Public License v3.0" wrapText="true" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="20.0" />
+                        <Hyperlink id="hyperlink" ellipsisString="https://www.gnu.org/licenses/gpl-3.0.en.html.." focusTraversable="false" layoutX="131.0" layoutY="209.0" onAction="#openLink" text="GNU General Public License v3.0 Document" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="131.0" AnchorPane.rightAnchor="131.0" />
+                    </children>
+                </AnchorPane>
+            </center>
+            <bottom>
+                <HBox id="aboutBoxBackground" alignment="CENTER_RIGHT" prefHeight="40.0" prefWidth="500.0" BorderPane.alignment="CENTER">
+                    <children>
+                        <Button fx:id="okButton" mnemonicParsing="false" onAction="#closeAboutBox" prefWidth="70.0" text="Ok">
+                            <HBox.margin>
+                                <Insets right="10.0" />
+                            </HBox.margin>
+                        </Button>
+                    </children>
+                </HBox>
+            </bottom>
+         <top>
+            <AnchorPane prefHeight="75.0" prefWidth="500.0" BorderPane.alignment="CENTER">
+               <children>
+                  <HBox alignment="CENTER" layoutX="35.0" layoutY="-12.0" prefHeight="100.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                     <children>
+                        <ImageView fitHeight="60.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@images/routinebean-logo.png" />
+                           </image>
+                        </ImageView>
+                        <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="61.0" prefWidth="311.0" text="RoutineBean" textAlignment="CENTER">
+                           <font>
+                              <Font name="Segoe UI Bold" size="50.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </HBox>
+               </children>
+            </AnchorPane>
+         </top>
+        </BorderPane>
+    </children>
+</AnchorPane>
