@@ -1,7 +1,9 @@
 package com.example.routinebean.utils;
 
 import com.example.routinebean.App;
+import com.example.routinebean.utils.properties.RoutineProperties;
 import javafx.scene.image.Image;
+import javafx.stage.Stage;
 
 import java.io.File;
 import java.io.IOException;
@@ -73,5 +75,36 @@ public class AppUtils {
         }
 
         return isRoutineCreated;
+    }
+
+    public static RoutineProperties loadRoutineProperties(String directory) {
+        try {
+            return RoutineProperties.load(directory);
+        } catch (IOException | NullPointerException | NumberFormatException e) {
+            RoutineProperties routineProperties = new RoutineProperties(directory);
+
+            try {
+                RoutineProperties.write(routineProperties);
+                return RoutineProperties.load(directory);
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+        }
+    }
+
+    public static void writeRoutineProperties(RoutineProperties properties, Stage stage) {
+        try {
+            properties.setSize(stage.getWidth(), stage.getHeight());
+            RoutineProperties.write(properties);
+        } catch (IOException e) {
+            RoutineProperties routineProperties = new RoutineProperties(properties.getDirectory());
+            routineProperties.setSize(stage.getWidth(), stage.getHeight());
+
+            try {
+                RoutineProperties.write(routineProperties);
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+        }
     }
 }

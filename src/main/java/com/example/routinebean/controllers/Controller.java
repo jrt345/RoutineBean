@@ -49,14 +49,19 @@ public class Controller implements Initializable {
         stage.setScene(scene);
         stage.getIcons().add(AppUtils.ICON);
 
+        RoutineProperties properties = AppUtils.loadRoutineProperties(loader.getDirectory());
+        controller.setProperties(properties);
+        properties.setStageSize(stage);
+
         controller.setStage(stage);
         controller.initializeMemento();
 
-        RoutineProperties.setStage(stage);
-
         stage.show();
 
-        stage.setOnCloseRequest(e -> controller.getLoader().getButton().setDisable(false));
+        stage.setOnCloseRequest(e -> {
+            AppUtils.writeRoutineProperties(properties, stage);
+            controller.getLoader().getButton().setDisable(false);
+        });
     }
 
     @FXML

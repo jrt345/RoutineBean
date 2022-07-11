@@ -3,6 +3,7 @@ package com.example.routinebean.controllers;
 import com.example.routinebean.commands.Caretaker;
 import com.example.routinebean.commands.Originator;
 import com.example.routinebean.utils.AppData;
+import com.example.routinebean.utils.AppUtils;
 import com.example.routinebean.utils.ColorUtils;
 import com.example.routinebean.utils.Routine;
 import com.example.routinebean.utils.properties.RoutineProperties;
@@ -37,6 +38,14 @@ public class RoutineController implements Initializable {
     private Stage stage;
     public void setStage(Stage stage) {
         this.stage = stage;
+    }
+
+    private RoutineProperties properties;
+    public RoutineProperties getProperties() {
+        return properties;
+    }
+    public void setProperties(RoutineProperties properties) {
+        this.properties = properties;
     }
 
     private final Originator originator = new Originator();
@@ -90,17 +99,6 @@ public class RoutineController implements Initializable {
     @FXML
     private Label changesSaved;
 
-    public static void writeProperties(String directory, Stage stage) {
-        RoutineProperties.setWidth(stage.getWidth());
-        RoutineProperties.setHeight(stage.getHeight());
-
-        try {
-            RoutineProperties.write(directory);
-        } catch (IOException ex) {
-            throw new RuntimeException(ex);
-        }
-    }
-
     public Routine getCurrentRoutineObject() {
         String title = this.title.getText();
         String[][] tasks = new String[24][7];
@@ -135,7 +133,8 @@ public class RoutineController implements Initializable {
 
     @FXML
     private void closeRoutine(ActionEvent event) {
-        writeProperties(loader.getDirectory(), stage);
+        AppUtils.writeRoutineProperties(properties, stage);
+
         stage.close();
         loader.getButton().setDisable(false);
     }
@@ -147,7 +146,8 @@ public class RoutineController implements Initializable {
 
     @FXML
     private void quitProgram(ActionEvent event) {
-        writeProperties(loader.getDirectory(), stage);
+        AppUtils.writeRoutineProperties(properties, stage);
+
         Platform.exit();
     }
 
