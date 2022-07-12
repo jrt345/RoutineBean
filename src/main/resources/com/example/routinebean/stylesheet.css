@@ -1,3 +1,6 @@
+
+/*Css styles for routineBean.fxml*/
+
 #leftSideBar { -fx-background-color: #B2BEC3;}
 
 #leftSideBarButton { -fx-background-color: #B2BEC3; }
@@ -6,18 +9,39 @@
 
 #routineButton { -fx-background-color: #DFE6E9; }
 #routineButton:hover { -fx-background-color: #F3F6F7; }
-#routineButton:pressed { -fx-background-color: #DFE6E9; }
 
-#rbButton { -fx-background-color: #B2BEC3;}
-#rbButton:hover { -fx-background-color: #D1D8DB; }
-#rbButton:pressed { -fx-background-color: #B2BEC3; }
+#routineButton:pressed { -fx-background-color: #DFE6E9; }
 
 #centerAnchorPane { -fx-background-color: #DFE6E9; }
 
 #centerScrollPane .scroll-bar:vertical .track { -fx-background-color: #DFE6E9; }
 #centerScrollPane .scroll-bar:vertical .thumb { -fx-background-color: #636E72; }
 #centerScrollPane .scroll-bar:vertical *.increment-button,
-#centerScrollPane .scroll-bar:vertical *.decrement-button{  -fx-background-color: #DFE6E9; }
+#centerScrollPane .scroll-bar:vertical *.decrement-button { -fx-background-color: #DFE6E9; }
 #centerScrollPane .scroll-bar:vertical *.increment-arrow,
-#centerScrollPane .scroll-bar:vertical *.decrement-arrow{ -fx-background-color: #636E72; }
+#centerScrollPane .scroll-bar:vertical *.decrement-arrow { -fx-background-color: #636E72; }
 
+#newRoutinePane { -fx-background-color: #DFE6E9; }
+#newRoutinePane:header *.header-panel { -fx-background-color: #DFE6E9; }
+
+/*Css styles for routineLoader.fxml*/
+
+#loaderAnchorPane, #loaderGridPane { -fx-background-color: #DFE6E9; }
+#loaderMenuBar { -fx-background-color: #F0F0F0; }
+
+#loaderScrollPane > .viewport { -fx-background-color: #DFE6E9; }
+#loaderScrollPane > .corner { -fx-background-color: #DFE6E9; }
+#loaderScrollPane .scroll-bar:vertical .track { -fx-background-color: #DFE6E9; }
+#loaderScrollPane .scroll-bar:vertical .thumb { -fx-background-color: #636E72; }
+#loaderScrollPane .scroll-bar:vertical *.increment-button,
+#loaderScrollPane .scroll-bar:vertical *.decrement-button { -fx-background-color: #DFE6E9; }
+#loaderScrollPane .scroll-bar:vertical *.increment-arrow,
+#loaderScrollPane .scroll-bar:vertical *.decrement-arrow { -fx-background-color: #636E72; }
+#loaderScrollPane .scroll-bar:horizontal .track { -fx-background-color: #DFE6E9; }
+#loaderScrollPane .scroll-bar:horizontal .thumb { -fx-background-color: #636E72; }
+#loaderScrollPane .scroll-bar:horizontal *.increment-button,
+#loaderScrollPane .scroll-bar:horizontal *.decrement-button { -fx-background-color: #DFE6E9; }
+#loaderScrollPane .scroll-bar:horizontal *.increment-arrow,
+#loaderScrollPane .scroll-bar:horizontal *.decrement-arrow { -fx-background-color: #636E72; }
+
+#aboutBoxAnchorPane { -fx-background-color: #DFE6E9; }

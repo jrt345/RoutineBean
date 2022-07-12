@@ -4,18 +4,18 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
-<AnchorPane prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/null" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.routinebean.controllers.RoutineController">
+<AnchorPane prefHeight="600.0" prefWidth="900.0" stylesheets="@stylesheet.css" xmlns="http://javafx.com/javafx/null" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.routinebean.controllers.RoutineController">
     <children>
         <BorderPane prefHeight="600.0" prefWidth="900.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <top>
-                <AnchorPane prefHeight="95.0" BorderPane.alignment="CENTER">
+                <AnchorPane id="loaderAnchorPane" prefHeight="95.0" BorderPane.alignment="CENTER">
                     <children>
                         <Label fx:id="title" alignment="CENTER" prefHeight="70.0" prefWidth="900.0" text="Routine Title" textAlignment="CENTER" wrapText="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="25.0">
                             <font>
                                 <Font name="Segoe UI" size="50.0" />
                             </font>
                         </Label>
-                  <MenuBar layoutX="-9.0" layoutY="2.0" AnchorPane.bottomAnchor="70.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <MenuBar id="loaderMenuBar" layoutX="-9.0" layoutY="2.0" AnchorPane.bottomAnchor="70.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                     <menus>
                       <Menu mnemonicParsing="false" text="File">
                         <items>
@@ -47,7 +47,7 @@
                 </AnchorPane>
             </top>
             <left>
-                <AnchorPane prefHeight="530.0" prefWidth="220.0" BorderPane.alignment="CENTER">
+                <AnchorPane id="loaderAnchorPane" prefHeight="530.0" prefWidth="220.0" BorderPane.alignment="CENTER">
                     <children>
                         <TextField fx:id="taskTextField" layoutX="13.0" layoutY="121.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="15.0" />
                         <ChoiceBox fx:id="daysOfTheWeekChoiceBox1" layoutX="13.0" layoutY="172.0" prefHeight="25.0" prefWidth="85.0" AnchorPane.leftAnchor="10.0" />
@@ -113,11 +113,11 @@
                 </AnchorPane>
             </left>
             <center>
-                <AnchorPane prefHeight="530.0" prefWidth="680.0" BorderPane.alignment="CENTER">
+                <AnchorPane id="loaderAnchorPane" prefHeight="530.0" prefWidth="680.0" BorderPane.alignment="CENTER">
                     <children>
-                        <ScrollPane layoutX="3.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <ScrollPane id="loaderScrollPane" layoutX="3.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                             <content>
-                                <GridPane fx:id="routineGrid" gridLinesVisible="true" prefHeight="875.0" prefWidth="1328.0">
+                                <GridPane id="loaderGridPane" fx:id="routineGrid" gridLinesVisible="true" prefHeight="875.0" prefWidth="1328.0">
                                     <columnConstraints>
                                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />

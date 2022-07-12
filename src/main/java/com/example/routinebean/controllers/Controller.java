@@ -25,6 +25,8 @@ import java.util.*;
 
 public class Controller implements Initializable {
 
+    private final String STYLESHEET = Objects.requireNonNull(App.class.getResource("stylesheet.css")).toExternalForm();
+
     private ArrayList<RoutineLoader> loaders = new ArrayList<>();
 
     @FXML
@@ -70,6 +72,8 @@ public class Controller implements Initializable {
         textDialog.setTitle("New Routine");
         textDialog.setHeaderText("Routine Name:");
         textDialog.getDialogPane().setPrefWidth(300);
+        textDialog.getDialogPane().setId("newRoutinePane");
+        textDialog.getDialogPane().getStylesheets().add(STYLESHEET);
         ((Stage) textDialog.getDialogPane().getScene().getWindow()).getIcons().add(AppUtils.ICON);
 
         Optional<String> result = textDialog.showAndWait();
@@ -162,7 +166,8 @@ public class Controller implements Initializable {
         button.setPrefSize(Double.MAX_VALUE, 40);
         button.setMinHeight(40);
         button.setId("routineButton");
-        button.getStylesheets().add(Objects.requireNonNull(App.class.getResource("stylesheet.css")).toExternalForm());
+        button.setFocusTraversable(false);
+        button.getStylesheets().add(STYLESHEET);
 
         return button;
     }
