@@ -19,13 +19,20 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import javafx.stage.Window;
+import javafx.stage.WindowEvent;
 import javafx.util.Duration;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class RoutineController implements Initializable {
+
+    private static final ButtonType exitWithSaving = new ButtonType("Save");
+    private static final ButtonType exitWithoutSaving = new ButtonType("Don't Save");
+    private static final ButtonType cancel = new ButtonType("Cancel");
 
     private RoutineLoader loader;
     public RoutineLoader getLoader() {
@@ -99,21 +106,6 @@ public class RoutineController implements Initializable {
     @FXML
     private Label changesSaved;
 
-    public Routine getCurrentRoutineObject() {
-        String title = this.title.getText();
-        String[][] tasks = new String[24][7];
-        String[][] backgroundColors = new String[24][7];
-
-        for (int i = 0; i < 7; i++) {
-            for (int j = 0; j < 24; j++) {
-                tasks[j][i] = textFieldArray[j][i].getText();
-                backgroundColors[j][i] = backgroundColorsArray[j][i];
-            }
-        }
-
-        return new Routine(title, tasks, backgroundColors);
-    }
-
     @FXML
     private void saveRoutine(ActionEvent event) throws IOException, ClassNotFoundException {
         Routine currentRoutine = getCurrentRoutineObject();
@@ -131,8 +123,98 @@ public class RoutineController implements Initializable {
         }
     }
 
+    public Routine getCurrentRoutineObject() {
+        String title = this.title.getText();
+        String[][] tasks = new String[24][7];
+        String[][] backgroundColors = new String[24][7];
+
+        for (int i = 0; i < 7; i++) {
+            for (int j = 0; j < 24; j++) {
+                tasks[j][i] = textFieldArray[j][i].getText();
+                backgroundColors[j][i] = backgroundColorsArray[j][i];
+            }
+        }
+
+        return new Routine(title, tasks, backgroundColors);
+    }
+
     @FXML
-    private void closeRoutine(ActionEvent event) {
+    private void closeRoutine(ActionEvent event) throws IOException, ClassNotFoundException {
+        Routine currentRoutine = getCurrentRoutineObject();
+        Routine savedRoutine = AppData.deserialize(loader.getDirectory());
+
+        if (!savedRoutine.equals(currentRoutine)) {
+            Optional<ButtonType> result = showUnsavedChangesAlert(title.getText());
+
+            if (result.isPresent()) {
+                if (result.get().equals(exitWithSaving)) {
+                    exitWithSavingRoutine(currentRoutine);
+                }
+
+                if (result.get().equals(exitWithoutSaving)) {
+                    exitWithoutSavingRoutine();
+                }
+            }
+        } else {
+            exitWithoutSavingRoutine();
+        }
+    }
+
+    public void closeRoutineOnCloseRequest(WindowEvent event) throws IOException, ClassNotFoundException {
+        Routine currentRoutine = getCurrentRoutineObject();
+        Routine savedRoutine = AppData.deserialize(loader.getDirectory());
+
+        if (!savedRoutine.equals(currentRoutine)) {
+            Optional<ButtonType> result = showUnsavedChangesAlert(title.getText());
+
+            if (result.isPresent()) {
+                if (result.get().equals(exitWithSaving)) {
+                    exitWithSavingRoutine(currentRoutine);
+                }
+
+                if (result.get().equals(exitWithoutSaving)) {
+                    exitWithoutSavingRoutine();
+                }
+
+                if (result.get().equals(cancel)) {
+                    event.consume();
+                }
+            }
+        } else {
+            exitWithoutSavingRoutine();
+        }
+    }
+
+    private static Optional<ButtonType> showUnsavedChangesAlert(String title) {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("RoutineBean");
+        alert.setHeaderText(null);
+        alert.getButtonTypes().clear();
+        alert.getDialogPane().setContentText("Do you want to save changes to " + title + "?");
+        alert.getButtonTypes().add(exitWithSaving);
+        alert.getButtonTypes().add(exitWithoutSaving);
+        alert.getButtonTypes().add(cancel);
+
+        Window window = alert.getDialogPane().getScene().getWindow();
+        window.setOnCloseRequest(event -> window.hide());
+
+        ((Stage) alert.getDialogPane().getScene().getWindow()).getIcons().add(AppUtils.ICON);
+
+        return alert.showAndWait();
+    }
+
+    private void exitWithSavingRoutine(Routine routine) throws IOException {
+        loader.setRoutine(routine);
+        loader.getButton().setText(routine.getTitle());
+
+        AppData.serialize(loader.getDirectory(), routine);
+        AppUtils.writeRoutineProperties(properties, stage);
+
+        stage.close();
+        loader.getButton().setDisable(false);
+    }
+
+    private void exitWithoutSavingRoutine() {
         AppUtils.writeRoutineProperties(properties, stage);
 
         stage.close();
@@ -145,15 +227,58 @@ public class RoutineController implements Initializable {
     }
 
     @FXML
-    private void quitProgram(ActionEvent event) {
-        AppUtils.writeRoutineProperties(properties, stage);
+    private void quitProgram(ActionEvent event) throws IOException, ClassNotFoundException {
+        Routine currentRoutine = getCurrentRoutineObject();
+        Routine savedRoutine = AppData.deserialize(loader.getDirectory());
 
+        if (!savedRoutine.equals(currentRoutine)) {
+            Optional<ButtonType> result = showUnsavedChangesAlert(title.getText());
+            if (result.isPresent()) {
+                if (result.get().equals(exitWithSaving)) {
+                    exitWithSavingApp(currentRoutine);
+                }
+
+                if (result.get().equals(exitWithoutSaving)) {
+                    exitWithoutSavingApp();
+                }
+            }
+        } else {
+            exitWithoutSavingApp();
+        }
+    }
+
+    private void exitWithSavingApp(Routine routine) throws IOException {
+        loader.setRoutine(routine);
+        loader.getButton().setText(routine.getTitle());
+
+        AppData.serialize(loader.getDirectory(), routine);
+        AppUtils.writeRoutineProperties(properties, stage);
         Platform.exit();
+    }
+
+    private void exitWithoutSavingApp() {
+        AppUtils.writeRoutineProperties(properties, stage);
+        Platform.exit();
+    }
+
+    public void loadRoutine(Routine routine) {
+        title.setText(routine.getTitle());
+
+        for (int i = 0; i < 7; i++) {
+            for (int j = 0; j < 24; j++) {
+                backgroundColorsArray[j][i] = routine.getBackgroundColors()[j][i];
+
+                textFieldArray[j][i].setStyle("-fx-background-color: " +
+                        backgroundColorsArray[j][i] + "; -fx-border-color: black;");
+
+                textFieldArray[j][i].setText(routine.getTasks()[j][i]);
+            }
+        }
     }
 
     @FXML
     private void undoChange(ActionEvent event) {
-        if(currentRoutine > 1){
+        if(currentRoutine > 1) {
             currentRoutine--;
             loadRoutine(originator.restoreFromMemento(caretaker.getMemento(currentRoutine - 1)));
             redoButton.setDisable(false);
@@ -165,7 +290,7 @@ public class RoutineController implements Initializable {
 
     @FXML
     private void redoChange(ActionEvent event) {
-        if(savedRoutines > currentRoutine){
+        if(savedRoutines > currentRoutine) {
             currentRoutine++;
             Routine routine = originator.restoreFromMemento(caretaker.getMemento(currentRoutine - 1));
             loadRoutine(routine);
@@ -211,7 +336,7 @@ public class RoutineController implements Initializable {
         backgroundColorPicker.setValue(Color.WHITE);
     }
 
-    private int dayToNumber(String dayOfTheWeek) {
+    private static int dayToNumber(String dayOfTheWeek) {
         return switch (dayOfTheWeek) {
             case "Monday" -> 1;
             case "Tuesday" -> 2;
@@ -224,7 +349,7 @@ public class RoutineController implements Initializable {
         };
     }
 
-    private int timeToNumber(String timeOfDay) {
+    private static int timeToNumber(String timeOfDay) {
         return switch (timeOfDay) {
             case "12:00 am" -> 1;
             case "1:00 am" -> 2;
@@ -389,21 +514,6 @@ public class RoutineController implements Initializable {
     @FXML
     private void openAboutBox(ActionEvent event) throws IOException {
         AppUtils.openAboutBox();
-    }
-
-    public void loadRoutine(Routine routine) {
-        title.setText(routine.getTitle());
-
-        for (int i = 0; i < 7; i++) {
-            for (int j = 0; j < 24; j++) {
-                backgroundColorsArray[j][i] = routine.getBackgroundColors()[j][i];
-
-                textFieldArray[j][i].setStyle("-fx-background-color: " +
-                        backgroundColorsArray[j][i] + "; -fx-border-color: black;");
-
-                textFieldArray[j][i].setText(routine.getTasks()[j][i]);
-            }
-        }
     }
 
     public void initializeMemento() {

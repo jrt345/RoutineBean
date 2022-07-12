@@ -58,9 +58,12 @@ public class Controller implements Initializable {
 
         stage.show();
 
-        stage.setOnCloseRequest(e -> {
-            AppUtils.writeRoutineProperties(properties, stage);
-            controller.getLoader().getButton().setDisable(false);
+        stage.setOnCloseRequest(event -> {
+            try {
+                controller.closeRoutineOnCloseRequest(event);
+            } catch (IOException | ClassNotFoundException ex) {
+                throw new RuntimeException(ex);
+            }
         });
     }
 
