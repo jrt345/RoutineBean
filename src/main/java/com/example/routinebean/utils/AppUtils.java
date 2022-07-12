@@ -15,6 +15,8 @@ import java.util.regex.Pattern;
 
 public class AppUtils {
 
+    public static final String STYLESHEET = Objects.requireNonNull(App.class.getResource("stylesheet.css")).toExternalForm();
+
     public static final Image ICON = new Image(Objects.requireNonNull(App.class.getResourceAsStream("images/routinebean-logo.png")));
 
     private static String getDuplicateFolderName(String name) {

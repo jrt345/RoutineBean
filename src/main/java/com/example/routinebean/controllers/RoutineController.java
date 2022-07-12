@@ -190,7 +190,11 @@ public class RoutineController implements Initializable {
         alert.setTitle("RoutineBean");
         alert.setHeaderText(null);
         alert.getButtonTypes().clear();
+
+        alert.getDialogPane().setId("newRoutinePane");
+        alert.getDialogPane().getStylesheets().add(AppUtils.STYLESHEET);
         alert.getDialogPane().setContentText("Do you want to save changes to " + title + "?");
+
         alert.getButtonTypes().add(exitWithSaving);
         alert.getButtonTypes().add(exitWithoutSaving);
         alert.getButtonTypes().add(cancel);

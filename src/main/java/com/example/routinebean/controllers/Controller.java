@@ -25,8 +25,6 @@ import java.util.*;
 
 public class Controller implements Initializable {
 
-    private final String STYLESHEET = Objects.requireNonNull(App.class.getResource("stylesheet.css")).toExternalForm();
-
     private ArrayList<RoutineLoader> loaders = new ArrayList<>();
 
     @FXML
@@ -34,6 +32,76 @@ public class Controller implements Initializable {
 
     @FXML
     private Button updateButton;
+
+    @FXML
+    private void newRoutine(ActionEvent event) {
+        TextInputDialog textDialog = new TextInputDialog("Routine");
+        textDialog.setTitle("New Routine");
+        textDialog.setHeaderText("Routine Name:");
+        textDialog.getDialogPane().setPrefWidth(300);
+        textDialog.getDialogPane().setId("newRoutinePane");
+        textDialog.getDialogPane().getStylesheets().add(AppUtils.STYLESHEET);
+        ((Stage) textDialog.getDialogPane().getScene().getWindow()).getIcons().add(AppUtils.ICON);
+
+        Optional<String> result = textDialog.showAndWait();
+
+        if (result.isPresent()) {
+            String directory = AppUtils.filterFolderName(result.get());
+            Routine routine = new Routine(result.get());
+
+            boolean isRoutineCreated = AppUtils.createNewRoutine(directory, routine);
+
+            if (isRoutineCreated) {
+                RoutineLoader loader = generateRoutineLoader(directory, routine);
+
+                loaders.add(0, loader);
+                routineVBox.getChildren().add(0, loader.getButton());
+            }
+        }
+    }
+
+    private RoutineLoader generateRoutineLoader(String directory, Routine routine) {
+        Button button = generateButton(routine.getTitle());
+
+        RoutineLoader loader = new RoutineLoader(directory, routine, button);
+        loader.getButton().setContextMenu(generateContextMenu(loader));
+        loader.getButton().setOnAction(e -> {
+            try {
+                loader.getButton().setDisable(true);
+                runRoutine(loader);
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+        });
+
+        return loader;
+    }
+
+    private Button generateButton(String title) {
+        Button button = new Button(title);
+        button.setPrefSize(Double.MAX_VALUE, 40);
+        button.setMinHeight(40);
+        button.setId("routineButton");
+        button.setFocusTraversable(false);
+        button.getStylesheets().add(AppUtils.STYLESHEET);
+
+        return button;
+    }
+
+    private ArrayList<RoutineLoader> generateRoutineLoaders(File[] files, ArrayList<Routine> routines) {
+        ArrayList<RoutineLoader> routineLoaders = new ArrayList<>();
+
+        for (int i = 0; i < files.length; i++) {
+            if (routines.get(i) != null) {
+                String directory = files[i].getName();
+                Routine routine = routines.get(i);
+
+                routineLoaders.add(generateRoutineLoader(directory, routine));
+            }
+        }
+
+        return routineLoaders;
+    }
 
     public void runRoutine(RoutineLoader loader) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("routineLoader.fxml"));
@@ -70,33 +138,6 @@ public class Controller implements Initializable {
     }
 
     @FXML
-    private void newRoutine(ActionEvent event) {
-        TextInputDialog textDialog = new TextInputDialog("Routine");
-        textDialog.setTitle("New Routine");
-        textDialog.setHeaderText("Routine Name:");
-        textDialog.getDialogPane().setPrefWidth(300);
-        textDialog.getDialogPane().setId("newRoutinePane");
-        textDialog.getDialogPane().getStylesheets().add(STYLESHEET);
-        ((Stage) textDialog.getDialogPane().getScene().getWindow()).getIcons().add(AppUtils.ICON);
-
-        Optional<String> result = textDialog.showAndWait();
-
-        if (result.isPresent()) {
-            String directory = AppUtils.filterFolderName(result.get());
-            Routine routine = new Routine(result.get());
-
-            boolean isRoutineCreated = AppUtils.createNewRoutine(directory, routine);
-
-            if (isRoutineCreated) {
-                RoutineLoader loader = generateRoutineLoader(directory, routine);
-
-                loaders.add(0, loader);
-                routineVBox.getChildren().add(0, loader.getButton());
-            }
-        }
-    }
-
-    @FXML
     private void openGithub(ActionEvent event) throws IOException {
         Runtime rt = Runtime.getRuntime();
         String url = "https://github.com/jrt345/RoutineBean";
@@ -118,23 +159,6 @@ public class Controller implements Initializable {
 
     }
 
-    private RoutineLoader generateRoutineLoader(String directory, Routine routine) {
-        Button button = generateButton(routine.getTitle());
-
-        RoutineLoader loader = new RoutineLoader(directory, routine, button);
-        loader.getButton().setContextMenu(generateContextMenu(loader));
-        loader.getButton().setOnAction(e -> {
-            try {
-                loader.getButton().setDisable(true);
-                runRoutine(loader);
-            } catch (IOException ex) {
-                throw new RuntimeException(ex);
-            }
-        });
-
-        return loader;
-    }
-
     private ArrayList<Routine> getRoutines(File[] files) {
         ArrayList<Routine> routines = new ArrayList<>();
 
@@ -147,32 +171,6 @@ public class Controller implements Initializable {
         }
 
         return routines;
-    }
-
-    private ArrayList<RoutineLoader> generateRoutineLoaders(File[] files, ArrayList<Routine> routines) {
-        ArrayList<RoutineLoader> routineLoaders = new ArrayList<>();
-
-        for (int i = 0; i < files.length; i++) {
-            if (routines.get(i) != null) {
-                String directory = files[i].getName();
-                Routine routine = routines.get(i);
-
-                routineLoaders.add(generateRoutineLoader(directory, routine));
-            }
-        }
-
-        return routineLoaders;
-    }
-
-    private Button generateButton(String title) {
-        Button button = new Button(title);
-        button.setPrefSize(Double.MAX_VALUE, 40);
-        button.setMinHeight(40);
-        button.setId("routineButton");
-        button.setFocusTraversable(false);
-        button.getStylesheets().add(STYLESHEET);
-
-        return button;
     }
 
     private ContextMenu generateContextMenu(RoutineLoader loader) {
