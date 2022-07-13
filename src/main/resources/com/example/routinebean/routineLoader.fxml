@@ -50,10 +50,10 @@
                 <AnchorPane id="loaderAnchorPane" prefHeight="530.0" prefWidth="220.0" BorderPane.alignment="CENTER">
                     <children>
                         <TextField fx:id="taskTextField" layoutX="13.0" layoutY="121.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="15.0" />
-                        <ChoiceBox fx:id="daysOfTheWeekChoiceBox1" layoutX="13.0" layoutY="172.0" prefHeight="25.0" prefWidth="85.0" AnchorPane.leftAnchor="10.0" />
-                        <ChoiceBox fx:id="daysOfTheWeekChoiceBox2" layoutX="123.0" layoutY="172.0" prefHeight="25.0" prefWidth="85.0" AnchorPane.rightAnchor="15.0" />
-                        <ColorPicker fx:id="backgroundColorPicker" layoutX="13.0" layoutY="273.0" prefHeight="25.0" prefWidth="85.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="15.0" />
-                        <Button layoutX="13.0" layoutY="339.0" mnemonicParsing="false" onAction="#addTasks" prefHeight="50.0" prefWidth="85.0" text="Add" AnchorPane.leftAnchor="10.0" />
+                        <ChoiceBox id="routineLoaderChoiceBox" fx:id="daysOfTheWeekChoiceBox1" focusTraversable="false" layoutX="13.0" layoutY="172.0" prefHeight="25.0" prefWidth="85.0" AnchorPane.leftAnchor="10.0" />
+                        <ChoiceBox id="routineLoaderChoiceBox" fx:id="daysOfTheWeekChoiceBox2" focusTraversable="false" layoutX="123.0" layoutY="172.0" prefHeight="25.0" prefWidth="85.0" AnchorPane.rightAnchor="15.0" />
+                        <ColorPicker id="routineLoaderColorPicker" fx:id="backgroundColorPicker" focusTraversable="false" layoutX="13.0" layoutY="273.0" prefHeight="25.0" prefWidth="85.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="15.0" />
+                        <Button id="routineLoaderButton" focusTraversable="false" layoutX="13.0" layoutY="339.0" mnemonicParsing="false" onAction="#addTasks" prefHeight="50.0" prefWidth="85.0" text="Add" AnchorPane.leftAnchor="10.0" />
                         <Separator layoutX="217.0" layoutY="1.0" orientation="VERTICAL" prefHeight="200.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="214.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="10.0" />
                         <Label layoutX="13.0" layoutY="98.0" text="Task:" AnchorPane.leftAnchor="10.0">
                             <font>
@@ -76,8 +76,8 @@
                                 <Insets top="8.0" />
                             </padding>
                         </Label>
-                        <ChoiceBox fx:id="timeChoiceBox1" layoutX="13.0" layoutY="223.0" prefHeight="25.0" prefWidth="85.0" AnchorPane.leftAnchor="10.0" />
-                        <ChoiceBox fx:id="timeChoiceBox2" layoutX="123.0" layoutY="223.0" prefHeight="25.0" prefWidth="85.0" AnchorPane.rightAnchor="15.0" />
+                        <ChoiceBox id="routineLoaderChoiceBox" fx:id="timeChoiceBox1" focusTraversable="false" layoutX="13.0" layoutY="223.0" prefHeight="25.0" prefWidth="85.0" AnchorPane.leftAnchor="10.0" />
+                        <ChoiceBox id="routineLoaderChoiceBox" fx:id="timeChoiceBox2" focusTraversable="false" layoutX="123.0" layoutY="223.0" prefHeight="25.0" prefWidth="85.0" AnchorPane.rightAnchor="15.0" />
                         <Label layoutX="13.0" layoutY="243.0" text="Background Color:" AnchorPane.leftAnchor="10.0">
                             <font>
                                 <Font name="Segoe UI" size="15.0" />
@@ -95,15 +95,15 @@
                                 <Insets top="8.0" />
                             </padding>
                         </Label>
-                        <Button layoutX="149.0" layoutY="27.0" mnemonicParsing="false" onAction="#setTitle" text="Set Title" AnchorPane.rightAnchor="15.0" />
+                        <Button id="routineLoaderButton" focusTraversable="false" layoutX="149.0" layoutY="27.0" mnemonicParsing="false" onAction="#setTitle" text="Set Title" AnchorPane.rightAnchor="15.0" />
                         <Separator layoutX="13.0" layoutY="60.0" prefWidth="200.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="15.0" />
                         <Label alignment="CENTER" layoutX="13.0" layoutY="66.0" text="Quick Add/Delete" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="15.0">
                             <font>
                                 <Font name="Segoe UI" size="20.0" />
                             </font>
                         </Label>
-                        <Button layoutX="123.0" layoutY="339.0" mnemonicParsing="false" onAction="#deleteTasks" prefHeight="50.0" prefWidth="85.0" text="Delete" AnchorPane.rightAnchor="15.0" />
-                        <Button layoutX="13.0" layoutY="306.0" mnemonicParsing="false" onAction="#clearSelections" text="Clear Selections" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="15.0" />
+                        <Button id="routineLoaderButton" focusTraversable="false" layoutX="123.0" layoutY="339.0" mnemonicParsing="false" onAction="#deleteTasks" prefHeight="50.0" prefWidth="85.0" text="Delete" AnchorPane.rightAnchor="15.0" />
+                        <Button id="routineLoaderButton" focusTraversable="false" layoutX="13.0" layoutY="306.0" mnemonicParsing="false" onAction="#clearSelections" text="Clear Selections" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="15.0" />
                   <Label fx:id="changesSaved" layoutX="10.0" layoutY="476.0" text="Changes saved" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="10.0">
                      <font>
                         <Font name="Segoe UI" size="15.0" />

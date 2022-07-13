@@ -45,3 +45,24 @@
 #loaderScrollPane .scroll-bar:horizontal *.decrement-arrow { -fx-background-color: #636E72; }
 
 #aboutBoxAnchorPane { -fx-background-color: #DFE6E9; }
+
+#routineLoaderButton { -fx-background-color: #DBDBDB; }
+#routineLoaderButton { -fx-background-radius: 5; }
+#routineLoaderButton:hover { -fx-background-color: #EBEBEB; }
+#routineLoaderButton:hover { -fx-background-radius: 5; }
+#routineLoaderButton:pressed { -fx-background-color: #DBDBDB; }
+#routineLoaderButton:pressed { -fx-background-radius: 5; }
+
+#routineLoaderChoiceBox { -fx-background-color: #DBDBDB; }
+#routineLoaderChoiceBox { -fx-background-radius: 5; }
+#routineLoaderChoiceBox:hover { -fx-background-color: #EBEBEB; }
+#routineLoaderChoiceBox:hover { -fx-background-radius: 5; }
+#routineLoaderChoiceBox:pressed { -fx-background-color: #DBDBDB; }
+#routineLoaderChoiceBox:pressed { -fx-background-radius: 5; }
+
+#routineLoaderColorPicker { -fx-background-color: #DBDBDB; }
+#routineLoaderColorPicker { -fx-background-radius: 5; }
+#routineLoaderColorPicker:hover { -fx-background-color: #EBEBEB; }
+#routineLoaderColorPicker:hover { -fx-background-radius: 5; }
+#routineLoaderColorPicker:pressed { -fx-background-color: #DBDBDB; }
+#routineLoaderColorPicker:pressed { -fx-background-radius: 5; }
