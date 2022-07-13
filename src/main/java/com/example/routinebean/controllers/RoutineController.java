@@ -188,10 +188,9 @@ public class RoutineController implements Initializable {
     private static Optional<ButtonType> showUnsavedChangesAlert(String title) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("RoutineBean");
-        alert.setHeaderText(null);
         alert.getButtonTypes().clear();
 
-        alert.getDialogPane().setId("newRoutinePane");
+        alert.getDialogPane().setId("alertPane");
         alert.getDialogPane().getStylesheets().add(AppUtils.STYLESHEET);
         alert.getDialogPane().setContentText("Do you want to save changes to " + title + "?");
 

@@ -21,8 +21,8 @@
 #centerScrollPane .scroll-bar:vertical *.increment-arrow,
 #centerScrollPane .scroll-bar:vertical *.decrement-arrow { -fx-background-color: #636E72; }
 
-#newRoutinePane { -fx-background-color: #DFE6E9; }
-#newRoutinePane:header *.header-panel { -fx-background-color: #DFE6E9; }
+#alertPane { -fx-background-color: #DFE6E9; }
+#alertPane:header *.header-panel { -fx-background-color: #DFE6E9; }
 
 /*Css styles for routineLoader.fxml*/
 

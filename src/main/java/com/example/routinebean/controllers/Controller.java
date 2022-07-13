@@ -11,10 +11,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ContextMenu;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.TextInputDialog;
+import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
@@ -39,7 +36,7 @@ public class Controller implements Initializable {
         textDialog.setTitle("New Routine");
         textDialog.setHeaderText("Routine Name:");
         textDialog.getDialogPane().setPrefWidth(300);
-        textDialog.getDialogPane().setId("newRoutinePane");
+        textDialog.getDialogPane().setId("alertPane");
         textDialog.getDialogPane().getStylesheets().add(AppUtils.STYLESHEET);
         ((Stage) textDialog.getDialogPane().getScene().getWindow()).getIcons().add(AppUtils.ICON);
 
@@ -215,25 +212,45 @@ public class Controller implements Initializable {
     }
 
     private void deleteRoutine(RoutineLoader loader) {
-        File file = new File(AppData.ROUTINE_DIRECTORY.concat(loader.getDirectory()));
-        File[] fileContents = file.listFiles(File::isFile);
+        Optional<ButtonType> result = showDeleteRoutineAlert(loader.getRoutine().getTitle());
 
-        if (fileContents != null) {
-            Boolean[] areFileContentsDeleted = new Boolean[fileContents.length];
+        if (result.isPresent()) {
+            if (result.get().equals(ButtonType.OK)) {
+                File file = new File(AppData.ROUTINE_DIRECTORY.concat(loader.getDirectory()));
+                File[] fileContents = file.listFiles(File::isFile);
 
-            for (int i = 0;i < fileContents.length;i++) {
-                areFileContentsDeleted[i] = fileContents[i].delete();
-            }
+                if (fileContents != null) {
+                    Boolean[] areFileContentsDeleted = new Boolean[fileContents.length];
 
-            if (!(Arrays.asList(areFileContentsDeleted).contains(false))){
-                boolean isRoutineDeleted = file.delete();
+                    for (int i = 0;i < fileContents.length;i++) {
+                        areFileContentsDeleted[i] = fileContents[i].delete();
+                    }
 
-                if (isRoutineDeleted) {
-                    routineVBox.getChildren().remove(loader.getButton());
-                    loaders.remove(loader);
+                    if (!(Arrays.asList(areFileContentsDeleted).contains(false))){
+                        boolean isRoutineDeleted = file.delete();
+
+                        if (isRoutineDeleted) {
+                            routineVBox.getChildren().remove(loader.getButton());
+                            loaders.remove(loader);
+                        }
+                    }
                 }
             }
         }
+    }
+
+    private Optional<ButtonType> showDeleteRoutineAlert(String title) {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Delete Routine");
+        alert.setHeaderText(null);
+
+        alert.getDialogPane().setId("alertPane");
+        alert.getDialogPane().getStylesheets().add(AppUtils.STYLESHEET);
+        alert.getDialogPane().setContentText("Are you sure you want to delete " + title + "?");
+
+        ((Stage) alert.getDialogPane().getScene().getWindow()).getIcons().add(AppUtils.ICON);
+
+        return alert.showAndWait();
     }
 
     @Override
