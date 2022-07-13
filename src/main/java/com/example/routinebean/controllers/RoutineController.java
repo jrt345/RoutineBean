@@ -266,6 +266,7 @@ public class RoutineController implements Initializable {
 
     public void loadRoutine(Routine routine) {
         title.setText(routine.getTitle());
+        titleTextField.setText(routine.getTitle());
 
         for (int i = 0; i < 7; i++) {
             for (int j = 0; j < 24; j++) {
