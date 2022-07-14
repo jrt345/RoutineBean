@@ -59,7 +59,7 @@ public class App extends Application {
         stage.show();
         stage.setOnCloseRequest(e -> writeProperties(properties, stage));
 
-        if (UpdateManager.isUpdateAvailable()) {
+        if (UpdateManager.isUpdateAvailable() && properties.isCheckForUpdate()) {
             UpdateManager.showUpdateDialog(properties);
         }
     }
