@@ -7,7 +7,9 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -25,8 +27,12 @@ public class NewUpdatePromptController implements Initializable {
     private Label newUpdateInfoLabel;
 
     @FXML
-    private void download(ActionEvent event) {
+    private void download(ActionEvent event) throws IOException {
+        ((Stage) downloadButton.getScene().getWindow()).close();
 
+        Runtime rt = Runtime.getRuntime();
+        String url = "https://github.com/jrt345/RoutineBean/release/latest";
+        rt.exec("rundll32 url.dll,FileProtocolHandler " + url);
     }
 
     @FXML
@@ -35,13 +41,17 @@ public class NewUpdatePromptController implements Initializable {
     }
 
     @FXML
-    private void learnMore(ActionEvent event) {
+    private void learnMore(ActionEvent event) throws IOException {
+        ((Stage) downloadButton.getScene().getWindow()).close();
 
+        Runtime rt = Runtime.getRuntime();
+        String url = "https://github.com/jrt345/RoutineBean/release/latest";
+        rt.exec("rundll32 url.dll,FileProtocolHandler " + url);
     }
 
     @FXML
     private void remindLater(ActionEvent event) {
-
+        ((Stage) downloadButton.getScene().getWindow()).close();
     }
 
     @Override
