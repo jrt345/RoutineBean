@@ -148,8 +148,8 @@ public class Controller implements Initializable {
     }
 
     @FXML
-    private void updateApp(ActionEvent event) {
-
+    private void updateApp(ActionEvent event) throws IOException {
+        UpdateManager.showUpdateDialog();
     }
 
     private ArrayList<Routine> getRoutines(File[] files) {

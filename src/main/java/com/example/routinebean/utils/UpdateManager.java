@@ -1,7 +1,10 @@
 package com.example.routinebean.utils;
 
 import com.example.routinebean.App;
+import com.example.routinebean.controllers.NewUpdatePromptController;
+import com.example.routinebean.utils.properties.AppProperties;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -67,6 +70,24 @@ public class UpdateManager {
     public static void showUpdateDialog() throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("newUpdatePrompt.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
+        Stage stage = new Stage();
+        stage.setTitle("Update Available");
+        stage.setScene(scene);
+        stage.setResizable(false);
+        stage.getIcons().add(AppUtils.ICON);
+        stage.initModality(Modality.APPLICATION_MODAL);
+
+        stage.show();
+    }
+
+    public static void showUpdateDialog(AppProperties properties) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("newUpdatePrompt.fxml"));
+        Parent root = fxmlLoader.load();
+
+        NewUpdatePromptController controller = fxmlLoader.getController();
+        controller.setProperties(properties);
+
+        Scene scene = new Scene(root);
         Stage stage = new Stage();
         stage.setTitle("Update Available");
         stage.setScene(scene);

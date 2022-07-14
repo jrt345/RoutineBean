@@ -1,6 +1,7 @@
 package com.example.routinebean;
 
 import com.example.routinebean.utils.AppUtils;
+import com.example.routinebean.utils.UpdateManager;
 import com.example.routinebean.utils.properties.AppProperties;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -10,12 +11,6 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 public class App extends Application {
-
-    private static Stage stage;
-
-    public static Stage getStage() {
-        return stage;
-    }
 
     private static void writeProperties(AppProperties properties, Stage stage) {
         try {
@@ -58,15 +53,14 @@ public class App extends Application {
         stage.setMinHeight(639);
         stage.getIcons().add(AppUtils.ICON);
 
-        App.stage = stage;
         AppProperties properties = loadProperties();
         properties.setStageSize(stage);
 
         stage.show();
         stage.setOnCloseRequest(e -> writeProperties(properties, stage));
 
-        if (properties.isCheckForUpdate()) {
-            AppUtils.checkForUpdate();
+        if (UpdateManager.isUpdateAvailable()) {
+            UpdateManager.showUpdateDialog(properties);
         }
     }
 

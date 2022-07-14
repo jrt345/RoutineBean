@@ -1,6 +1,7 @@
 package com.example.routinebean.controllers;
 
 import com.example.routinebean.utils.UpdateManager;
+import com.example.routinebean.utils.properties.AppProperties;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -14,6 +15,12 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class NewUpdatePromptController implements Initializable {
+
+    private AppProperties properties;
+    public void setProperties(AppProperties properties) {
+        this.properties = properties;
+    }
+
     @FXML
     private Label currentVersionLabel;
 
@@ -36,8 +43,13 @@ public class NewUpdatePromptController implements Initializable {
     }
 
     @FXML
-    private void ignore(ActionEvent event) {
+    private void ignore(ActionEvent event) throws IOException {
+        if (properties != null) {
+            properties.setCheckForUpdate(false);
+            AppProperties.write(properties);
+        }
 
+        ((Stage) downloadButton.getScene().getWindow()).close();
     }
 
     @FXML
