@@ -127,4 +127,10 @@ public class AppUtils {
 
         stage.show();
     }
+
+    public static void checkForUpdate() throws IOException {
+        if (UpdateManager.isUpdateAvailable()) {
+            UpdateManager.showUpdateDialog();
+        }
+    }
 }

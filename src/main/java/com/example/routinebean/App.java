@@ -57,6 +57,8 @@ public class App extends Application {
 
         stage.show();
         stage.setOnCloseRequest(e -> writeProperties());
+
+        AppUtils.checkForUpdate();
     }
 
     public static void main(String[] args) {

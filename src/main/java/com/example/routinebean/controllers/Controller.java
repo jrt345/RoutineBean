@@ -4,6 +4,7 @@ import com.example.routinebean.App;
 import com.example.routinebean.utils.AppData;
 import com.example.routinebean.utils.AppUtils;
 import com.example.routinebean.utils.Routine;
+import com.example.routinebean.utils.UpdateManager;
 import com.example.routinebean.utils.properties.RoutineProperties;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -276,7 +277,9 @@ public class Controller implements Initializable {
             }
         }
 
-        updateButton.setDisable(true);
-        updateButton.setOpacity(0.0);
+        if (!UpdateManager.isUpdateAvailable()) {
+            updateButton.setDisable(true);
+            updateButton.setOpacity(0.0);
+        }
     }
 }

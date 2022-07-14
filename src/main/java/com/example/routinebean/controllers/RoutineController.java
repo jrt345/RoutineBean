@@ -520,6 +520,11 @@ public class RoutineController implements Initializable {
         AppUtils.openAboutBox();
     }
 
+    @FXML
+    private void checkForUpdate(ActionEvent event) throws IOException {
+        AppUtils.checkForUpdate();
+    }
+
     public void initializeMemento() {
         Routine routine = getCurrentRoutineObject();
         originator.set(routine);
