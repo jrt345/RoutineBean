@@ -1,5 +1,11 @@
 package com.example.routinebean.utils;
 
+import com.example.routinebean.App;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -8,7 +14,7 @@ import java.net.URLConnection;
 
 public class UpdateManager {
 
-    private static final String stringCurrentVersion = "1.0.0";
+    public static final String CURRENT_VERSION = "1.0.0";
 
     public static String getLatestVersion() {
         try {
@@ -35,7 +41,7 @@ public class UpdateManager {
         try {
             String stringLatestVersion = getLatestVersion();
 
-            String[] currentVersionsStringArray = stringCurrentVersion.split("\\.");
+            String[] currentVersionsStringArray = CURRENT_VERSION.split("\\.");
             String[] latestVersionsStringArray = stringLatestVersion.split("\\.");
 
             int[] currentVersionsIntArray = new int[3];
@@ -56,5 +62,18 @@ public class UpdateManager {
         } catch (Exception e) {
             return false;
         }
+    }
+
+    public static void showUpdateDialog() throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("newUpdatePrompt.fxml"));
+        Scene scene = new Scene(fxmlLoader.load());
+        Stage stage = new Stage();
+        stage.setTitle("Update Available");
+        stage.setScene(scene);
+        stage.setResizable(false);
+        stage.getIcons().add(AppUtils.ICON);
+        stage.initModality(Modality.APPLICATION_MODAL);
+
+        stage.show();
     }
 }
