@@ -29,4 +29,32 @@ public class UpdateManager {
             return "0.0.0";
         }
     }
+
+
+    public static boolean isUpdateAvailable() {
+        try {
+            String stringLatestVersion = getLatestVersion();
+
+            String[] currentVersionsStringArray = stringCurrentVersion.split("\\.");
+            String[] latestVersionsStringArray = stringLatestVersion.split("\\.");
+
+            int[] currentVersionsIntArray = new int[3];
+            int[] latestVersionsIntArray = new int[3];
+
+            for (int i = 0;i < 3;i++){
+                currentVersionsIntArray[i] = Integer.parseInt(currentVersionsStringArray[i]);
+                latestVersionsIntArray[i] = Integer.parseInt(latestVersionsStringArray[i]);
+            }
+
+            if (currentVersionsIntArray[0] < latestVersionsIntArray[0]){
+                return true;
+            } else if (currentVersionsIntArray[1] < latestVersionsIntArray[1]) {
+                return true;
+            } else {
+                return currentVersionsIntArray[2] < latestVersionsIntArray[2];
+            }
+        } catch (Exception e) {
+            return false;
+        }
+    }
 }
