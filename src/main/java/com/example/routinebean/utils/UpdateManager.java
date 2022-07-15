@@ -1,7 +1,7 @@
 package com.example.routinebean.utils;
 
 import com.example.routinebean.App;
-import com.example.routinebean.controllers.NewUpdatePromptController;
+import com.example.routinebean.controllers.UpdateController;
 import com.example.routinebean.properties.AppProperties;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -84,7 +84,7 @@ public class UpdateManager {
         FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("newUpdatePrompt.fxml"));
         Parent root = fxmlLoader.load();
 
-        NewUpdatePromptController controller = fxmlLoader.getController();
+        UpdateController controller = fxmlLoader.getController();
         controller.setProperties(properties);
 
         Scene scene = new Scene(root);

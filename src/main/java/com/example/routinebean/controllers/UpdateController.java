@@ -14,7 +14,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class NewUpdatePromptController implements Initializable {
+public class UpdateController implements Initializable {
 
     private AppProperties properties;
     public void setProperties(AppProperties properties) {
