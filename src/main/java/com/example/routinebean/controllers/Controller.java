@@ -196,11 +196,10 @@ public class Controller implements Initializable {
     }
 
     private void duplicateRoutine(RoutineLoader loader) {
-        String directory = loader.getDirectory();
-        Routine routine = loader.getRoutine();
+        String directory = AppUtils.filterFolderName(loader.getDirectory().concat(" - Copy"));
 
-        directory = AppUtils.filterFolderName(directory.concat(" - Copy"));
-        routine.setTitle(routine.getTitle().concat(" - Copy"));
+        Routine routine = new Routine(loader.getRoutine().getTitle().concat(" - Copy"),
+                loader.getRoutine().getTasks(), loader.getRoutine().getBackgroundColors());
 
         boolean isRoutineDuplicated = AppUtils.createNewRoutine(directory, routine);
 
