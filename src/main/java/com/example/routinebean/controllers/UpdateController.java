@@ -1,6 +1,7 @@
 package com.example.routinebean.controllers;
 
 import com.example.routinebean.properties.AppProperties;
+import com.example.routinebean.utils.AppUtils;
 import com.example.routinebean.utils.UpdateManager;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -37,9 +38,7 @@ public class UpdateController implements Initializable {
     private void download(ActionEvent event) throws IOException {
         ((Stage) downloadButton.getScene().getWindow()).close();
 
-        Runtime rt = Runtime.getRuntime();
-        String url = "https://github.com/jrt345/RoutineBean/release/latest";
-        rt.exec("rundll32 url.dll,FileProtocolHandler " + url);
+        AppUtils.openUrlInBrowser("https://github.com/jrt345/RoutineBean/release/latest");
     }
 
     @FXML
@@ -56,9 +55,7 @@ public class UpdateController implements Initializable {
     private void learnMore(ActionEvent event) throws IOException {
         ((Stage) downloadButton.getScene().getWindow()).close();
 
-        Runtime rt = Runtime.getRuntime();
-        String url = "https://github.com/jrt345/RoutineBean/release/latest";
-        rt.exec("rundll32 url.dll,FileProtocolHandler " + url);
+        AppUtils.openUrlInBrowser("https://github.com/jrt345/RoutineBean/release/latest");
     }
 
     @FXML

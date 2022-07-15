@@ -115,6 +115,11 @@ public class AppUtils {
         }
     }
 
+    public static void openUrlInBrowser(String url) throws IOException {
+        Runtime rt = Runtime.getRuntime();
+        rt.exec("rundll32 url.dll,FileProtocolHandler " + url);
+    }
+
     public static void openAboutBox() throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("aboutBox.fxml"));
         Scene scene = new Scene(fxmlLoader.load());

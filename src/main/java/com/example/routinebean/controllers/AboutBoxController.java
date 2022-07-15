@@ -1,5 +1,6 @@
 package com.example.routinebean.controllers;
 
+import com.example.routinebean.utils.AppUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -19,8 +20,6 @@ public class AboutBoxController {
 
     @FXML
     private void openLink(ActionEvent event) throws IOException {
-        Runtime rt = Runtime.getRuntime();
-        String url = "https://www.gnu.org/licenses/gpl-3.0.en.html";
-        rt.exec("rundll32 url.dll,FileProtocolHandler " + url);
+        AppUtils.openUrlInBrowser("https://www.gnu.org/licenses/gpl-3.0.en.html");
     }
 }

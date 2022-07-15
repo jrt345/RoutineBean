@@ -137,9 +137,7 @@ public class Controller implements Initializable {
 
     @FXML
     private void openGithub(ActionEvent event) throws IOException {
-        Runtime rt = Runtime.getRuntime();
-        String url = "https://github.com/jrt345/RoutineBean";
-        rt.exec("rundll32 url.dll,FileProtocolHandler " + url);
+        AppUtils.openUrlInBrowser("https://github.com/jrt345/RoutineBean");
     }
 
     @FXML
