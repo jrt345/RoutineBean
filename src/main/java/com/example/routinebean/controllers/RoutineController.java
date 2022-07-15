@@ -36,9 +36,6 @@ public class RoutineController implements Initializable {
     private static final ButtonType cancel = new ButtonType("Cancel");
 
     private RoutineLoader loader;
-    public RoutineLoader getLoader() {
-        return loader;
-    }
     public void setLoader(RoutineLoader loader) {
         this.loader = loader;
     }
@@ -49,9 +46,6 @@ public class RoutineController implements Initializable {
     }
 
     private RoutineProperties properties;
-    public RoutineProperties getProperties() {
-        return properties;
-    }
     public void setProperties(RoutineProperties properties) {
         this.properties = properties;
     }

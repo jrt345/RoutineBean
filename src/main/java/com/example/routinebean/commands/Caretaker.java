@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class Caretaker {
 
-    ArrayList<Memento> savedRoutines = new ArrayList<>();
+    final ArrayList<Memento> savedRoutines = new ArrayList<>();
 
     public void addMemento(Memento memento) {
         savedRoutines.add(memento);
