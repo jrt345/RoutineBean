@@ -2,6 +2,11 @@
 
 # RoutineBean
 
+<p align="center">
+  <a href="https://github.com/jrt345/RoutineBean/releases/latest"><img src="https://img.shields.io/github/v/release/jrt345/RoutineBean"/></a>
+  <a href="https://opensource.org/licenses/GPL-3.0"><img src="https://img.shields.io/github/license/jrt345/gamblescramble"/></a>
+</p>
+
 RoutineBean is a routine building desktop app that can easily create a weekly routine. It features a grid UI with each cell representing a specific hour and day of the week. Multiple cells can easily be modifed using the quick add feature, saving time. 
 
 ## Getting Started
