@@ -1,6 +1,6 @@
-package com.example.routinebean.utils.properties;
+package com.example.routinebean.properties;
 
-import com.example.routinebean.utils.AppData;
+import com.example.routinebean.data.AppData;
 import javafx.stage.Stage;
 
 import java.io.*;

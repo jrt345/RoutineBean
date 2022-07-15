@@ -1,4 +1,4 @@
-package com.example.routinebean.utils.properties;
+package com.example.routinebean.properties;
 
 import javafx.stage.Stage;
 

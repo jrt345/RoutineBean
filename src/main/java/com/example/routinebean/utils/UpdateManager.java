@@ -2,7 +2,7 @@ package com.example.routinebean.utils;
 
 import com.example.routinebean.App;
 import com.example.routinebean.controllers.NewUpdatePromptController;
-import com.example.routinebean.utils.properties.AppProperties;
+import com.example.routinebean.properties.AppProperties;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;

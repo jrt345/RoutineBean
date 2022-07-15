@@ -1,5 +1,6 @@
-package com.example.routinebean.utils;
+package com.example.routinebean.data;
 
+import com.example.routinebean.utils.ColorUtils;
 import javafx.scene.paint.Color;
 
 import java.io.Serial;

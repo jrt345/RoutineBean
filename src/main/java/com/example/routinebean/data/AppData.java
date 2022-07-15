@@ -1,4 +1,4 @@
-package com.example.routinebean.utils;
+package com.example.routinebean.data;
 
 import java.io.*;
 

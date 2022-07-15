@@ -2,8 +2,12 @@ package com.example.routinebean.controllers;
 
 import com.example.routinebean.commands.Caretaker;
 import com.example.routinebean.commands.Originator;
-import com.example.routinebean.utils.*;
-import com.example.routinebean.utils.properties.RoutineProperties;
+import com.example.routinebean.data.AppData;
+import com.example.routinebean.data.Routine;
+import com.example.routinebean.properties.RoutineProperties;
+import com.example.routinebean.utils.AppUtils;
+import com.example.routinebean.utils.ColorUtils;
+import com.example.routinebean.utils.UpdateManager;
 import javafx.animation.FadeTransition;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;

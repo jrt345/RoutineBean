@@ -1,7 +1,7 @@
 package com.example.routinebean.controllers;
 
+import com.example.routinebean.properties.AppProperties;
 import com.example.routinebean.utils.UpdateManager;
-import com.example.routinebean.utils.properties.AppProperties;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;

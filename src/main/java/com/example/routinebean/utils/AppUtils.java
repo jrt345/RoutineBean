@@ -1,7 +1,9 @@
 package com.example.routinebean.utils;
 
 import com.example.routinebean.App;
-import com.example.routinebean.utils.properties.RoutineProperties;
+import com.example.routinebean.data.AppData;
+import com.example.routinebean.data.Routine;
+import com.example.routinebean.properties.RoutineProperties;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
