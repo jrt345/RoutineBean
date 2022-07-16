@@ -30,10 +30,6 @@ public class AppUtils {
         return new File(ROUTINES_DIRECTORY, name);
     }
 
-    public static File createRoutineDataFile(String folder, String dataFileName) {
-        return new File(ROUTINES_DIRECTORY, new File(folder, dataFileName).getPath());
-    }
-
     private static String getDuplicateFolderName(String name) {
         int index = 0;
         String duplicateFolderName = name;

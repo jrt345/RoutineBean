@@ -18,9 +18,13 @@ public class RoutineProperties {
         this.height = 639.0;
     }
 
+    private static File propertiesFile(String directory) {
+        return new File(AppUtils.ROUTINES_DIRECTORY, new File(directory, "Routine.properties").getPath());
+    }
+
     public static RoutineProperties load(String directory) throws IOException, NullPointerException, NumberFormatException {
         Properties properties = new Properties();
-        InputStream inputStream = new FileInputStream(AppUtils.createRoutineDataFile(directory, "Routine.properties"));
+        InputStream inputStream = new FileInputStream(propertiesFile(directory));
         properties.load(inputStream);
 
         RoutineProperties routineProperties = new RoutineProperties(directory);
@@ -34,7 +38,7 @@ public class RoutineProperties {
 
     public static void write(RoutineProperties routineProperties) throws IOException {
         Properties properties = new Properties();
-        OutputStream outputStream = new FileOutputStream(AppUtils.createRoutineDataFile(routineProperties.directory, "Routine.properties"));
+        OutputStream outputStream = new FileOutputStream(propertiesFile(routineProperties.directory));
 
         properties.setProperty("routine-window-width", String.valueOf(routineProperties.width));
         properties.setProperty("routine-window-height", String.valueOf(routineProperties.height));
