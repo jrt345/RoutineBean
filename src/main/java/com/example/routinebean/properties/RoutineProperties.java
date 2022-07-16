@@ -23,28 +23,26 @@ public class RoutineProperties {
     }
 
     public static RoutineProperties load(String directory) throws IOException, NullPointerException, NumberFormatException {
-        Properties properties = new Properties();
-        InputStream inputStream = new FileInputStream(propertiesFile(directory));
-        properties.load(inputStream);
+        try (InputStream inputStream = new FileInputStream(propertiesFile(directory))) {
+            Properties properties = new Properties();
+            properties.load(inputStream);
 
-        RoutineProperties routineProperties = new RoutineProperties(directory);
-        routineProperties.width = Double.parseDouble(properties.getProperty("routine-window-width"));
-        routineProperties.height = Double.parseDouble(properties.getProperty("routine-window-height"));
+            RoutineProperties routineProperties = new RoutineProperties(directory);
+            routineProperties.width = Double.parseDouble(properties.getProperty("routine-window-width"));
+            routineProperties.height = Double.parseDouble(properties.getProperty("routine-window-height"));
 
-        inputStream.close();
-
-        return routineProperties;
+            return routineProperties;
+        }
     }
 
     public static void write(RoutineProperties routineProperties) throws IOException {
-        Properties properties = new Properties();
-        OutputStream outputStream = new FileOutputStream(propertiesFile(routineProperties.directory));
+        try (OutputStream outputStream = new FileOutputStream(propertiesFile(routineProperties.directory))) {
+            Properties properties = new Properties();
+            properties.setProperty("routine-window-width", String.valueOf(routineProperties.width));
+            properties.setProperty("routine-window-height", String.valueOf(routineProperties.height));
 
-        properties.setProperty("routine-window-width", String.valueOf(routineProperties.width));
-        properties.setProperty("routine-window-height", String.valueOf(routineProperties.height));
-
-        properties.store(outputStream, null);
-        outputStream.close();
+            properties.store(outputStream, null);
+        }
     }
 
     public void setStageSize(Stage stage) {
