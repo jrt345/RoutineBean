@@ -221,7 +221,7 @@ public class RoutineController implements Initializable {
     }
 
     @FXML
-    private void openExplorer(ActionEvent event) throws IOException {
+    private void openExplorer(ActionEvent event) {
         AppUtils.openDirectory(new File(AppData.ROUTINE_DIRECTORY.concat(loader.getDirectory())));
     }
 

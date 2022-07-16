@@ -4,17 +4,15 @@ import com.example.routinebean.App;
 import com.example.routinebean.data.AppData;
 import com.example.routinebean.data.Routine;
 import com.example.routinebean.properties.RoutineProperties;
+import javafx.application.HostServices;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-import java.awt.*;
 import java.io.File;
 import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.Objects;
 import java.util.regex.Pattern;
 
@@ -23,6 +21,11 @@ public class AppUtils {
     public static final String STYLESHEET = Objects.requireNonNull(App.class.getResource("stylesheet.css")).toExternalForm();
 
     public static final Image ICON = new Image(Objects.requireNonNull(App.class.getResourceAsStream("images/routinebean-logo.png")));
+
+    private static HostServices hostServices;
+    public static void setHostServices(HostServices hostServices) {
+        AppUtils.hostServices = hostServices;
+    }
 
     private static String getDuplicateFolderName(String name) {
         int index = 0;
@@ -118,14 +121,12 @@ public class AppUtils {
         }
     }
 
-    public static void openDirectory(File file) throws IOException {
-        Desktop.getDesktop().open(file);
+    public static void openDirectory(File file) {
+        hostServices.showDocument(file.toURI().toString());
     }
 
-    public static void openUrlInBrowser(String url) throws IOException, URISyntaxException {
-        if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
-            Desktop.getDesktop().browse(new URI(url));
-        }
+    public static void openUrlInBrowser(String url) {
+        hostServices.showDocument(url);
     }
 
     public static void openAboutBox() throws IOException {

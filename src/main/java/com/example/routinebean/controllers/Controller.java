@@ -18,7 +18,6 @@ import javafx.stage.Stage;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.*;
 
@@ -137,7 +136,7 @@ public class Controller implements Initializable {
     }
 
     @FXML
-    private void openGithub(ActionEvent event) throws IOException, URISyntaxException {
+    private void openGithub(ActionEvent event) {
         AppUtils.openUrlInBrowser("https://github.com/jrt345/RoutineBean");
     }
 
@@ -187,11 +186,7 @@ public class Controller implements Initializable {
     }
 
     private void openRoutineInExplorer(RoutineLoader loader) {
-        try {
-            AppUtils.openDirectory(new File(AppData.ROUTINE_DIRECTORY.concat(loader.getDirectory())));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        AppUtils.openDirectory(new File(AppData.ROUTINE_DIRECTORY.concat(loader.getDirectory())));
     }
 
     private void duplicateRoutine(RoutineLoader loader) {
