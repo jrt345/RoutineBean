@@ -10,6 +10,7 @@ import javafx.scene.image.Image;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.Objects;
@@ -113,6 +114,10 @@ public class AppUtils {
                 throw new RuntimeException(ex);
             }
         }
+    }
+
+    public static void openDirectory(File file) throws IOException {
+        Desktop.getDesktop().open(file);
     }
 
     public static void openUrlInBrowser(String url) throws IOException {

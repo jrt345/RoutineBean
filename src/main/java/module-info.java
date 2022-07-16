@@ -1,6 +1,7 @@
 module com.example.routinebean {
     requires javafx.controls;
     requires javafx.fxml;
+    requires java.desktop;
 
     opens com.example.routinebean to javafx.fxml;
     exports com.example.routinebean;

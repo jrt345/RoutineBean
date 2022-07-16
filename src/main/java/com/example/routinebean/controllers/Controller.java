@@ -187,7 +187,7 @@ public class Controller implements Initializable {
 
     private void openRoutineInExplorer(RoutineLoader loader) {
         try {
-            Runtime.getRuntime().exec("explorer.exe /select," + AppData.ROUTINE_DIRECTORY.concat(loader.getDirectory()) + "\\routine.dat");
+            AppUtils.openDirectory(new File(AppData.ROUTINE_DIRECTORY.concat(loader.getDirectory())));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
