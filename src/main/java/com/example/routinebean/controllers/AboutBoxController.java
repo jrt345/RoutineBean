@@ -7,6 +7,7 @@ import javafx.scene.control.Button;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 
 public class AboutBoxController {
 
@@ -19,7 +20,7 @@ public class AboutBoxController {
     }
 
     @FXML
-    private void openLink(ActionEvent event) throws IOException {
+    private void openLink(ActionEvent event) throws IOException, URISyntaxException {
         AppUtils.openUrlInBrowser("https://www.gnu.org/licenses/gpl-3.0.en.html");
     }
 }

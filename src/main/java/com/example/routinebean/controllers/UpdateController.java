@@ -12,6 +12,7 @@ import javafx.scene.control.Label;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -35,7 +36,7 @@ public class UpdateController implements Initializable {
     private Label newUpdateInfoLabel;
 
     @FXML
-    private void download(ActionEvent event) throws IOException {
+    private void download(ActionEvent event) throws IOException, URISyntaxException {
         ((Stage) downloadButton.getScene().getWindow()).close();
 
         AppUtils.openUrlInBrowser("https://github.com/jrt345/RoutineBean/release/latest");
@@ -52,7 +53,7 @@ public class UpdateController implements Initializable {
     }
 
     @FXML
-    private void learnMore(ActionEvent event) throws IOException {
+    private void learnMore(ActionEvent event) throws IOException, URISyntaxException {
         ((Stage) downloadButton.getScene().getWindow()).close();
 
         AppUtils.openUrlInBrowser("https://github.com/jrt345/RoutineBean/release/latest");

@@ -13,6 +13,8 @@ import javafx.stage.Stage;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Objects;
 import java.util.regex.Pattern;
 
@@ -120,9 +122,10 @@ public class AppUtils {
         Desktop.getDesktop().open(file);
     }
 
-    public static void openUrlInBrowser(String url) throws IOException {
-        Runtime rt = Runtime.getRuntime();
-        rt.exec("rundll32 url.dll,FileProtocolHandler " + url);
+    public static void openUrlInBrowser(String url) throws IOException, URISyntaxException {
+        if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
+            Desktop.getDesktop().browse(new URI(url));
+        }
     }
 
     public static void openAboutBox() throws IOException {
