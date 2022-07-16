@@ -24,7 +24,6 @@ import javafx.stage.Window;
 import javafx.stage.WindowEvent;
 import javafx.util.Duration;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Optional;
@@ -222,7 +221,7 @@ public class RoutineController implements Initializable {
 
     @FXML
     private void openExplorer(ActionEvent event) {
-        AppUtils.openDirectory(new File(AppData.ROUTINE_DIRECTORY.concat(loader.getDirectory())));
+        AppUtils.openDirectory(AppUtils.createRoutineFile(loader.getDirectory()));
     }
 
     @FXML

@@ -57,7 +57,6 @@ public class App extends Application {
         AppProperties properties = loadProperties();
         properties.setStageSize(stage);
 
-
         stage.show();
         stage.setOnCloseRequest(e -> writeProperties(properties, stage));
 

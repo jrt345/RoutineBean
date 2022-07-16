@@ -186,7 +186,7 @@ public class Controller implements Initializable {
     }
 
     private void openRoutineInExplorer(RoutineLoader loader) {
-        AppUtils.openDirectory(new File(AppData.ROUTINE_DIRECTORY.concat(loader.getDirectory())));
+        AppUtils.openDirectory(AppUtils.createRoutineFile(loader.getDirectory()));
     }
 
     private void duplicateRoutine(RoutineLoader loader) {
@@ -210,7 +210,7 @@ public class Controller implements Initializable {
 
         if (result.isPresent()) {
             if (result.get().equals(ButtonType.OK)) {
-                File file = new File(AppData.ROUTINE_DIRECTORY.concat(loader.getDirectory()));
+                File file = AppUtils.createRoutineFile(loader.getDirectory());
                 File[] fileContents = file.listFiles(File::isFile);
 
                 if (fileContents != null) {
@@ -249,15 +249,14 @@ public class Controller implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        File routinesDirectory = new File(AppData.ROUTINE_DIRECTORY);
+        boolean hasRoutinesDirectory = AppUtils.ROUTINES_DIRECTORY.exists();
 
-        boolean hasRoutinesDirectory = routinesDirectory.exists();
         if (!hasRoutinesDirectory){
-            hasRoutinesDirectory = new File(AppData.ROUTINE_DIRECTORY).mkdirs();
+            hasRoutinesDirectory = AppUtils.ROUTINES_DIRECTORY.mkdirs();
         }
 
         if (hasRoutinesDirectory) {
-            File[] files = routinesDirectory.listFiles(File::isDirectory);
+            File[] files = AppUtils.ROUTINES_DIRECTORY.listFiles(File::isDirectory);
 
             if (files != null) {
                 Arrays.sort(files, Comparator.comparingLong(File::lastModified).reversed());

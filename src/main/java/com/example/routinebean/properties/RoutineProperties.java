@@ -1,6 +1,6 @@
 package com.example.routinebean.properties;
 
-import com.example.routinebean.data.AppData;
+import com.example.routinebean.utils.AppUtils;
 import javafx.stage.Stage;
 
 import java.io.*;
@@ -20,7 +20,7 @@ public class RoutineProperties {
 
     public static RoutineProperties load(String directory) throws IOException, NullPointerException, NumberFormatException {
         Properties properties = new Properties();
-        InputStream inputStream = new FileInputStream(AppData.ROUTINE_DIRECTORY.concat(directory + "\\Routine.properties"));
+        InputStream inputStream = new FileInputStream(AppUtils.createRoutineDataFile(directory, "Routine.properties"));
         properties.load(inputStream);
 
         RoutineProperties routineProperties = new RoutineProperties(directory);
@@ -34,7 +34,7 @@ public class RoutineProperties {
 
     public static void write(RoutineProperties routineProperties) throws IOException {
         Properties properties = new Properties();
-        OutputStream outputStream = new FileOutputStream(AppData.ROUTINE_DIRECTORY.concat(routineProperties.directory) + "\\Routine.properties");
+        OutputStream outputStream = new FileOutputStream(AppUtils.createRoutineDataFile(routineProperties.directory, "Routine.properties"));
 
         properties.setProperty("routine-window-width", String.valueOf(routineProperties.width));
         properties.setProperty("routine-window-height", String.valueOf(routineProperties.height));

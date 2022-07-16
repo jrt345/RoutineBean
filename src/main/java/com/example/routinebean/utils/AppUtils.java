@@ -18,25 +18,29 @@ import java.util.regex.Pattern;
 
 public class AppUtils {
 
+    public static final File ROUTINES_DIRECTORY = new File("routines");
+
     public static final String STYLESHEET = Objects.requireNonNull(App.class.getResource("stylesheet.css")).toExternalForm();
 
     public static final Image ICON = new Image(Objects.requireNonNull(App.class.getResourceAsStream("images/routinebean-logo.png")));
 
     private static HostServices hostServices;
-    public static void setHostServices(HostServices hostServices) {
-        AppUtils.hostServices = hostServices;
+
+    public static File createRoutineFile(String name) {
+        return new File(ROUTINES_DIRECTORY, name);
+    }
+
+    public static File createRoutineDataFile(String folder, String dataFileName) {
+        return new File(ROUTINES_DIRECTORY, new File(folder, dataFileName).getPath());
     }
 
     private static String getDuplicateFolderName(String name) {
         int index = 0;
         String duplicateFolderName = name;
-        File file = new File(AppData.ROUTINE_DIRECTORY.concat(name));
 
-        while (file.exists()){
+        while (createRoutineFile(duplicateFolderName).exists()){
             index++;
             duplicateFolderName = name + " (" + index + ")";
-
-            file = new File(AppData.ROUTINE_DIRECTORY.concat(duplicateFolderName));
         }
 
         return duplicateFolderName;
@@ -57,7 +61,7 @@ public class AppUtils {
             filteredFolderName = "_" + filteredFolderName + "_";
         }
 
-        if (new File(AppData.ROUTINE_DIRECTORY.concat(filteredFolderName)).exists()){
+        if (createRoutineFile(filteredFolderName).exists()){
             filteredFolderName = getDuplicateFolderName(filteredFolderName);
         }
 
@@ -67,16 +71,16 @@ public class AppUtils {
     public static boolean createNewRoutine(String title, Routine routine) {
         String filteredFolderName = filterFolderName(title);
 
-        boolean isRoutinesDirCreated = new File(AppData.ROUTINE_DIRECTORY).exists();
+        boolean isRoutinesDirCreated = ROUTINES_DIRECTORY.exists();
 
         if (!isRoutinesDirCreated) {
-            isRoutinesDirCreated = new File(AppData.ROUTINE_DIRECTORY).mkdirs();
+            isRoutinesDirCreated = ROUTINES_DIRECTORY.mkdirs();
         }
 
         boolean isRoutineCreated = false;
 
         if (isRoutinesDirCreated) {
-            isRoutineCreated = new File(AppData.ROUTINE_DIRECTORY.concat(filteredFolderName)).mkdirs();
+            isRoutineCreated = createRoutineFile(filteredFolderName).mkdirs();
         }
 
         if (isRoutineCreated) {
@@ -142,5 +146,9 @@ public class AppUtils {
         stage.initModality(Modality.APPLICATION_MODAL);
 
         stage.show();
+    }
+
+    public static void setHostServices(HostServices hostServices) {
+        AppUtils.hostServices = hostServices;
     }
 }
