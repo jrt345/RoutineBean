@@ -7,6 +7,8 @@ import java.util.Properties;
 
 public class AppProperties {
 
+    private static final File PROPERTIES = new File("RoutineBean.properties");
+
     private double width;
     private double height;
     private boolean checkForUpdate;
@@ -25,7 +27,7 @@ public class AppProperties {
 
     public static AppProperties load() throws IOException, NullPointerException, NumberFormatException {
         Properties properties = new Properties();
-        InputStream inputStream = new FileInputStream(System.getProperty("user.dir").concat("\\RoutineBean.properties"));
+        InputStream inputStream = new FileInputStream(PROPERTIES);
         properties.load(inputStream);
 
         double width = Double.parseDouble(properties.getProperty("main-window-width"));
@@ -39,7 +41,7 @@ public class AppProperties {
 
     public static void write(AppProperties appProperties) throws IOException {
         Properties properties = new Properties();
-        OutputStream os = new FileOutputStream(System.getProperty("user.dir").concat("\\RoutineBean.properties"));
+        OutputStream os = new FileOutputStream(PROPERTIES);
 
         properties.setProperty("main-window-width", String.valueOf(appProperties.width));
         properties.setProperty("main-window-height", String.valueOf(appProperties.height));
