@@ -26,28 +26,27 @@ public class AppProperties {
     }
 
     public static AppProperties load() throws IOException, NullPointerException, NumberFormatException {
-        Properties properties = new Properties();
-        InputStream inputStream = new FileInputStream(PROPERTIES);
-        properties.load(inputStream);
+        try (InputStream inputStream = new FileInputStream(PROPERTIES)) {
+            Properties properties = new Properties();
+            properties.load(inputStream);
 
-        double width = Double.parseDouble(properties.getProperty("main-window-width"));
-        double height = Double.parseDouble(properties.getProperty("main-window-height"));
-        boolean checkForUpdates = Boolean.parseBoolean(properties.getProperty("check-for-update"));
+            double width = Double.parseDouble(properties.getProperty("main-window-width"));
+            double height = Double.parseDouble(properties.getProperty("main-window-height"));
+            boolean checkForUpdates = Boolean.parseBoolean(properties.getProperty("check-for-update"));
 
-        inputStream.close();
-
-        return new AppProperties(width, height, checkForUpdates);
+            return new AppProperties(width, height, checkForUpdates);
+        }
     }
 
     public static void write(AppProperties appProperties) throws IOException {
-        Properties properties = new Properties();
-        OutputStream os = new FileOutputStream(PROPERTIES);
+        try (OutputStream os = new FileOutputStream(PROPERTIES)) {
+            Properties properties = new Properties();
+            properties.setProperty("main-window-width", String.valueOf(appProperties.width));
+            properties.setProperty("main-window-height", String.valueOf(appProperties.height));
+            properties.setProperty("check-for-update", String.valueOf(appProperties.checkForUpdate));
 
-        properties.setProperty("main-window-width", String.valueOf(appProperties.width));
-        properties.setProperty("main-window-height", String.valueOf(appProperties.height));
-        properties.setProperty("check-for-update", String.valueOf(appProperties.checkForUpdate));
-
-        properties.store(os, null);
+            properties.store(os, null);
+        }
     }
 
     public void setStageSize(Stage stage) {
