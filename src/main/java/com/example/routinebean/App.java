@@ -53,6 +53,7 @@ public class App extends Application {
         stage.setMinHeight(639);
         stage.getIcons().add(AppUtils.ICON);
 
+        AppUtils.setHostServices(getHostServices());
         AppProperties properties = loadProperties();
         properties.setStageSize(stage);
 

@@ -35,7 +35,7 @@ public class UpdateController implements Initializable {
     private Label newUpdateInfoLabel;
 
     @FXML
-    private void download(ActionEvent event) throws IOException {
+    private void download(ActionEvent event) {
         ((Stage) downloadButton.getScene().getWindow()).close();
 
         AppUtils.openUrlInBrowser("https://github.com/jrt345/RoutineBean/release/latest");
@@ -52,7 +52,7 @@ public class UpdateController implements Initializable {
     }
 
     @FXML
-    private void learnMore(ActionEvent event) throws IOException {
+    private void learnMore(ActionEvent event) {
         ((Stage) downloadButton.getScene().getWindow()).close();
 
         AppUtils.openUrlInBrowser("https://github.com/jrt345/RoutineBean/release/latest");

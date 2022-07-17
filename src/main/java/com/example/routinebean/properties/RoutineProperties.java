@@ -1,6 +1,6 @@
 package com.example.routinebean.properties;
 
-import com.example.routinebean.data.AppData;
+import com.example.routinebean.utils.AppUtils;
 import javafx.stage.Stage;
 
 import java.io.*;
@@ -18,29 +18,31 @@ public class RoutineProperties {
         this.height = 639.0;
     }
 
+    private static File propertiesFile(String directory) {
+        return new File(AppUtils.ROUTINES_DIRECTORY, new File(directory, "Routine.properties").getPath());
+    }
+
     public static RoutineProperties load(String directory) throws IOException, NullPointerException, NumberFormatException {
-        Properties properties = new Properties();
-        InputStream inputStream = new FileInputStream(AppData.ROUTINE_DIRECTORY.concat(directory + "\\Routine.properties"));
-        properties.load(inputStream);
+        try (InputStream inputStream = new FileInputStream(propertiesFile(directory))) {
+            Properties properties = new Properties();
+            properties.load(inputStream);
 
-        RoutineProperties routineProperties = new RoutineProperties(directory);
-        routineProperties.width = Double.parseDouble(properties.getProperty("routine-window-width"));
-        routineProperties.height = Double.parseDouble(properties.getProperty("routine-window-height"));
+            RoutineProperties routineProperties = new RoutineProperties(directory);
+            routineProperties.width = Double.parseDouble(properties.getProperty("routine-window-width"));
+            routineProperties.height = Double.parseDouble(properties.getProperty("routine-window-height"));
 
-        inputStream.close();
-
-        return routineProperties;
+            return routineProperties;
+        }
     }
 
     public static void write(RoutineProperties routineProperties) throws IOException {
-        Properties properties = new Properties();
-        OutputStream outputStream = new FileOutputStream(AppData.ROUTINE_DIRECTORY.concat(routineProperties.directory) + "\\Routine.properties");
+        try (OutputStream outputStream = new FileOutputStream(propertiesFile(routineProperties.directory))) {
+            Properties properties = new Properties();
+            properties.setProperty("routine-window-width", String.valueOf(routineProperties.width));
+            properties.setProperty("routine-window-height", String.valueOf(routineProperties.height));
 
-        properties.setProperty("routine-window-width", String.valueOf(routineProperties.width));
-        properties.setProperty("routine-window-height", String.valueOf(routineProperties.height));
-
-        properties.store(outputStream, null);
-        outputStream.close();
+            properties.store(outputStream, null);
+        }
     }
 
     public void setStageSize(Stage stage) {
