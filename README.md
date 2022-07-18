@@ -29,3 +29,16 @@ git clone https://github.com/jrt345/RoutineBean.git
 * [JavaFX](https://openjfx.io/) - GUI Library
 * [Maven](https://maven.apache.org/) - Dependency Management
 * [SceneBuilder](https://gluonhq.com/products/scene-builder/) - Used to create and design JavaFX UIs
+
+## License
+
+This project is licensed under the GNU General Public License v3.0 - see the [LICENSE](LICENSE) file for details
+
+## Screenshots
+
+### Main Screen:
+<img src="https://github.com/jrt345/RoutineBean/blob/master/screenshots/routinebean.png" width=75%/>
+
+### Routine Screen:
+<img src="https://github.com/jrt345/RoutineBean/blob/master/screenshots/routine.png" width=75%/>
+
