@@ -30,6 +30,10 @@ git clone https://github.com/jrt345/RoutineBean.git
 * [Maven](https://maven.apache.org/) - Dependency Management
 * [SceneBuilder](https://gluonhq.com/products/scene-builder/) - Used to create and design JavaFX UIs
 
+## Versioning
+
+RoutineBean uses [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/jrt345/RoutineBean/tags).
+
 ## License
 
 This project is licensed under the GNU General Public License v3.0 - see the [LICENSE](LICENSE) file for details

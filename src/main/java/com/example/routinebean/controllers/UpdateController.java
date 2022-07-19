@@ -38,7 +38,7 @@ public class UpdateController implements Initializable {
     private void download(ActionEvent event) {
         ((Stage) downloadButton.getScene().getWindow()).close();
 
-        AppUtils.openUrlInBrowser("https://github.com/jrt345/RoutineBean/release/latest");
+        AppUtils.openUrlInBrowser("https://github.com/jrt345/RoutineBean/releases/latest");
     }
 
     @FXML
@@ -55,7 +55,7 @@ public class UpdateController implements Initializable {
     private void learnMore(ActionEvent event) {
         ((Stage) downloadButton.getScene().getWindow()).close();
 
-        AppUtils.openUrlInBrowser("https://github.com/jrt345/RoutineBean/release/latest");
+        AppUtils.openUrlInBrowser("https://github.com/jrt345/RoutineBean/releases/latest");
     }
 
     @FXML
