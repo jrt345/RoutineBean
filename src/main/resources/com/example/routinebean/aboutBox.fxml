@@ -13,7 +13,7 @@
                 <AnchorPane id="aboutBoxAnchorPane" prefHeight="251.0" prefWidth="500.0" BorderPane.alignment="CENTER">
                     <children>
                         <Separator id="separator" layoutX="199.0" layoutY="4.0" prefWidth="200.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="0.0" />
-                        <TextArea id="textArea" editable="false" focusTraversable="false" layoutX="50.0" layoutY="21.0" prefHeight="184.0" prefWidth="400.0" text="RoutineBean&#10;Version 1.0.0&#10;&#10;Build with:&#10;Java 17, OpenJDK.&#10;JavaFX 17, Gluon.&#10;&#10;Copyright © 2022 jrt345. All rights reserved.&#10;&#10;RoutineBean is licensed under the GNU General Public License v3.0" wrapText="true" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="20.0" />
+                        <TextArea id="textArea" editable="false" focusTraversable="false" layoutX="50.0" layoutY="21.0" prefHeight="184.0" prefWidth="400.0" text="RoutineBean&#10;Version 1.1.0&#10;&#10;Build with:&#10;Java 17, OpenJDK.&#10;JavaFX 17, Gluon.&#10;&#10;Copyright © 2022 jrt345. All rights reserved.&#10;&#10;RoutineBean is licensed under the GNU General Public License v3.0" wrapText="true" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="20.0" />
                         <Hyperlink id="hyperlink" ellipsisString="https://www.gnu.org/licenses/gpl-3.0.en.html.." focusTraversable="false" layoutX="131.0" layoutY="209.0" onAction="#openLink" text="GNU General Public License v3.0 Document" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="131.0" AnchorPane.rightAnchor="131.0" />
                     </children>
                 </AnchorPane>

@@ -17,7 +17,7 @@ import java.net.URLConnection;
 
 public class UpdateManager {
 
-    public static final String CURRENT_VERSION = "1.0.0";
+    public static final String CURRENT_VERSION = "1.1.0";
 
     public static String getLatestVersion() {
         try {
