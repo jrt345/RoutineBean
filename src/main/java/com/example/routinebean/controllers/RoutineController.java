@@ -225,6 +225,11 @@ public class RoutineController implements Initializable {
     }
 
     @FXML
+    private void exportToCSV(ActionEvent event) {
+
+    }
+
+    @FXML
     private void quitProgram(ActionEvent event) throws IOException, ClassNotFoundException {
         Routine currentRoutine = getCurrentRoutineObject();
         Routine savedRoutine = AppData.deserialize(loader.getDirectory());

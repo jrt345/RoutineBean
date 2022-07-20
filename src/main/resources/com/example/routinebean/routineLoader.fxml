@@ -24,6 +24,12 @@
                               <SeparatorMenuItem mnemonicParsing="false" />
                               <MenuItem mnemonicParsing="false" onAction="#openExplorer" text="Open in Explorer" />
                               <SeparatorMenuItem mnemonicParsing="false" />
+                              <Menu mnemonicParsing="false" text="Export...">
+                                <items>
+                                  <MenuItem mnemonicParsing="false" onAction="#exportToCSV" text="Export to CSV" />
+                                </items>
+                              </Menu>
+                              <SeparatorMenuItem mnemonicParsing="false" />
                               <MenuItem mnemonicParsing="false" onAction="#quitProgram" text="Quit" />
                         </items>
                       </Menu>
