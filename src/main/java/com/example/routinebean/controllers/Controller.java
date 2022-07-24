@@ -109,11 +109,11 @@ public class Controller implements Initializable {
         controller.setLoader(loader);
         controller.loadRoutine(loader.getRoutine());
 
-        Scene scene = new Scene(root, 900, 600);
+        Scene scene = new Scene(root, 1220, 820);
         Stage stage = new Stage();
         stage.setTitle(controller.getCurrentRoutineObject().getTitle());
-        stage.setMinHeight(639);
-        stage.setMinWidth(916);
+        stage.setMinWidth(1236);
+        stage.setMinHeight(859);
         stage.setScene(scene);
         stage.getIcons().add(AppUtils.ICON);
 

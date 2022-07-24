@@ -14,8 +14,8 @@ public class RoutineProperties {
 
     public RoutineProperties(String directory) {
         this.directory = directory;
-        this.width = 916.0;
-        this.height = 639.0;
+        this.width = 1236.0;
+        this.height = 859.0;
     }
 
     private static File propertiesFile(String directory) {
