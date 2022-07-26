@@ -86,7 +86,7 @@ public class RoutineController implements Initializable {
     private final ColorPicker[] taskColorPickers = new ColorPicker[7];
 
     @FXML
-    private Button updateRoutineButton;
+    private Spinner<String> timeSpinner;
 
     @FXML
     private TextField mondayTextField;
@@ -129,6 +129,9 @@ public class RoutineController implements Initializable {
 
     @FXML
     private ColorPicker sundayColorPicker;
+
+    @FXML
+    private Button updateRoutineButton;
 
     @FXML
     private void saveRoutine(ActionEvent event) throws IOException, ClassNotFoundException {
