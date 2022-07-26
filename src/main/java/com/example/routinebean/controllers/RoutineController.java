@@ -79,6 +79,10 @@ public class RoutineController implements Initializable {
     @FXML
     private GridPane routineGrid;
 
+    private TextField[] daysTextField = new TextField[7];
+
+    private ColorPicker[] daysColorPicker = new ColorPicker[7];
+
     @FXML
     private Button updateRoutineButton;
 
@@ -401,6 +405,22 @@ public class RoutineController implements Initializable {
                 routineGrid.add(textField,i+1,j+1);
             }
         }
+
+        daysTextField[0] = mondayTextField;
+        daysTextField[1] = tuesdayTextField;
+        daysTextField[2] = wednesdayTextField;
+        daysTextField[3] = thursdayTextField;
+        daysTextField[4] = fridayTextField;
+        daysTextField[5] = saturdayTextField;
+        daysTextField[6] = sundayTextField;
+
+        daysColorPicker[0] = mondayColorPicker;
+        daysColorPicker[1] = tuesdayColorPicker;
+        daysColorPicker[2] = wednesdayColorPicker;
+        daysColorPicker[3] = thursdayColorPicker;
+        daysColorPicker[4] = fridayColorPicker;
+        daysColorPicker[5] = saturdayColorPicker;
+        daysColorPicker[6] = sundayColorPicker;
 
         saveButton.setAccelerator(KeyCombination.keyCombination("Ctrl+S"));
         closeButton.setAccelerator(KeyCombination.keyCombination("Ctrl+W"));
