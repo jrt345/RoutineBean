@@ -52,11 +52,11 @@ public class RoutineController implements Initializable {
     private final Originator originator = new Originator();
     private final Caretaker caretaker = new Caretaker();
 
-    private int savedRoutines = 0;
-    private int currentRoutine = 0;
+    private int savedRoutinesIndex = 0;
+    private int currentRoutineIndex = 0;
 
-    private final TextField[][] textFieldArray = new TextField[24][7];
-    private final String[][] backgroundColorsArray = new String[24][7];
+    private final TextField[][] routineTextFields = new TextField[24][7];
+    private final String[][] routineBackgroundColors = new String[24][7];
 
     @FXML
     private Label title;
@@ -79,9 +79,9 @@ public class RoutineController implements Initializable {
     @FXML
     private GridPane routineGrid;
 
-    private TextField[] daysTextField = new TextField[7];
+    private final TextField[] taskTextFields = new TextField[7];
 
-    private ColorPicker[] daysColorPicker = new ColorPicker[7];
+    private final ColorPicker[] taskColorPickers = new ColorPicker[7];
 
     @FXML
     private Button updateRoutineButton;
@@ -147,8 +147,8 @@ public class RoutineController implements Initializable {
 
         for (int i = 0; i < 7; i++) {
             for (int j = 0; j < 24; j++) {
-                tasks[j][i] = textFieldArray[j][i].getText();
-                backgroundColors[j][i] = backgroundColorsArray[j][i];
+                tasks[j][i] = routineTextFields[j][i].getText();
+                backgroundColors[j][i] = routineBackgroundColors[j][i];
             }
         }
 
@@ -292,23 +292,23 @@ public class RoutineController implements Initializable {
 
         for (int i = 0; i < 7; i++) {
             for (int j = 0; j < 24; j++) {
-                backgroundColorsArray[j][i] = routine.getBackgroundColors()[j][i];
+                routineBackgroundColors[j][i] = routine.getBackgroundColors()[j][i];
 
-                textFieldArray[j][i].setStyle("-fx-background-color: " +
-                        backgroundColorsArray[j][i] + "; -fx-border-color: black;");
+                routineTextFields[j][i].setStyle("-fx-background-color: " +
+                        routineBackgroundColors[j][i] + "; -fx-border-color: black;");
 
-                textFieldArray[j][i].setText(routine.getTasks()[j][i]);
+                routineTextFields[j][i].setText(routine.getTasks()[j][i]);
             }
         }
     }
 
     @FXML
     private void undoChange(ActionEvent event) {
-        if(currentRoutine > 1) {
-            currentRoutine--;
-            loadRoutine(originator.restoreFromMemento(caretaker.getMemento(currentRoutine - 1)));
+        if(currentRoutineIndex > 1) {
+            currentRoutineIndex--;
+            loadRoutine(originator.restoreFromMemento(caretaker.getMemento(currentRoutineIndex - 1)));
             redoButton.setDisable(false);
-            undoButton.setDisable(currentRoutine <= 1);
+            undoButton.setDisable(currentRoutineIndex <= 1);
         } else {
             undoButton.setDisable(true);
         }
@@ -316,32 +316,32 @@ public class RoutineController implements Initializable {
 
     @FXML
     private void redoChange(ActionEvent event) {
-        if(savedRoutines > currentRoutine) {
-            currentRoutine++;
-            Routine routine = originator.restoreFromMemento(caretaker.getMemento(currentRoutine - 1));
+        if(savedRoutinesIndex > currentRoutineIndex) {
+            currentRoutineIndex++;
+            Routine routine = originator.restoreFromMemento(caretaker.getMemento(currentRoutineIndex - 1));
             loadRoutine(routine);
             undoButton.setDisable(false);
-            redoButton.setDisable(savedRoutines <= currentRoutine);
+            redoButton.setDisable(savedRoutinesIndex <= currentRoutineIndex);
         } else {
             redoButton.setDisable(true);
         }
     }
 
     private void updateMemento() {
-        if (!(caretaker.getMemento(currentRoutine - 1).getSavedRoutine().equals(getCurrentRoutineObject()))) {
+        if (!(caretaker.getMemento(currentRoutineIndex - 1).getSavedRoutine().equals(getCurrentRoutineObject()))) {
 
             originator.set(getCurrentRoutineObject());
 
-            if (currentRoutine == savedRoutines){
+            if (currentRoutineIndex == savedRoutinesIndex){
                 caretaker.addMemento(originator.storeInMemento());
-            } else if (currentRoutine < savedRoutines) {
-                caretaker.clearMemento(currentRoutine);
+            } else if (currentRoutineIndex < savedRoutinesIndex) {
+                caretaker.clearMemento(currentRoutineIndex);
                 caretaker.addMemento(originator.storeInMemento());
-                savedRoutines = currentRoutine;
+                savedRoutinesIndex = currentRoutineIndex;
             }
 
-            savedRoutines++;
-            currentRoutine++;
+            savedRoutinesIndex++;
+            currentRoutineIndex++;
             undoButton.setDisable(false);
         }
     }
@@ -360,8 +360,8 @@ public class RoutineController implements Initializable {
     private void clearRoutine(ActionEvent event) {
         for (int i = 0; i < 7; i++) {
             for (int j = 0; j < 24; j++) {
-                textFieldArray[j][i].setText("");
-                backgroundColorsArray[j][i] = ColorUtils.colorToRGBA(Color.WHITE);
+                routineTextFields[j][i].setText("");
+                routineBackgroundColors[j][i] = ColorUtils.colorToRGBA(Color.WHITE);
             }
         }
 
@@ -385,8 +385,8 @@ public class RoutineController implements Initializable {
         Routine routine = getCurrentRoutineObject();
         originator.set(routine);
         caretaker.addMemento(originator.storeInMemento());
-        savedRoutines++;
-        currentRoutine++;
+        savedRoutinesIndex++;
+        currentRoutineIndex++;
     }
 
     @Override
@@ -401,31 +401,33 @@ public class RoutineController implements Initializable {
 
                 textField.setOnKeyReleased(e -> updateMemento());
 
-                textFieldArray[j][i] = textField;
+                routineTextFields[j][i] = textField;
                 routineGrid.add(textField,i+1,j+1);
             }
         }
 
-        daysTextField[0] = mondayTextField;
-        daysTextField[1] = tuesdayTextField;
-        daysTextField[2] = wednesdayTextField;
-        daysTextField[3] = thursdayTextField;
-        daysTextField[4] = fridayTextField;
-        daysTextField[5] = saturdayTextField;
-        daysTextField[6] = sundayTextField;
+        taskTextFields[0] = mondayTextField;
+        taskTextFields[1] = tuesdayTextField;
+        taskTextFields[2] = wednesdayTextField;
+        taskTextFields[3] = thursdayTextField;
+        taskTextFields[4] = fridayTextField;
+        taskTextFields[5] = saturdayTextField;
+        taskTextFields[6] = sundayTextField;
 
-        daysColorPicker[0] = mondayColorPicker;
-        daysColorPicker[1] = tuesdayColorPicker;
-        daysColorPicker[2] = wednesdayColorPicker;
-        daysColorPicker[3] = thursdayColorPicker;
-        daysColorPicker[4] = fridayColorPicker;
-        daysColorPicker[5] = saturdayColorPicker;
-        daysColorPicker[6] = sundayColorPicker;
+        taskColorPickers[0] = mondayColorPicker;
+        taskColorPickers[1] = tuesdayColorPicker;
+        taskColorPickers[2] = wednesdayColorPicker;
+        taskColorPickers[3] = thursdayColorPicker;
+        taskColorPickers[4] = fridayColorPicker;
+        taskColorPickers[5] = saturdayColorPicker;
+        taskColorPickers[6] = sundayColorPicker;
 
         saveButton.setAccelerator(KeyCombination.keyCombination("Ctrl+S"));
         closeButton.setAccelerator(KeyCombination.keyCombination("Ctrl+W"));
         undoButton.setAccelerator(KeyCombination.keyCombination("Ctrl+Z"));
         redoButton.setAccelerator(KeyCombination.keyCombination("Ctrl+Y"));
+
+
 
         undoButton.setDisable(true);
         redoButton.setDisable(true);
