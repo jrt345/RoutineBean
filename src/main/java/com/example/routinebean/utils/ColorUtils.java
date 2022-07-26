@@ -16,4 +16,19 @@ public class ColorUtils {
 
         return "rgba(" + RGBToInt(red) + ","+ RGBToInt(green) + ","+ RGBToInt(blue) + ","+ opacity + ")";
     }
+
+    private static double intToRGB(int val) {
+        return val/255.0;
+    }
+
+    public static Color RGBAToColor(String RGBA) {
+        String[] stringsRGBA = RGBA.replaceAll("[a-z()]", "").split(",");
+        double[] doublesRGBA = new double[3];
+
+        for (int i = 0; i < 3; i++) {
+            doublesRGBA[i] = intToRGB(Integer.parseInt(stringsRGBA[i]));
+        }
+
+        return new Color(doublesRGBA[0], doublesRGBA[1], doublesRGBA[2], Double.parseDouble(stringsRGBA[3]));
+    }
 }
