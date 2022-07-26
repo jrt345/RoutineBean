@@ -391,6 +391,13 @@ public class RoutineController implements Initializable {
         currentRoutineIndex++;
     }
 
+    private void setTaskInputs(int row) {
+        for (int i = 0; i < 7; i++) {
+            taskTextFields[i].setText(routineTextFields[row][i].getText());
+            taskColorPickers[i].setValue(ColorUtils.RGBAToColor(routineBackgroundColors[row][i]));
+        }
+    }
+
     private void duplicateTask(int index, KeyEvent event) {
         if (new KeyCodeCombination(KeyCode.D, KeyCombination.CONTROL_DOWN).match(event) && index < 6) {
             taskTextFields[index + 1].setText(taskTextFields[index].getText());
@@ -406,7 +413,6 @@ public class RoutineController implements Initializable {
             Platform.runLater(taskTextFields[index - 1]::requestFocus);
         }
     }
-
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         for (int i = 0; i < 7; i++) {
@@ -445,6 +451,13 @@ public class RoutineController implements Initializable {
 
             taskTextFields[index].setOnKeyPressed(event -> duplicateTask(index, event));
             taskColorPickers[index].setOnKeyPressed(event -> duplicateTask(index, event));
+        }
+
+        for (int i = 0; i < 24; i++) {
+            int index = i;
+            routineGrid.getChildren().get(i + 8).setOnMouseClicked(event -> {
+                setTaskInputs(index);
+            });
         }
 
         saveButton.setAccelerator(KeyCombination.keyCombination("Ctrl+S"));
