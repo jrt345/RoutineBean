@@ -14,6 +14,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
@@ -389,6 +391,22 @@ public class RoutineController implements Initializable {
         currentRoutineIndex++;
     }
 
+    private void duplicateTask(int index, KeyEvent event) {
+        if (new KeyCodeCombination(KeyCode.D, KeyCombination.CONTROL_DOWN).match(event) && index < 6) {
+            taskTextFields[index + 1].setText(taskTextFields[index].getText());
+            taskColorPickers[index + 1].setValue(taskColorPickers[index].getValue());
+
+            Platform.runLater(taskTextFields[index + 1]::requestFocus);
+        }
+
+        if (new KeyCodeCombination(KeyCode.D, KeyCombination.CONTROL_DOWN, KeyCombination.SHIFT_DOWN).match(event) && index > 0) {
+            taskTextFields[index - 1].setText(taskTextFields[index].getText());
+            taskColorPickers[index - 1].setValue(taskColorPickers[index].getValue());
+
+            Platform.runLater(taskTextFields[index - 1]::requestFocus);
+        }
+    }
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         for (int i = 0; i < 7; i++) {
@@ -422,12 +440,17 @@ public class RoutineController implements Initializable {
         taskColorPickers[5] = saturdayColorPicker;
         taskColorPickers[6] = sundayColorPicker;
 
+        for (int i = 0; i < 7; i++) {
+            int index = i;
+
+            taskTextFields[index].setOnKeyPressed(event -> duplicateTask(index, event));
+            taskColorPickers[index].setOnKeyPressed(event -> duplicateTask(index, event));
+        }
+
         saveButton.setAccelerator(KeyCombination.keyCombination("Ctrl+S"));
         closeButton.setAccelerator(KeyCombination.keyCombination("Ctrl+W"));
         undoButton.setAccelerator(KeyCombination.keyCombination("Ctrl+Z"));
         redoButton.setAccelerator(KeyCombination.keyCombination("Ctrl+Y"));
-
-
 
         undoButton.setDisable(true);
         redoButton.setDisable(true);
