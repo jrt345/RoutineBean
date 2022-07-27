@@ -266,57 +266,55 @@
                      <bottom>
                         <AnchorPane prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                            <children>
-                              <HBox layoutX="115.0" spacing="5.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                              <HBox fillHeight="false" layoutX="10.0" prefWidth="200.0" spacing="10.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                  <children>
-                                    <Spinner fx:id="timeSpinner" maxWidth="100.0" minWidth="100.0" prefWidth="100.0" />
-                                    <HBox HBox.hgrow="SOMETIMES">
+                                    <HBox>
                                        <children>
-                                          <TextField fx:id="mondayTextField" promptText="Monday" HBox.hgrow="SOMETIMES" />
-                                          <ColorPicker fx:id="mondayColorPicker" maxHeight="25.0" maxWidth="30.0" minHeight="25.0" minWidth="30.0" prefHeight="25.0" prefWidth="30.0" HBox.hgrow="NEVER" />
+                                          <TextField fx:id="taskTextField" promptText="Task" />
+                                          <ColorPicker fx:id="taskColorPicker" maxWidth="30.0" minWidth="30.0" prefWidth="30.0" />
                                        </children>
                                     </HBox>
-                                    <HBox layoutX="20.0" layoutY="10.0" HBox.hgrow="SOMETIMES">
+                                    <VBox>
                                        <children>
-                                          <TextField fx:id="tuesdayTextField" promptText="Tuesday" HBox.hgrow="SOMETIMES" />
-                                          <ColorPicker fx:id="tuesdayColorPicker" maxHeight="25.0" maxWidth="30.0" minHeight="25.0" minWidth="30.0" prefHeight="25.0" prefWidth="30.0" HBox.hgrow="NEVER" />
+                                          <HBox>
+                                             <children>
+                                                <ChoiceBox fx:id="firstHour" minWidth="100.0" prefWidth="100.0" />
+                                                <ChoiceBox fx:id="secondHour" minWidth="100.0" prefWidth="100.0">
+                                                   <HBox.margin>
+                                                      <Insets left="5.0" />
+                                                   </HBox.margin>
+                                                </ChoiceBox>
+                                             </children>
+                                          </HBox>
+                                       </children>
+                                    </VBox>
+                                    <HBox fx:id="daysHBox">
+                                       <children>
+                                          <ToggleButton minWidth="30.0" mnemonicParsing="false" text="M" />
+                                          <ToggleButton layoutX="10.0" layoutY="10.0" minWidth="30.0" mnemonicParsing="false" text="T" />
+                                          <ToggleButton layoutX="37.0" layoutY="10.0" minWidth="30.0" mnemonicParsing="false" text="W" />
+                                          <ToggleButton layoutX="64.0" layoutY="10.0" minWidth="30.0" mnemonicParsing="false" text="H" />
+                                          <ToggleButton layoutX="91.0" layoutY="10.0" minWidth="30.0" mnemonicParsing="false" text="F" />
+                                          <ToggleButton layoutX="118.0" layoutY="10.0" minWidth="30.0" mnemonicParsing="false" text="S" />
+                                          <ToggleButton layoutX="145.0" layoutY="10.0" minWidth="30.0" mnemonicParsing="false" text="S" />
                                        </children>
                                     </HBox>
-                                    <HBox layoutX="204.0" layoutY="10.0" HBox.hgrow="SOMETIMES">
-                                       <children>
-                                          <TextField fx:id="wednesdayTextField" promptText="Wednesday" HBox.hgrow="SOMETIMES" />
-                                          <ColorPicker fx:id="wednesdayColorPicker" maxHeight="25.0" maxWidth="30.0" minHeight="25.0" minWidth="30.0" prefHeight="25.0" prefWidth="30.0" HBox.hgrow="NEVER" />
-                                       </children>
-                                    </HBox>
-                                    <HBox layoutX="388.0" layoutY="10.0" HBox.hgrow="SOMETIMES">
-                                       <children>
-                                          <TextField fx:id="thursdayTextField" promptText="Thursday" HBox.hgrow="SOMETIMES" />
-                                          <ColorPicker fx:id="thursdayColorPicker" maxHeight="25.0" maxWidth="30.0" minHeight="25.0" minWidth="30.0" prefHeight="25.0" prefWidth="30.0" HBox.hgrow="NEVER" />
-                                       </children>
-                                    </HBox>
-                                    <HBox layoutX="20.0" layoutY="10.0" HBox.hgrow="SOMETIMES">
-                                       <children>
-                                          <TextField fx:id="fridayTextField" promptText="Friday" HBox.hgrow="SOMETIMES" />
-                                          <ColorPicker fx:id="fridayColorPicker" maxHeight="25.0" maxWidth="30.0" minHeight="25.0" minWidth="30.0" prefHeight="25.0" prefWidth="30.0" HBox.hgrow="NEVER" />
-                                       </children>
-                                    </HBox>
-                                    <HBox layoutX="204.0" layoutY="10.0" HBox.hgrow="SOMETIMES">
-                                       <children>
-                                          <TextField fx:id="saturdayTextField" promptText="Saturday" HBox.hgrow="SOMETIMES" />
-                                          <ColorPicker fx:id="saturdayColorPicker" maxHeight="25.0" maxWidth="30.0" minHeight="25.0" minWidth="30.0" prefHeight="25.0" prefWidth="30.0" HBox.hgrow="NEVER" />
-                                       </children>
-                                    </HBox>
-                                    <HBox layoutX="388.0" layoutY="10.0" HBox.hgrow="SOMETIMES">
-                                       <children>
-                                          <TextField fx:id="sundayTextField" promptText="Sunday" HBox.hgrow="SOMETIMES" />
-                                          <ColorPicker fx:id="sundayColorPicker" maxHeight="25.0" maxWidth="30.0" minHeight="25.0" minWidth="30.0" prefHeight="25.0" prefWidth="30.0" HBox.hgrow="NEVER" />
-                                       </children>
-                                    </HBox>
-                                    <Button fx:id="updateRoutineButton" minWidth="75.0" mnemonicParsing="false" onAction="#updateRoutine" text="Add" />
+                                    <SplitMenuButton fx:id="addDeleteButton" alignment="CENTER" minWidth="100.0" mnemonicParsing="false" onAction="#updateRoutineTasks" text="Add">
+                                      <items>
+                                          <RadioMenuItem fx:id="addMenuItem" mnemonicParsing="false" onAction="#switchToAdd" selected="true" text="Add">
+                                             <toggleGroup>
+                                                <ToggleGroup fx:id="addDelete" />
+                                             </toggleGroup>
+                                          </RadioMenuItem>
+                                          <RadioMenuItem fx:id="deleteMenuItem" mnemonicParsing="false" onAction="#switchToDelete" text="Delete" toggleGroup="$addDelete" />
+                                      </items>
+                                    </SplitMenuButton>
                                  </children>
                                  <padding>
-                                    <Insets right="10.0" />
+                                    <Insets left="10.0" top="5.0" />
                                  </padding>
                               </HBox>
+                              <TextField fx:id="titleTextField" layoutX="7.0" layoutY="61.0" minWidth="179.0" onKeyTyped="#setTitle" prefHeight="25.0" prefWidth="394.0" promptText="Title" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" />
                            </children>
                         </AnchorPane>
                      </bottom>
@@ -324,19 +322,6 @@
                     </children>
                 </AnchorPane>
             </center>
-         <left>
-            <AnchorPane id="loaderAnchorPane" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-               <children>
-                  <VBox prefHeight="200.0" prefWidth="100.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                     <children>
-                        <TextField fx:id="titleTextField" onKeyTyped="#setTitle" promptText="Title" />
-                     </children>
-                     <padding>
-                        <Insets left="10.0" right="10.0" top="10.0" />
-                     </padding>
-                  </VBox>
-               </children></AnchorPane>
-         </left>
         </BorderPane>
     </children>
 </AnchorPane>

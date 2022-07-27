@@ -9,16 +9,16 @@ import com.example.routinebean.utils.AppUtils;
 import com.example.routinebean.utils.ColorUtils;
 import com.example.routinebean.utils.UpdateManager;
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
@@ -27,29 +27,22 @@ import javafx.stage.WindowEvent;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class RoutineController implements Initializable {
 
-    private static final ButtonType exitWithSaving = new ButtonType("Save");
-    private static final ButtonType exitWithoutSaving = new ButtonType("Don't Save");
-    private static final ButtonType cancel = new ButtonType("Cancel");
+    private static final ButtonType EXIT_WITH_SAVING = new ButtonType("Save");
+    private static final ButtonType EXIT_WITHOUT_SAVING = new ButtonType("Don't Save");
+    private static final ButtonType CANCEL = new ButtonType("Cancel");
 
-    private RoutineLoader loader;
-    public void setLoader(RoutineLoader loader) {
-        this.loader = loader;
-    }
+    private final TextField[][] routineTextFields = new TextField[24][7];
+    private final String[][] routineBackgroundColors = new String[24][7];
 
-    private Stage stage;
-    public void setStage(Stage stage) {
-        this.stage = stage;
-    }
-
-    private RoutineProperties properties;
-    public void setProperties(RoutineProperties properties) {
-        this.properties = properties;
-    }
+    private final String[] stringsHours = new String[24];
+    private final ToggleButton[] dayToggleButtons = new ToggleButton[7];
 
     private final Originator originator = new Originator();
     private final Caretaker caretaker = new Caretaker();
@@ -57,8 +50,9 @@ public class RoutineController implements Initializable {
     private int savedRoutinesIndex = 0;
     private int currentRoutineIndex = 0;
 
-    private final TextField[][] routineTextFields = new TextField[24][7];
-    private final String[][] routineBackgroundColors = new String[24][7];
+    private RoutineLoader loader;
+    private Stage stage;
+    private RoutineProperties properties;
 
     @FXML
     private Label title;
@@ -79,59 +73,31 @@ public class RoutineController implements Initializable {
     private TextField titleTextField;
 
     @FXML
+    private TextField taskTextField;
+
+    @FXML
+    private ColorPicker taskColorPicker;
+
+    @FXML
+    private ChoiceBox<String> firstHour;
+
+    @FXML
+    private ChoiceBox<String> secondHour;
+
+    @FXML
+    private SplitMenuButton addDeleteButton;
+
+    @FXML
+    private RadioMenuItem addMenuItem;
+
+    @FXML
+    private RadioMenuItem deleteMenuItem;
+
+    @FXML
+    private HBox daysHBox;
+
+    @FXML
     private GridPane routineGrid;
-
-    private final TextField[] taskTextFields = new TextField[7];
-
-    private final ColorPicker[] taskColorPickers = new ColorPicker[7];
-
-    @FXML
-    private Spinner<String> timeSpinner;
-
-    @FXML
-    private TextField mondayTextField;
-
-    @FXML
-    private ColorPicker mondayColorPicker;
-
-    @FXML
-    private TextField tuesdayTextField;
-
-    @FXML
-    private ColorPicker tuesdayColorPicker;
-
-    @FXML
-    private TextField wednesdayTextField;
-
-    @FXML
-    private ColorPicker wednesdayColorPicker;
-
-    @FXML
-    private TextField thursdayTextField;
-
-    @FXML
-    private ColorPicker thursdayColorPicker;
-
-    @FXML
-    private TextField fridayTextField;
-
-    @FXML
-    private ColorPicker fridayColorPicker;
-
-    @FXML
-    private TextField saturdayTextField;
-
-    @FXML
-    private ColorPicker saturdayColorPicker;
-
-    @FXML
-    private TextField sundayTextField;
-
-    @FXML
-    private ColorPicker sundayColorPicker;
-
-    @FXML
-    private Button updateRoutineButton;
 
     @FXML
     private void saveRoutine(ActionEvent event) throws IOException, ClassNotFoundException {
@@ -150,10 +116,10 @@ public class RoutineController implements Initializable {
         String[][] tasks = new String[24][7];
         String[][] backgroundColors = new String[24][7];
 
-        for (int i = 0; i < 7; i++) {
-            for (int j = 0; j < 24; j++) {
-                tasks[j][i] = routineTextFields[j][i].getText();
-                backgroundColors[j][i] = routineBackgroundColors[j][i];
+        for (int i = 0; i < 24; i++) {
+            for (int j = 0; j < 7; j++) {
+                tasks[i][j] = routineTextFields[i][j].getText();
+                backgroundColors[i][j] = routineBackgroundColors[i][j];
             }
         }
 
@@ -169,11 +135,11 @@ public class RoutineController implements Initializable {
             Optional<ButtonType> result = showUnsavedChangesAlert(title.getText());
 
             if (result.isPresent()) {
-                if (result.get().equals(exitWithSaving)) {
+                if (result.get().equals(EXIT_WITH_SAVING)) {
                     exitWithSavingRoutine(currentRoutine);
                 }
 
-                if (result.get().equals(exitWithoutSaving)) {
+                if (result.get().equals(EXIT_WITHOUT_SAVING)) {
                     exitWithoutSavingRoutine();
                 }
             }
@@ -190,15 +156,15 @@ public class RoutineController implements Initializable {
             Optional<ButtonType> result = showUnsavedChangesAlert(title.getText());
 
             if (result.isPresent()) {
-                if (result.get().equals(exitWithSaving)) {
+                if (result.get().equals(EXIT_WITH_SAVING)) {
                     exitWithSavingRoutine(currentRoutine);
                 }
 
-                if (result.get().equals(exitWithoutSaving)) {
+                if (result.get().equals(EXIT_WITHOUT_SAVING)) {
                     exitWithoutSavingRoutine();
                 }
 
-                if (result.get().equals(cancel)) {
+                if (result.get().equals(CANCEL)) {
                     event.consume();
                 }
             }
@@ -216,9 +182,9 @@ public class RoutineController implements Initializable {
         alert.getDialogPane().getStylesheets().add(AppUtils.STYLESHEET);
         alert.getDialogPane().setContentText("Do you want to save changes to " + title + "?");
 
-        alert.getButtonTypes().add(exitWithSaving);
-        alert.getButtonTypes().add(exitWithoutSaving);
-        alert.getButtonTypes().add(cancel);
+        alert.getButtonTypes().add(EXIT_WITH_SAVING);
+        alert.getButtonTypes().add(EXIT_WITHOUT_SAVING);
+        alert.getButtonTypes().add(CANCEL);
 
         Window window = alert.getDialogPane().getScene().getWindow();
         window.setOnCloseRequest(event -> window.hide());
@@ -264,11 +230,11 @@ public class RoutineController implements Initializable {
         if (!savedRoutine.equals(currentRoutine)) {
             Optional<ButtonType> result = showUnsavedChangesAlert(title.getText());
             if (result.isPresent()) {
-                if (result.get().equals(exitWithSaving)) {
+                if (result.get().equals(EXIT_WITH_SAVING)) {
                     exitWithSavingApp(currentRoutine);
                 }
 
-                if (result.get().equals(exitWithoutSaving)) {
+                if (result.get().equals(EXIT_WITHOUT_SAVING)) {
                     exitWithoutSavingApp();
                 }
             }
@@ -295,16 +261,17 @@ public class RoutineController implements Initializable {
         title.setText(routine.getTitle());
         titleTextField.setText(routine.getTitle());
 
-        for (int i = 0; i < 7; i++) {
-            for (int j = 0; j < 24; j++) {
-                routineBackgroundColors[j][i] = routine.getBackgroundColors()[j][i];
-
-                routineTextFields[j][i].setStyle("-fx-background-color: " +
-                        routineBackgroundColors[j][i] + "; -fx-border-color: black;");
-
-                routineTextFields[j][i].setText(routine.getTasks()[j][i]);
+        for (int i = 0; i < 24; i++) {
+            for (int j = 0; j < 7; j++) {
+                routineBackgroundColors[i][j] = routine.getBackgroundColors()[i][j];
+                routineTextFields[i][j].setText(routine.getTasks()[i][j]);
+                setTextFieldBackgroundColor(routineTextFields[i][j], routineBackgroundColors[i][j]);
             }
         }
+    }
+
+    private void setTextFieldBackgroundColor(TextField textField, String backgroundColor) {
+        textField.setStyle("-fx-background-color: " + backgroundColor + "; -fx-border-color: black;");
     }
 
     @FXML
@@ -352,21 +319,11 @@ public class RoutineController implements Initializable {
     }
 
     @FXML
-    private void setTitle(KeyEvent event) {
-        title.setText(titleTextField.getText());
-    }
-
-    @FXML
-    private void updateRoutine(ActionEvent event) {
-
-    }
-
-    @FXML
     private void clearRoutine(ActionEvent event) {
-        for (int i = 0; i < 7; i++) {
-            for (int j = 0; j < 24; j++) {
-                routineTextFields[j][i].setText("");
-                routineBackgroundColors[j][i] = ColorUtils.colorToRGBA(Color.WHITE);
+        for (int i = 0; i < 24; i++) {
+            for (int j = 0; j < 7; j++) {
+                routineTextFields[i][j].setText("");
+                routineBackgroundColors[i][j] = ColorUtils.colorToRGBA(Color.WHITE);
             }
         }
 
@@ -394,32 +351,95 @@ public class RoutineController implements Initializable {
         currentRoutineIndex++;
     }
 
-    private void setTaskInputs(int row) {
+    @FXML
+    private void setTitle(KeyEvent event) {
+        title.setText(titleTextField.getText());
+    }
+
+    @FXML
+    public void switchToAdd(ActionEvent event) {
+        addDeleteButton.setText("Add");
+    }
+
+    @FXML
+    public void switchToDelete(ActionEvent event) {
+        addDeleteButton.setText("Delete");
+    }
+
+    @FXML
+    public void updateRoutineTasks(ActionEvent event) {
+        String task = taskTextField.getText();
+        String color = ColorUtils.colorToRGBA(taskColorPicker.getValue());
+
+        if (!addMenuItem.isSelected() && deleteMenuItem.isSelected()) {
+            task = "";
+            color = ColorUtils.colorToRGBA(Color.WHITE);
+        }
+
+        for (int i : getSelectedHours()) {
+            for (int j : getSelectedDays()) {
+                routineTextFields[i][j].setText(task);
+                routineBackgroundColors[i][j] = color;
+                setTextFieldBackgroundColor(routineTextFields[i][j], routineBackgroundColors[i][j]);
+            }
+        }
+
+        updateMemento();
+    }
+
+    private int[] getSelectedDays() {
+        ArrayList<Integer> dayIndices = new ArrayList<>();
         for (int i = 0; i < 7; i++) {
-            taskTextFields[i].setText(routineTextFields[row][i].getText());
-            taskColorPickers[i].setValue(ColorUtils.RGBAToColor(routineBackgroundColors[row][i]));
+            if (dayToggleButtons[i].isSelected()) {
+                dayIndices.add(i);
+            }
+        }
+
+        return dayIndices.stream().mapToInt(i->i).toArray();
+    }
+
+    private int[] getSelectedHours() {
+        Integer start = getHourIndex(firstHour.getValue());
+        Integer end = getHourIndex(secondHour.getValue());
+
+        ArrayList<Integer> hourIndices = new ArrayList<>();
+        if (start != null && end != null) {
+            if (start <= end) {
+                addHourRange(hourIndices, start, end);
+            }
+
+            if (start > end) {
+                addHourRange(hourIndices, 0, end);
+                addHourRange(hourIndices, start, 23);
+            }
+        }
+
+        return hourIndices.stream().mapToInt(i->i).toArray();
+    }
+
+    private Integer getHourIndex(String value) {
+        Integer index = null;
+
+        for (int i = 0; i < 24; i++) {
+            if (stringsHours[i].equals(value)) {
+                index = i;
+                break;
+            }
+        }
+
+        return index;
+    }
+
+    private void addHourRange(ArrayList<Integer> hourIndices, int start, int end) {
+        for (int i = 0; i < (end - start + 1); i++) {
+            hourIndices.add(i + start);
         }
     }
 
-    private void duplicateTask(int index, KeyEvent event) {
-        if (new KeyCodeCombination(KeyCode.D, KeyCombination.CONTROL_DOWN).match(event) && index < 6) {
-            taskTextFields[index + 1].setText(taskTextFields[index].getText());
-            taskColorPickers[index + 1].setValue(taskColorPickers[index].getValue());
-
-            Platform.runLater(taskTextFields[index + 1]::requestFocus);
-        }
-
-        if (new KeyCodeCombination(KeyCode.D, KeyCombination.CONTROL_DOWN, KeyCombination.SHIFT_DOWN).match(event) && index > 0) {
-            taskTextFields[index - 1].setText(taskTextFields[index].getText());
-            taskColorPickers[index - 1].setValue(taskColorPickers[index].getValue());
-
-            Platform.runLater(taskTextFields[index - 1]::requestFocus);
-        }
-    }
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        for (int i = 0; i < 7; i++) {
-            for (int j = 0; j < 24; j++) {
+        for (int i = 0; i < 24; i++) {
+            for (int j = 0; j < 7; j++) {
                 TextField textField = new TextField();
                 textField.setPrefSize(166, 36);
                 textField.setAlignment(Pos.CENTER);
@@ -428,39 +448,20 @@ public class RoutineController implements Initializable {
 
                 textField.setOnKeyReleased(e -> updateMemento());
 
-                routineTextFields[j][i] = textField;
-                routineGrid.add(textField,i+1,j+1);
+                routineTextFields[i][j] = textField;
+                routineGrid.add(textField,j+1,i+1);
             }
         }
 
-        taskTextFields[0] = mondayTextField;
-        taskTextFields[1] = tuesdayTextField;
-        taskTextFields[2] = wednesdayTextField;
-        taskTextFields[3] = thursdayTextField;
-        taskTextFields[4] = fridayTextField;
-        taskTextFields[5] = saturdayTextField;
-        taskTextFields[6] = sundayTextField;
-
-        taskColorPickers[0] = mondayColorPicker;
-        taskColorPickers[1] = tuesdayColorPicker;
-        taskColorPickers[2] = wednesdayColorPicker;
-        taskColorPickers[3] = thursdayColorPicker;
-        taskColorPickers[4] = fridayColorPicker;
-        taskColorPickers[5] = saturdayColorPicker;
-        taskColorPickers[6] = sundayColorPicker;
-
-        for (int i = 0; i < 7; i++) {
-            int index = i;
-
-            taskTextFields[index].setOnKeyPressed(event -> duplicateTask(index, event));
-            taskColorPickers[index].setOnKeyPressed(event -> duplicateTask(index, event));
+        for (int i = 0; i < 24; i++) {
+            stringsHours[i] = ((Label) routineGrid.getChildren().get(i + 8)).getText();
         }
 
-        for (int i = 0; i < 24; i++) {
-            int index = i;
-            routineGrid.getChildren().get(i + 8).setOnMouseClicked(event -> {
-                setTaskInputs(index);
-            });
+        firstHour.setItems(FXCollections.observableList(Arrays.asList(stringsHours)));
+        secondHour.setItems(FXCollections.observableList(Arrays.asList(stringsHours)));
+
+        for (int i = 0; i < 7; i++) {
+            dayToggleButtons[i] = (ToggleButton) daysHBox.getChildren().get(i);
         }
 
         saveButton.setAccelerator(KeyCombination.keyCombination("Ctrl+S"));
@@ -470,5 +471,17 @@ public class RoutineController implements Initializable {
 
         undoButton.setDisable(true);
         redoButton.setDisable(true);
+    }
+
+    public void setLoader(RoutineLoader loader) {
+        this.loader = loader;
+    }
+
+    public void setStage(Stage stage) {
+        this.stage = stage;
+    }
+
+    public void setProperties(RoutineProperties properties) {
+        this.properties = properties;
     }
 }
