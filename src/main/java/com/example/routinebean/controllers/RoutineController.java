@@ -324,10 +324,10 @@ public class RoutineController implements Initializable {
             for (int j = 0; j < 7; j++) {
                 routineTextFields[i][j].setText("");
                 routineBackgroundColors[i][j] = ColorUtils.colorToRGBA(Color.WHITE);
+                setTextFieldBackgroundColor(routineTextFields[i][j], routineBackgroundColors[i][j]);
             }
         }
 
-        loadRoutine(getCurrentRoutineObject());
         updateMemento();
     }
 
@@ -436,6 +436,22 @@ public class RoutineController implements Initializable {
         }
     }
 
+    private void setTaskInputs(String task, int time, int day) {
+        selectAllTaskToggleButtons(false);
+
+        taskTextField.setText(task);
+        taskColorPicker.setValue(ColorUtils.RGBAToColor(routineBackgroundColors[time][day]));
+        firstHour.getSelectionModel().select(time);
+        secondHour.getSelectionModel().select(time);
+        dayToggleButtons[day].setSelected(true);
+    }
+
+    private void selectAllTaskToggleButtons(boolean select) {
+        for (ToggleButton dayToggleButton : dayToggleButtons) {
+            dayToggleButton.setSelected(select);
+        }
+    }
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         for (int i = 0; i < 24; i++) {
@@ -446,7 +462,25 @@ public class RoutineController implements Initializable {
                 textField.setFont(new Font("Segoe UI",18));
                 textField.setStyle("-fx-border-color: black");
 
-                textField.setOnKeyReleased(e -> updateMemento());
+                ContextMenu contextMenu = new ContextMenu();
+                MenuItem delete = new MenuItem("Delete");
+
+                int time = i;
+                int day = j;
+                delete.setOnAction(event -> {
+                    routineTextFields[time][day].setText("");
+                    routineBackgroundColors[time][day] = ColorUtils.colorToRGBA(Color.WHITE);
+                    setTextFieldBackgroundColor(routineTextFields[time][day], routineBackgroundColors[time][day]);
+
+                    updateMemento();
+                });
+
+                contextMenu.getItems().setAll(delete);
+                textField.setContextMenu(contextMenu);
+
+                textField.setOnMouseClicked(event -> setTaskInputs(textField.getText(), time, day));
+                textField.setOnKeyPressed(event -> setTaskInputs(textField.getText(), time, day));
+                textField.setOnKeyReleased(event -> updateMemento());
 
                 routineTextFields[i][j] = textField;
                 routineGrid.add(textField,j+1,i+1);
