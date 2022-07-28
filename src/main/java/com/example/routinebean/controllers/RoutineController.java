@@ -21,11 +21,15 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 import javafx.stage.WindowEvent;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -42,6 +46,7 @@ public class RoutineController implements Initializable {
     private final String[][] routineBackgroundColors = new String[24][7];
 
     private final String[] stringsHours = new String[24];
+    private final String[] stringsDays = new String[7];
     private final ToggleButton[] dayToggleButtons = new ToggleButton[7];
 
     private final Originator originator = new Originator();
@@ -217,9 +222,45 @@ public class RoutineController implements Initializable {
         AppUtils.openDirectory(AppUtils.createRoutineFile(loader.getDirectory()));
     }
 
-    @FXML
-    private void exportToCSV(ActionEvent event) {
+    private String routineToStringCSV() {
+        StringBuilder sb = new StringBuilder();
 
+        sb.append(((Label) routineGrid.getChildren().get(0)).getText());
+
+        for (String stringDay : stringsDays) {
+            sb.append(",");
+            sb.append(stringDay);
+        }
+
+        sb.append("\n");
+
+        for (int i = 0; i < 24; i++) {
+            sb.append(stringsHours[i]);
+
+            for (int j = 0; j < 7; j++) {
+                sb.append(",");
+                sb.append(routineTextFields[i][j].getText());
+            }
+
+            sb.append("\n");
+        }
+
+        return sb.toString();
+    }
+
+    @FXML
+    private void exportToCSV(ActionEvent event) throws FileNotFoundException {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setInitialDirectory(AppUtils.ROUTINES_DIRECTORY);
+        fileChooser.setInitialFileName(getCurrentRoutineObject().getTitle().concat(".csv"));
+        fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("(CSV) Comma Delimited", "*.csv*"));
+        File file = fileChooser.showSaveDialog(stage);
+
+        if (file != null) {
+            try (PrintWriter printWriter = new PrintWriter(file)) {
+                printWriter.write(routineToStringCSV());
+            }
+        }
     }
 
     @FXML
@@ -495,6 +536,7 @@ public class RoutineController implements Initializable {
         secondHour.setItems(FXCollections.observableList(Arrays.asList(stringsHours)));
 
         for (int i = 0; i < 7; i++) {
+            stringsDays[i] = ((Label) routineGrid.getChildren().get(i + 1)).getText();
             dayToggleButtons[i] = (ToggleButton) daysHBox.getChildren().get(i);
         }
 
