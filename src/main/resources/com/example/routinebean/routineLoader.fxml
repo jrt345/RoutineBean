@@ -274,29 +274,33 @@
                                           <ColorPicker fx:id="taskColorPicker" maxWidth="30.0" minWidth="30.0" prefWidth="30.0" />
                                        </children>
                                     </HBox>
-                                    <VBox>
+                                    <HBox>
                                        <children>
-                                          <HBox>
+                                          <ChoiceBox fx:id="firstHour" minWidth="100.0" prefWidth="100.0" />
+                                          <ChoiceBox fx:id="secondHour" minWidth="100.0" prefWidth="100.0">
+                                             <HBox.margin>
+                                                <Insets left="5.0" />
+                                             </HBox.margin>
+                                          </ChoiceBox>
+                                       </children>
+                                    </HBox>
+                                    <HBox>
+                                       <children>
+                                          <Button mnemonicParsing="false" onAction="#selectAllButtons">
+                                             <tooltip>
+                                                <Tooltip text="Select all days" />
+                                             </tooltip></Button>
+                                          <HBox fx:id="daysHBox">
                                              <children>
-                                                <ChoiceBox fx:id="firstHour" minWidth="100.0" prefWidth="100.0" />
-                                                <ChoiceBox fx:id="secondHour" minWidth="100.0" prefWidth="100.0">
-                                                   <HBox.margin>
-                                                      <Insets left="5.0" />
-                                                   </HBox.margin>
-                                                </ChoiceBox>
+                                                <ToggleButton minWidth="30.0" mnemonicParsing="false" text="M" />
+                                                <ToggleButton layoutX="10.0" layoutY="10.0" minWidth="30.0" mnemonicParsing="false" text="T" />
+                                                <ToggleButton layoutX="37.0" layoutY="10.0" minWidth="30.0" mnemonicParsing="false" text="W" />
+                                                <ToggleButton layoutX="64.0" layoutY="10.0" minWidth="30.0" mnemonicParsing="false" text="H" />
+                                                <ToggleButton layoutX="91.0" layoutY="10.0" minWidth="30.0" mnemonicParsing="false" text="F" />
+                                                <ToggleButton layoutX="118.0" layoutY="10.0" minWidth="30.0" mnemonicParsing="false" text="S" />
+                                                <ToggleButton layoutX="145.0" layoutY="10.0" minWidth="30.0" mnemonicParsing="false" text="S" />
                                              </children>
                                           </HBox>
-                                       </children>
-                                    </VBox>
-                                    <HBox fx:id="daysHBox">
-                                       <children>
-                                          <ToggleButton minWidth="30.0" mnemonicParsing="false" text="M" />
-                                          <ToggleButton layoutX="10.0" layoutY="10.0" minWidth="30.0" mnemonicParsing="false" text="T" />
-                                          <ToggleButton layoutX="37.0" layoutY="10.0" minWidth="30.0" mnemonicParsing="false" text="W" />
-                                          <ToggleButton layoutX="64.0" layoutY="10.0" minWidth="30.0" mnemonicParsing="false" text="H" />
-                                          <ToggleButton layoutX="91.0" layoutY="10.0" minWidth="30.0" mnemonicParsing="false" text="F" />
-                                          <ToggleButton layoutX="118.0" layoutY="10.0" minWidth="30.0" mnemonicParsing="false" text="S" />
-                                          <ToggleButton layoutX="145.0" layoutY="10.0" minWidth="30.0" mnemonicParsing="false" text="S" />
                                        </children>
                                     </HBox>
                                     <SplitMenuButton fx:id="addDeleteButton" alignment="CENTER" minWidth="100.0" mnemonicParsing="false" onAction="#updateRoutineTasks" text="Add">

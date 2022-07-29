@@ -398,6 +398,25 @@ public class RoutineController implements Initializable {
     }
 
     @FXML
+    private void selectAllButtons(ActionEvent event) {
+        Boolean[] buttonSelected = new Boolean[7];
+
+        for (int i = 0; i < 7; i++) {
+            buttonSelected[i] = dayToggleButtons[i].isSelected();
+        }
+
+        if (!Arrays.asList(buttonSelected).contains(true) || !Arrays.asList(buttonSelected).contains(false)) {
+            for (ToggleButton dayToggleButton : dayToggleButtons) {
+                dayToggleButton.fire();
+            }
+        } else {
+            for (ToggleButton dayToggleButton : dayToggleButtons) {
+                dayToggleButton.setSelected(true);
+            }
+        }
+    }
+
+    @FXML
     public void switchToAdd(ActionEvent event) {
         addDeleteButton.setText("Add");
     }
