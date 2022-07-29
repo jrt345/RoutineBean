@@ -398,6 +398,11 @@ public class RoutineController implements Initializable {
     }
 
     @FXML
+    private void selectSingleHour(ActionEvent event) {
+        secondHour.setValue(firstHour.getValue());
+    }
+
+    @FXML
     private void selectAllButtons(ActionEvent event) {
         Boolean[] buttonSelected = new Boolean[7];
 
@@ -552,7 +557,9 @@ public class RoutineController implements Initializable {
         }
 
         firstHour.setItems(FXCollections.observableList(Arrays.asList(stringsHours)));
+        firstHour.setValue(stringsHours[0]);
         secondHour.setItems(FXCollections.observableList(Arrays.asList(stringsHours)));
+        secondHour.setValue(stringsHours[0]);
 
         for (int i = 0; i < 7; i++) {
             stringsDays[i] = ((Label) routineGrid.getChildren().get(i + 1)).getText();

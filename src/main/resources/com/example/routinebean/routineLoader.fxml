@@ -277,6 +277,11 @@
                                     <HBox>
                                        <children>
                                           <ChoiceBox fx:id="firstHour" minWidth="100.0" prefWidth="100.0" />
+                                          <Button mnemonicParsing="false" onAction="#selectSingleHour">
+                                             <tooltip>
+                                                <Tooltip text="Select single hour" />
+                                             </tooltip>
+                                          </Button>
                                           <ChoiceBox fx:id="secondHour" minWidth="100.0" prefWidth="100.0">
                                              <HBox.margin>
                                                 <Insets left="5.0" />
