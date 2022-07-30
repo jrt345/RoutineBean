@@ -168,21 +168,49 @@ public class Controller implements Initializable {
         ContextMenu contextMenu = new ContextMenu();
 
         MenuItem open = new MenuItem("Open");
+        MenuItem rename = new MenuItem("Rename");
         MenuItem explorer = new MenuItem("Open in Explorer");
         MenuItem duplicate = new MenuItem("Duplicate");
         MenuItem delete = new MenuItem("Delete");
 
         open.setOnAction(event -> loader.getButton().fire());
+        rename.setOnAction(event -> renameRoutine(loader));
         explorer.setOnAction(event -> openRoutineInExplorer(loader));
         duplicate.setOnAction(event -> duplicateRoutine(loader));
         delete.setOnAction(event -> deleteRoutine(loader));
 
         contextMenu.getItems().add(open);
+        contextMenu.getItems().add(new SeparatorMenuItem());
+        contextMenu.getItems().add(rename);
         contextMenu.getItems().add(explorer);
         contextMenu.getItems().add(duplicate);
+        contextMenu.getItems().add(new SeparatorMenuItem());
         contextMenu.getItems().add(delete);
 
         return contextMenu;
+    }
+
+    private void renameRoutine(RoutineLoader loader) {
+        TextInputDialog textDialog = new TextInputDialog(loader.getRoutine().getTitle());
+        textDialog.setTitle("Rename Routine");
+        textDialog.setHeaderText(null);
+        textDialog.getDialogPane().setPrefWidth(300);
+        textDialog.getDialogPane().setId("alertPane");
+        textDialog.getDialogPane().getStylesheets().add(AppUtils.STYLESHEET);
+        ((Stage) textDialog.getDialogPane().getScene().getWindow()).getIcons().add(AppUtils.ICON);
+
+        Optional<String> result = textDialog.showAndWait();
+
+        result.ifPresent(string -> loader.getRoutine().setTitle(string));
+        result.ifPresent(string -> loader.getButton().setText(string));
+
+        if (result.isPresent()) {
+            try {
+                AppData.serialize(loader.getDirectory(), loader.getRoutine());
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
     }
 
     private void openRoutineInExplorer(RoutineLoader loader) {
