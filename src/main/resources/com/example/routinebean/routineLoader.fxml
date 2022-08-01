@@ -266,11 +266,11 @@
                      <bottom>
                         <AnchorPane prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                            <children>
-                              <HBox fillHeight="false" layoutX="10.0" prefWidth="200.0" spacing="10.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                              <HBox fillHeight="false" layoutX="10.0" spacing="10.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                  <children>
-                                    <HBox>
+                                    <HBox maxWidth="350.0" HBox.hgrow="SOMETIMES">
                                        <children>
-                                          <TextField fx:id="taskTextField" promptText="Task" />
+                                          <TextField fx:id="taskTextField" promptText="Task" HBox.hgrow="SOMETIMES" />
                                           <ColorPicker fx:id="taskColorPicker" maxWidth="30.0" minWidth="30.0" prefWidth="30.0" />
                                        </children>
                                     </HBox>
@@ -318,12 +318,12 @@
                                           <RadioMenuItem fx:id="deleteMenuItem" mnemonicParsing="false" onAction="#switchToDelete" text="Delete" toggleGroup="$addDelete" />
                                       </items>
                                     </SplitMenuButton>
+                                    <TextField fx:id="titleTextField" minWidth="179.0" onKeyTyped="#setTitle" prefHeight="25.0" prefWidth="394.0" promptText="Title" HBox.hgrow="SOMETIMES" />
                                  </children>
                                  <padding>
-                                    <Insets left="10.0" top="5.0" />
+                                    <Insets left="10.0" right="10.0" top="5.0" />
                                  </padding>
                               </HBox>
-                              <TextField fx:id="titleTextField" layoutX="7.0" layoutY="61.0" minWidth="179.0" onKeyTyped="#setTitle" prefHeight="25.0" prefWidth="394.0" promptText="Title" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" />
                            </children>
                         </AnchorPane>
                      </bottom>

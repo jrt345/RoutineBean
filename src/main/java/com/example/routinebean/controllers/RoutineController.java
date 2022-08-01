@@ -502,19 +502,15 @@ public class RoutineController implements Initializable {
     }
 
     private void setTaskInputs(String task, int time, int day) {
-        selectAllTaskToggleButtons(false);
+        for (ToggleButton dayToggleButton : dayToggleButtons) {
+            dayToggleButton.setSelected(false);
+        }
 
         taskTextField.setText(task);
         taskColorPicker.setValue(ColorUtils.RGBAToColor(routineBackgroundColors[time][day]));
         firstHour.getSelectionModel().select(time);
         secondHour.getSelectionModel().select(time);
         dayToggleButtons[day].setSelected(true);
-    }
-
-    private void selectAllTaskToggleButtons(boolean select) {
-        for (ToggleButton dayToggleButton : dayToggleButtons) {
-            dayToggleButton.setSelected(select);
-        }
     }
 
     @Override
