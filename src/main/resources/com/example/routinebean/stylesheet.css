@@ -44,4 +44,18 @@
 #loaderScrollPane .scroll-bar:horizontal *.increment-arrow,
 #loaderScrollPane .scroll-bar:horizontal *.decrement-arrow { -fx-background-color: #636E72; }
 
+#presetScrollPane > .corner { -fx-background-color: #DFE6E9; }
+#presetScrollPane .scroll-bar:vertical .track { -fx-background-color: #DFE6E9; }
+#presetScrollPane .scroll-bar:vertical .thumb { -fx-background-color: #636E72; }
+#presetScrollPane .scroll-bar:vertical *.increment-button,
+#presetScrollPane .scroll-bar:vertical *.decrement-button { -fx-background-color: #DFE6E9; }
+#presetScrollPane .scroll-bar:vertical *.increment-arrow,
+#presetScrollPane .scroll-bar:vertical *.decrement-arrow { -fx-background-color: #636E72; }
+#presetScrollPane .scroll-bar:horizontal .track { -fx-background-color: #DFE6E9; }
+#presetScrollPane .scroll-bar:horizontal .thumb { -fx-background-color: #636E72; }
+#presetScrollPane .scroll-bar:horizontal *.increment-button,
+#presetScrollPane .scroll-bar:horizontal *.decrement-button { -fx-background-color: #DFE6E9; }
+#presetScrollPane .scroll-bar:horizontal *.increment-arrow,
+#presetScrollPane .scroll-bar:horizontal *.decrement-arrow { -fx-background-color: #636E72; }
+
 #aboutBoxAnchorPane { -fx-background-color: #DFE6E9; }

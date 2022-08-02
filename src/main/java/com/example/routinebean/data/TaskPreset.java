@@ -1,8 +1,6 @@
 package com.example.routinebean.data;
 
-import java.io.Serializable;
-
-public class TaskPreset implements Serializable {
+public class TaskPreset {
 
     private String name;
     private String color;

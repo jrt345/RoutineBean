@@ -4,16 +4,19 @@ import com.example.routinebean.commands.Caretaker;
 import com.example.routinebean.commands.Originator;
 import com.example.routinebean.data.AppData;
 import com.example.routinebean.data.Routine;
+import com.example.routinebean.data.TaskPreset;
 import com.example.routinebean.properties.RoutineProperties;
 import com.example.routinebean.utils.AppUtils;
 import com.example.routinebean.utils.ColorUtils;
 import com.example.routinebean.utils.UpdateManager;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
@@ -100,6 +103,9 @@ public class RoutineController implements Initializable {
 
     @FXML
     private HBox daysHBox;
+
+    @FXML
+    private HBox taskPresetHBox;
 
     @FXML
     private GridPane routineGrid;
@@ -397,6 +403,44 @@ public class RoutineController implements Initializable {
         title.setText(titleTextField.getText());
     }
 
+
+    @FXML
+    private void saveTaskPreset(ActionEvent event) {
+        TaskPreset taskPreset = new TaskPreset(taskTextField.getText(), ColorUtils.colorToRGBA(taskColorPicker.getValue()));
+
+        if (isNewTaskPreset(taskPreset)) {
+            taskPresetHBox.getChildren().add(generateTaskPresetButton(taskPreset));
+        }
+    }
+
+    private boolean isNewTaskPreset(TaskPreset taskPreset) {
+        ObservableList<Node> taskPresetHBoxNodes = taskPresetHBox.getChildren();
+
+        for (Node taskPresetHBoxNode : taskPresetHBoxNodes) {
+            if (((TaskPresetButton) taskPresetHBoxNode).taskPreset.equals(taskPreset)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    private TaskPresetButton generateTaskPresetButton(TaskPreset taskPreset) {
+        TaskPresetButton taskPresetButton = new TaskPresetButton(taskPreset);
+
+        MenuItem delete = new MenuItem("Delete");
+        delete.setOnAction(event -> taskPresetHBox.getChildren().remove(taskPresetButton));
+
+        taskPresetButton.setContextMenu(new ContextMenu(delete));
+        taskPresetButton.setOnMouseClicked(e -> {
+            taskTextField.setText(taskPreset.getName());
+            taskColorPicker.setValue(ColorUtils.RGBAToColor(taskPreset.getColor()));
+        });
+
+
+        return taskPresetButton;
+    }
+
     @FXML
     private void selectSingleHour(ActionEvent event) {
         secondHour.setValue(firstHour.getValue());
@@ -581,5 +625,18 @@ public class RoutineController implements Initializable {
 
     public void setProperties(RoutineProperties properties) {
         this.properties = properties;
+    }
+
+    private static class TaskPresetButton extends Button {
+
+        private final TaskPreset taskPreset;
+
+        private TaskPresetButton(TaskPreset taskPreset) {
+            this.taskPreset = taskPreset;
+            setMinWidth(70);
+            setPrefHeight(Double.MAX_VALUE);
+            setText(taskPreset.getName());
+            setStyle("-fx-background-color: " + taskPreset.getColor() + "; -fx-background-radius: 0;");
+        }
     }
 }

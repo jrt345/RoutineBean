@@ -266,64 +266,82 @@
                      <bottom>
                         <AnchorPane prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                            <children>
-                              <HBox fillHeight="false" layoutX="10.0" spacing="10.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                              <VBox spacing="10.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                  <children>
-                                    <HBox maxWidth="350.0" HBox.hgrow="SOMETIMES">
+                                    <HBox fillHeight="false" spacing="10.0">
                                        <children>
-                                          <TextField fx:id="taskTextField" promptText="Task" HBox.hgrow="SOMETIMES" />
-                                          <ColorPicker fx:id="taskColorPicker" maxWidth="30.0" minWidth="30.0" prefWidth="30.0" />
-                                       </children>
-                                    </HBox>
-                                    <HBox>
-                                       <children>
-                                          <ChoiceBox fx:id="firstHour" minWidth="100.0" prefWidth="100.0" />
-                                          <Button mnemonicParsing="false" onAction="#selectSingleHour">
-                                             <tooltip>
-                                                <Tooltip text="Select single hour" />
-                                             </tooltip>
-                                          </Button>
-                                          <ChoiceBox fx:id="secondHour" minWidth="100.0" prefWidth="100.0">
-                                             <HBox.margin>
-                                                <Insets left="5.0" />
-                                             </HBox.margin>
-                                          </ChoiceBox>
-                                       </children>
-                                    </HBox>
-                                    <HBox>
-                                       <children>
-                                          <Button mnemonicParsing="false" onAction="#selectAllButtons">
-                                             <tooltip>
-                                                <Tooltip text="Select all days" />
-                                             </tooltip></Button>
-                                          <HBox fx:id="daysHBox">
+                                          <HBox maxWidth="350.0" HBox.hgrow="SOMETIMES">
                                              <children>
-                                                <ToggleButton minWidth="30.0" mnemonicParsing="false" text="M" />
-                                                <ToggleButton layoutX="10.0" layoutY="10.0" minWidth="30.0" mnemonicParsing="false" text="T" />
-                                                <ToggleButton layoutX="37.0" layoutY="10.0" minWidth="30.0" mnemonicParsing="false" text="W" />
-                                                <ToggleButton layoutX="64.0" layoutY="10.0" minWidth="30.0" mnemonicParsing="false" text="H" />
-                                                <ToggleButton layoutX="91.0" layoutY="10.0" minWidth="30.0" mnemonicParsing="false" text="F" />
-                                                <ToggleButton layoutX="118.0" layoutY="10.0" minWidth="30.0" mnemonicParsing="false" text="S" />
-                                                <ToggleButton layoutX="145.0" layoutY="10.0" minWidth="30.0" mnemonicParsing="false" text="S" />
+                                                <TextField fx:id="taskTextField" promptText="Task" HBox.hgrow="SOMETIMES" />
+                                                <ColorPicker fx:id="taskColorPicker" maxWidth="30.0" minWidth="30.0" prefWidth="30.0" />
+                                                <Button mnemonicParsing="false" onAction="#saveTaskPreset">
+                                                   <tooltip>
+                                                      <Tooltip text="Save task preset" />
+                                                   </tooltip>
+                                                </Button>
                                              </children>
                                           </HBox>
+                                          <HBox>
+                                             <children>
+                                                <ChoiceBox fx:id="firstHour" minWidth="100.0" prefWidth="100.0" />
+                                                <Button mnemonicParsing="false" onAction="#selectSingleHour">
+                                                   <tooltip>
+                                                      <Tooltip text="Select single hour" />
+                                                   </tooltip>
+                                                </Button>
+                                                <ChoiceBox fx:id="secondHour" minWidth="100.0" prefWidth="100.0">
+                                                   <HBox.margin>
+                                                      <Insets left="5.0" />
+                                                   </HBox.margin>
+                                                </ChoiceBox>
+                                             </children>
+                                          </HBox>
+                                          <HBox>
+                                             <children>
+                                                <Button mnemonicParsing="false" onAction="#selectAllButtons">
+                                                   <tooltip>
+                                                      <Tooltip text="Select all days" />
+                                                   </tooltip>
+                                                </Button>
+                                                <HBox fx:id="daysHBox">
+                                                   <children>
+                                                      <ToggleButton minWidth="30.0" mnemonicParsing="false" text="M" />
+                                                      <ToggleButton layoutX="10.0" layoutY="10.0" minWidth="30.0" mnemonicParsing="false" text="T" />
+                                                      <ToggleButton layoutX="37.0" layoutY="10.0" minWidth="30.0" mnemonicParsing="false" text="W" />
+                                                      <ToggleButton layoutX="64.0" layoutY="10.0" minWidth="30.0" mnemonicParsing="false" text="H" />
+                                                      <ToggleButton layoutX="91.0" layoutY="10.0" minWidth="30.0" mnemonicParsing="false" text="F" />
+                                                      <ToggleButton layoutX="118.0" layoutY="10.0" minWidth="30.0" mnemonicParsing="false" text="S" />
+                                                      <ToggleButton layoutX="145.0" layoutY="10.0" minWidth="30.0" mnemonicParsing="false" text="S" />
+                                                   </children>
+                                                </HBox>
+                                             </children>
+                                          </HBox>
+                                          <SplitMenuButton fx:id="addDeleteButton" alignment="CENTER" minWidth="100.0" mnemonicParsing="false" onAction="#updateRoutineTasks" text="Add">
+                                            <items>
+                                                <RadioMenuItem fx:id="addMenuItem" mnemonicParsing="false" onAction="#switchToAdd" selected="true" text="Add">
+                                                   <toggleGroup>
+                                                      <ToggleGroup fx:id="addDelete" />
+                                                   </toggleGroup>
+                                                </RadioMenuItem>
+                                                <RadioMenuItem fx:id="deleteMenuItem" mnemonicParsing="false" onAction="#switchToDelete" text="Delete" toggleGroup="$addDelete" />
+                                            </items>
+                                          </SplitMenuButton>
+                                          <TextField fx:id="titleTextField" minWidth="179.0" onKeyTyped="#setTitle" prefHeight="25.0" prefWidth="394.0" promptText="Title" HBox.hgrow="SOMETIMES" />
                                        </children>
+                                       <padding>
+                                          <Insets left="10.0" right="10.0" top="5.0" />
+                                       </padding>
                                     </HBox>
-                                    <SplitMenuButton fx:id="addDeleteButton" alignment="CENTER" minWidth="100.0" mnemonicParsing="false" onAction="#updateRoutineTasks" text="Add">
-                                      <items>
-                                          <RadioMenuItem fx:id="addMenuItem" mnemonicParsing="false" onAction="#switchToAdd" selected="true" text="Add">
-                                             <toggleGroup>
-                                                <ToggleGroup fx:id="addDelete" />
-                                             </toggleGroup>
-                                          </RadioMenuItem>
-                                          <RadioMenuItem fx:id="deleteMenuItem" mnemonicParsing="false" onAction="#switchToDelete" text="Delete" toggleGroup="$addDelete" />
-                                      </items>
-                                    </SplitMenuButton>
-                                    <TextField fx:id="titleTextField" minWidth="179.0" onKeyTyped="#setTitle" prefHeight="25.0" prefWidth="394.0" promptText="Title" HBox.hgrow="SOMETIMES" />
+                                    <ScrollPane id="presetScrollPane" fitToHeight="true" prefHeight="40.0" prefWidth="1200.0" VBox.vgrow="SOMETIMES">
+                                       <VBox.margin>
+                                          <Insets left="10.0" right="10.0" />
+                                       </VBox.margin>
+                                       <content>
+                                          <HBox fx:id="taskPresetHBox" />
+                                       </content>
+                                    </ScrollPane>
                                  </children>
-                                 <padding>
-                                    <Insets left="10.0" right="10.0" top="5.0" />
-                                 </padding>
-                              </HBox>
+                              </VBox>
                            </children>
                         </AnchorPane>
                      </bottom>
