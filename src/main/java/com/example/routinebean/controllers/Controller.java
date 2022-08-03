@@ -108,6 +108,7 @@ public class Controller implements Initializable {
         RoutineController controller = fxmlLoader.getController();
         controller.setLoader(loader);
         controller.loadRoutine(loader.getRoutine());
+        controller.loadTaskPresetData();
 
         Scene scene = new Scene(root, 1220, 820);
         Stage stage = new Stage();

@@ -52,6 +52,8 @@ public class RoutineController implements Initializable {
     private final String[] stringsDays = new String[7];
     private final ToggleButton[] dayToggleButtons = new ToggleButton[7];
 
+    private final ArrayList<TaskPreset> taskPresetArrayList = new ArrayList<>();
+
     private final Originator originator = new Originator();
     private final Caretaker caretaker = new Caretaker();
 
@@ -115,7 +117,7 @@ public class RoutineController implements Initializable {
         Routine currentRoutine = getCurrentRoutineObject();
         Routine savedRoutine = AppData.deserialize(loader.getDirectory());
 
-        if (!savedRoutine.equals(currentRoutine)){
+        if (!savedRoutine.equals(currentRoutine)) {
             loader.setRoutine(currentRoutine);
             loader.getButton().setText(currentRoutine.getTitle());
             AppData.serialize(loader.getDirectory(), currentRoutine);
@@ -228,6 +230,21 @@ public class RoutineController implements Initializable {
         AppUtils.openDirectory(AppUtils.createRoutineFile(loader.getDirectory()));
     }
 
+    @FXML
+    private void exportToCSV(ActionEvent event) throws FileNotFoundException {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setInitialDirectory(AppUtils.ROUTINES_DIRECTORY);
+        fileChooser.setInitialFileName(getCurrentRoutineObject().getTitle().concat(".csv"));
+        fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("(CSV) Comma Delimited", "*.csv*"));
+        File file = fileChooser.showSaveDialog(stage);
+
+        if (file != null) {
+            try (PrintWriter printWriter = new PrintWriter(file)) {
+                printWriter.write(routineToStringCSV());
+            }
+        }
+    }
+
     private String routineToStringCSV() {
         StringBuilder sb = new StringBuilder();
 
@@ -252,21 +269,6 @@ public class RoutineController implements Initializable {
         }
 
         return sb.toString();
-    }
-
-    @FXML
-    private void exportToCSV(ActionEvent event) throws FileNotFoundException {
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setInitialDirectory(AppUtils.ROUTINES_DIRECTORY);
-        fileChooser.setInitialFileName(getCurrentRoutineObject().getTitle().concat(".csv"));
-        fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("(CSV) Comma Delimited", "*.csv*"));
-        File file = fileChooser.showSaveDialog(stage);
-
-        if (file != null) {
-            try (PrintWriter printWriter = new PrintWriter(file)) {
-                printWriter.write(routineToStringCSV());
-            }
-        }
     }
 
     @FXML
@@ -304,18 +306,7 @@ public class RoutineController implements Initializable {
         Platform.exit();
     }
 
-    public void loadRoutine(Routine routine) {
-        title.setText(routine.getTitle());
-        titleTextField.setText(routine.getTitle());
 
-        for (int i = 0; i < 24; i++) {
-            for (int j = 0; j < 7; j++) {
-                routineBackgroundColors[i][j] = routine.getBackgroundColors()[i][j];
-                routineTextFields[i][j].setText(routine.getTasks()[i][j]);
-                setTextFieldBackgroundColor(routineTextFields[i][j], routineBackgroundColors[i][j]);
-            }
-        }
-    }
 
     private void setTextFieldBackgroundColor(TextField textField, String backgroundColor) {
         textField.setStyle("-fx-background-color: " + backgroundColor + "; -fx-border-color: black;");
@@ -346,6 +337,19 @@ public class RoutineController implements Initializable {
         }
     }
 
+    public void loadRoutine(Routine routine) {
+        title.setText(routine.getTitle());
+        titleTextField.setText(routine.getTitle());
+
+        for (int i = 0; i < 24; i++) {
+            for (int j = 0; j < 7; j++) {
+                routineBackgroundColors[i][j] = routine.getBackgroundColors()[i][j];
+                routineTextFields[i][j].setText(routine.getTasks()[i][j]);
+                setTextFieldBackgroundColor(routineTextFields[i][j], routineBackgroundColors[i][j]);
+            }
+        }
+    }
+
     private void updateMemento() {
         if (!(caretaker.getMemento(currentRoutineIndex - 1).getSavedRoutine().equals(getCurrentRoutineObject()))) {
 
@@ -363,6 +367,14 @@ public class RoutineController implements Initializable {
             currentRoutineIndex++;
             undoButton.setDisable(false);
         }
+    }
+
+    public void initializeMemento() {
+        Routine routine = getCurrentRoutineObject();
+        originator.set(routine);
+        caretaker.addMemento(originator.storeInMemento());
+        savedRoutinesIndex++;
+        currentRoutineIndex++;
     }
 
     @FXML
@@ -390,26 +402,19 @@ public class RoutineController implements Initializable {
         }
     }
 
-    public void initializeMemento() {
-        Routine routine = getCurrentRoutineObject();
-        originator.set(routine);
-        caretaker.addMemento(originator.storeInMemento());
-        savedRoutinesIndex++;
-        currentRoutineIndex++;
-    }
-
     @FXML
     private void setTitle(KeyEvent event) {
         title.setText(titleTextField.getText());
     }
 
-
     @FXML
-    private void saveTaskPreset(ActionEvent event) {
+    private void saveTaskPreset(ActionEvent event) throws IOException {
         TaskPreset taskPreset = new TaskPreset(taskTextField.getText(), ColorUtils.colorToRGBA(taskColorPicker.getValue()));
 
         if (isNewTaskPreset(taskPreset)) {
             taskPresetHBox.getChildren().add(generateTaskPresetButton(taskPreset));
+            taskPresetArrayList.add(taskPreset);
+            TaskPreset.toJson(loader.getDirectory(), taskPresetArrayList);
         }
     }
 
@@ -429,16 +434,29 @@ public class RoutineController implements Initializable {
         TaskPresetButton taskPresetButton = new TaskPresetButton(taskPreset);
 
         MenuItem delete = new MenuItem("Delete");
-        delete.setOnAction(event -> taskPresetHBox.getChildren().remove(taskPresetButton));
+        delete.setOnAction(event -> {
+            try {
+                deleteTaskPreset(taskPresetButton);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
 
         taskPresetButton.setContextMenu(new ContextMenu(delete));
-        taskPresetButton.setOnMouseClicked(e -> {
+        taskPresetButton.setOnMouseClicked(event -> {
             taskTextField.setText(taskPreset.getName());
             taskColorPicker.setValue(ColorUtils.RGBAToColor(taskPreset.getColor()));
         });
 
 
         return taskPresetButton;
+    }
+
+    private void deleteTaskPreset(TaskPresetButton taskPresetButton) throws IOException {
+        taskPresetHBox.getChildren().remove(taskPresetButton);
+        taskPresetArrayList.remove(taskPresetButton.taskPreset);
+
+        TaskPreset.toJson(loader.getDirectory(), taskPresetArrayList);
     }
 
     @FXML
@@ -555,6 +573,25 @@ public class RoutineController implements Initializable {
         firstHour.getSelectionModel().select(time);
         secondHour.getSelectionModel().select(time);
         dayToggleButtons[day].setSelected(true);
+    }
+
+    public void loadTaskPresetData() {
+        try {
+            ArrayList<TaskPreset> taskPresetsFromJson = TaskPreset.fromJson(loader.getDirectory());
+
+            for (TaskPreset taskPreset : taskPresetsFromJson) {
+                if (isNewTaskPreset(taskPreset)) {
+                    taskPresetHBox.getChildren().add(generateTaskPresetButton(taskPreset));
+                    taskPresetArrayList.add(taskPreset);
+                }
+            }
+        } catch (IOException e) {
+            try {
+                TaskPreset.toJson(loader.getDirectory(), taskPresetArrayList);
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+        }
     }
 
     @Override
