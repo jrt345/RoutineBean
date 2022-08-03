@@ -606,6 +606,7 @@ public class RoutineController implements Initializable {
 
                 ContextMenu contextMenu = new ContextMenu();
                 MenuItem delete = new MenuItem("Delete");
+                MenuItem saveTask = new MenuItem("Save Task");
 
                 int time = i;
                 int day = j;
@@ -616,8 +617,22 @@ public class RoutineController implements Initializable {
 
                     updateMemento();
                 });
+                saveTask.setOnAction(event -> {
+                    TaskPreset taskPreset = new TaskPreset(textField.getText(), routineBackgroundColors[time][day]);
 
-                contextMenu.getItems().setAll(delete);
+                    if (isNewTaskPreset(taskPreset)) {
+                        taskPresetHBox.getChildren().add(generateTaskPresetButton(taskPreset));
+                        taskPresetArrayList.add(taskPreset);
+                        try {
+                            TaskPreset.toJson(loader.getDirectory(), taskPresetArrayList);
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
+                });
+
+
+                contextMenu.getItems().setAll(delete, saveTask);
                 textField.setContextMenu(contextMenu);
 
                 textField.setOnMouseClicked(event -> setTaskInputs(textField.getText(), time, day));
