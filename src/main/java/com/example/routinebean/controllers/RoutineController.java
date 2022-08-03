@@ -45,8 +45,7 @@ public class RoutineController implements Initializable {
     private static final ButtonType EXIT_WITHOUT_SAVING = new ButtonType("Don't Save");
     private static final ButtonType CANCEL = new ButtonType("Cancel");
 
-    private final TextField[][] routineTextFields = new TextField[24][7];
-    private final String[][] routineBackgroundColors = new String[24][7];
+    private final RoutineTextField[][] routineTextFields = new RoutineTextField[24][7];
 
     private final String[] stringsHours = new String[24];
     private final String[] stringsDays = new String[7];
@@ -132,7 +131,7 @@ public class RoutineController implements Initializable {
         for (int i = 0; i < 24; i++) {
             for (int j = 0; j < 7; j++) {
                 tasks[i][j] = routineTextFields[i][j].getText();
-                backgroundColors[i][j] = routineBackgroundColors[i][j];
+                backgroundColors[i][j] = ColorUtils.colorToRGBA(routineTextFields[i][j].backgroundColor);
             }
         }
 
@@ -306,12 +305,6 @@ public class RoutineController implements Initializable {
         Platform.exit();
     }
 
-
-
-    private void setTextFieldBackgroundColor(TextField textField, String backgroundColor) {
-        textField.setStyle("-fx-background-color: " + backgroundColor + "; -fx-border-color: black;");
-    }
-
     @FXML
     private void undoChange(ActionEvent event) {
         if(currentRoutineIndex > 1) {
@@ -343,9 +336,8 @@ public class RoutineController implements Initializable {
 
         for (int i = 0; i < 24; i++) {
             for (int j = 0; j < 7; j++) {
-                routineBackgroundColors[i][j] = routine.getBackgroundColors()[i][j];
                 routineTextFields[i][j].setText(routine.getTasks()[i][j]);
-                setTextFieldBackgroundColor(routineTextFields[i][j], routineBackgroundColors[i][j]);
+                routineTextFields[i][j].setBackgroundColor(ColorUtils.RGBAToColor(routine.getBackgroundColors()[i][j]));
             }
         }
     }
@@ -382,8 +374,7 @@ public class RoutineController implements Initializable {
         for (int i = 0; i < 24; i++) {
             for (int j = 0; j < 7; j++) {
                 routineTextFields[i][j].setText("");
-                routineBackgroundColors[i][j] = ColorUtils.colorToRGBA(Color.WHITE);
-                setTextFieldBackgroundColor(routineTextFields[i][j], routineBackgroundColors[i][j]);
+                routineTextFields[i][j].setBackgroundColor(Color.WHITE);
             }
         }
 
@@ -496,18 +487,17 @@ public class RoutineController implements Initializable {
     @FXML
     public void updateRoutineTasks(ActionEvent event) {
         String task = taskTextField.getText();
-        String color = ColorUtils.colorToRGBA(taskColorPicker.getValue());
+        Color color = taskColorPicker.getValue();
 
         if (!addMenuItem.isSelected() && deleteMenuItem.isSelected()) {
             task = "";
-            color = ColorUtils.colorToRGBA(Color.WHITE);
+            color = Color.WHITE;
         }
 
         for (int i : getSelectedHours()) {
             for (int j : getSelectedDays()) {
                 routineTextFields[i][j].setText(task);
-                routineBackgroundColors[i][j] = color;
-                setTextFieldBackgroundColor(routineTextFields[i][j], routineBackgroundColors[i][j]);
+                routineTextFields[i][j].setBackgroundColor(color);
             }
         }
 
@@ -569,7 +559,7 @@ public class RoutineController implements Initializable {
         }
 
         taskTextField.setText(task);
-        taskColorPicker.setValue(ColorUtils.RGBAToColor(routineBackgroundColors[time][day]));
+        taskColorPicker.setValue(routineTextFields[time][day].backgroundColor);
         firstHour.getSelectionModel().select(time);
         secondHour.getSelectionModel().select(time);
         dayToggleButtons[day].setSelected(true);
@@ -598,11 +588,7 @@ public class RoutineController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         for (int i = 0; i < 24; i++) {
             for (int j = 0; j < 7; j++) {
-                TextField textField = new TextField();
-                textField.setPrefSize(166, 36);
-                textField.setAlignment(Pos.CENTER);
-                textField.setFont(new Font("Segoe UI",18));
-                textField.setStyle("-fx-border-color: black");
+                RoutineTextField textField = new RoutineTextField();
 
                 ContextMenu contextMenu = new ContextMenu();
                 MenuItem delete = new MenuItem("Delete");
@@ -611,14 +597,14 @@ public class RoutineController implements Initializable {
                 int time = i;
                 int day = j;
                 delete.setOnAction(event -> {
-                    routineTextFields[time][day].setText("");
-                    routineBackgroundColors[time][day] = ColorUtils.colorToRGBA(Color.WHITE);
-                    setTextFieldBackgroundColor(routineTextFields[time][day], routineBackgroundColors[time][day]);
+                    textField.setText("");
+                    textField.setBackgroundColor(Color.WHITE);
 
                     updateMemento();
                 });
+
                 saveTask.setOnAction(event -> {
-                    TaskPreset taskPreset = new TaskPreset(textField.getText(), routineBackgroundColors[time][day]);
+                    TaskPreset taskPreset = new TaskPreset(textField.getText(), ColorUtils.colorToRGBA(textField.backgroundColor));
 
                     if (isNewTaskPreset(taskPreset)) {
                         taskPresetHBox.getChildren().add(generateTaskPresetButton(taskPreset));
@@ -678,6 +664,26 @@ public class RoutineController implements Initializable {
     public void setProperties(RoutineProperties properties) {
         this.properties = properties;
     }
+
+
+    private static class RoutineTextField extends TextField {
+
+        private Color backgroundColor = Color.WHITE;
+
+        private RoutineTextField() {
+            setPrefSize(166, 36);
+            setAlignment(Pos.CENTER);
+            setFont(new Font("Segoe UI",18));
+            setStyle("-fx-border-color: black");
+            setBackgroundColor(Color.WHITE);
+        }
+
+        private void setBackgroundColor(Color backgroundColor) {
+            this.backgroundColor = backgroundColor;
+            setStyle("-fx-background-color: " + ColorUtils.colorToRGBA(backgroundColor) + "; -fx-border-color: black;");
+        }
+    }
+
 
     private static class TaskPresetButton extends Button {
 
