@@ -2,7 +2,6 @@ package com.example.routinebean.controllers;
 
 import com.example.routinebean.commands.Caretaker;
 import com.example.routinebean.commands.Originator;
-import com.example.routinebean.data.AppData;
 import com.example.routinebean.data.Routine;
 import com.example.routinebean.data.TaskPreset;
 import com.example.routinebean.properties.RoutineProperties;
@@ -115,12 +114,12 @@ public class RoutineController implements Initializable {
     @FXML
     private void saveRoutine(ActionEvent event) throws IOException, ClassNotFoundException {
         Routine currentRoutine = getCurrentRoutineObject();
-        Routine savedRoutine = AppData.deserialize(loader.getDirectory());
+        Routine savedRoutine = Routine.deserialize(loader.getDirectory());
 
         if (!savedRoutine.equals(currentRoutine)) {
             loader.setRoutine(currentRoutine);
             loader.getButton().setText(currentRoutine.getTitle());
-            AppData.serialize(loader.getDirectory(), currentRoutine);
+            Routine.serialize(loader.getDirectory(), currentRoutine);
         }
     }
 
@@ -142,7 +141,7 @@ public class RoutineController implements Initializable {
     @FXML
     private void closeRoutine(ActionEvent event) throws IOException, ClassNotFoundException {
         Routine currentRoutine = getCurrentRoutineObject();
-        Routine savedRoutine = AppData.deserialize(loader.getDirectory());
+        Routine savedRoutine = Routine.deserialize(loader.getDirectory());
 
         if (!savedRoutine.equals(currentRoutine)) {
             Optional<ButtonType> result = showUnsavedChangesAlert(title.getText());
@@ -163,7 +162,7 @@ public class RoutineController implements Initializable {
 
     public void closeRoutineOnCloseRequest(WindowEvent event) throws IOException, ClassNotFoundException {
         Routine currentRoutine = getCurrentRoutineObject();
-        Routine savedRoutine = AppData.deserialize(loader.getDirectory());
+        Routine savedRoutine = Routine.deserialize(loader.getDirectory());
 
         if (!savedRoutine.equals(currentRoutine)) {
             Optional<ButtonType> result = showUnsavedChangesAlert(title.getText());
@@ -211,7 +210,7 @@ public class RoutineController implements Initializable {
         loader.setRoutine(routine);
         loader.getButton().setText(routine.getTitle());
 
-        AppData.serialize(loader.getDirectory(), routine);
+        Routine.serialize(loader.getDirectory(), routine);
         AppUtils.writeRoutineProperties(properties, stage);
 
         stage.close();
@@ -274,7 +273,7 @@ public class RoutineController implements Initializable {
     @FXML
     private void quitProgram(ActionEvent event) throws IOException, ClassNotFoundException {
         Routine currentRoutine = getCurrentRoutineObject();
-        Routine savedRoutine = AppData.deserialize(loader.getDirectory());
+        Routine savedRoutine = Routine.deserialize(loader.getDirectory());
 
         if (!savedRoutine.equals(currentRoutine)) {
             Optional<ButtonType> result = showUnsavedChangesAlert(title.getText());
@@ -296,7 +295,7 @@ public class RoutineController implements Initializable {
         loader.setRoutine(routine);
         loader.getButton().setText(routine.getTitle());
 
-        AppData.serialize(loader.getDirectory(), routine);
+        Routine.serialize(loader.getDirectory(), routine);
         AppUtils.writeRoutineProperties(properties, stage);
         Platform.exit();
     }

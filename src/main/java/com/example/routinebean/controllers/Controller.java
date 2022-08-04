@@ -1,7 +1,6 @@
 package com.example.routinebean.controllers;
 
 import com.example.routinebean.App;
-import com.example.routinebean.data.AppData;
 import com.example.routinebean.data.Routine;
 import com.example.routinebean.properties.RoutineProperties;
 import com.example.routinebean.utils.AppUtils;
@@ -156,7 +155,7 @@ public class Controller implements Initializable {
 
         for (File file : files) {
             try {
-                routines.add(AppData.deserialize(file.getName()));
+                routines.add(Routine.deserialize(file.getName()));
             } catch (IOException | ClassNotFoundException e) {
                 routines.add(null);
             }
@@ -207,7 +206,7 @@ public class Controller implements Initializable {
 
         if (result.isPresent()) {
             try {
-                AppData.serialize(loader.getDirectory(), loader.getRoutine());
+                Routine.serialize(loader.getDirectory(), loader.getRoutine());
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }

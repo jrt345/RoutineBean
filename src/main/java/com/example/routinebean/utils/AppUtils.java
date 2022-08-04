@@ -1,7 +1,6 @@
 package com.example.routinebean.utils;
 
 import com.example.routinebean.App;
-import com.example.routinebean.data.AppData;
 import com.example.routinebean.data.Routine;
 import com.example.routinebean.properties.RoutineProperties;
 import javafx.application.HostServices;
@@ -81,7 +80,7 @@ public class AppUtils {
 
         if (isRoutineCreated) {
             try {
-                AppData.serialize(filteredFolderName, routine);
+                Routine.serialize(filteredFolderName, routine);
             } catch (IOException e) {
                 isRoutineCreated = false;
             }
