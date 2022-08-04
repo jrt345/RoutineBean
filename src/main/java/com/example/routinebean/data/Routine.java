@@ -7,6 +7,7 @@ import javafx.scene.paint.Color;
 import java.io.*;
 import java.util.Arrays;
 import java.util.Objects;
+import java.util.Optional;
 
 public class Routine implements Serializable {
 
@@ -51,9 +52,11 @@ public class Routine implements Serializable {
         }
     }
 
-    public static Routine deserialize(String directory) throws IOException, ClassNotFoundException {
+    public static Optional<Routine> deserialize(String directory) {
         try (FileInputStream fileIn = new FileInputStream(serializedRoutine(directory)); ObjectInputStream in = new ObjectInputStream(fileIn)) {
-            return (Routine) in.readObject();
+            return Optional.ofNullable((Routine) in.readObject());
+        } catch (IOException | ClassNotFoundException e) {
+            return Optional.empty();
         }
     }
 

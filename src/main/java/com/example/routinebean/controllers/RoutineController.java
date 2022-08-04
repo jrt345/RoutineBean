@@ -112,15 +112,19 @@ public class RoutineController implements Initializable {
     private GridPane routineGrid;
 
     @FXML
-    private void saveRoutine(ActionEvent event) throws IOException, ClassNotFoundException {
+    private void saveRoutine(ActionEvent event) throws IOException {
         Routine currentRoutine = getCurrentRoutineObject();
-        Routine savedRoutine = Routine.deserialize(loader.getDirectory());
+        Optional<Routine> savedRoutine = Routine.deserialize(loader.getDirectory());
 
-        if (!savedRoutine.equals(currentRoutine)) {
-            loader.setRoutine(currentRoutine);
-            loader.getButton().setText(currentRoutine.getTitle());
-            Routine.serialize(loader.getDirectory(), currentRoutine);
+        if (savedRoutine.isPresent() && !savedRoutine.get().equals(currentRoutine) || savedRoutine.isEmpty()) {
+            saveRoutine(currentRoutine);
         }
+    }
+
+    private void saveRoutine(Routine currentRoutine) throws IOException {
+        loader.setRoutine(currentRoutine);
+        loader.getButton().setText(currentRoutine.getTitle());
+        Routine.serialize(loader.getDirectory(), currentRoutine);
     }
 
     public Routine getCurrentRoutineObject() {
@@ -139,47 +143,49 @@ public class RoutineController implements Initializable {
     }
 
     @FXML
-    private void closeRoutine(ActionEvent event) throws IOException, ClassNotFoundException {
+    private void closeRoutine(ActionEvent event) throws IOException {
         Routine currentRoutine = getCurrentRoutineObject();
-        Routine savedRoutine = Routine.deserialize(loader.getDirectory());
+        Optional<Routine> savedRoutine = Routine.deserialize(loader.getDirectory());
 
-        if (!savedRoutine.equals(currentRoutine)) {
+        if (savedRoutine.isPresent() && !savedRoutine.get().equals(currentRoutine)) {
             Optional<ButtonType> result = showUnsavedChangesAlert(title.getText());
 
-            if (result.isPresent()) {
-                if (result.get().equals(EXIT_WITH_SAVING)) {
-                    exitWithSavingRoutine(currentRoutine);
-                }
-
-                if (result.get().equals(EXIT_WITHOUT_SAVING)) {
-                    exitWithoutSavingRoutine();
-                }
+            if (result.isPresent() && result.get().equals(EXIT_WITH_SAVING)) {
+                exitWithSavingRoutine(currentRoutine);
             }
+
+            if (result.isPresent() && result.get().equals(EXIT_WITHOUT_SAVING)) {
+                exitWithoutSavingRoutine();
+            }
+
+        } else if (savedRoutine.isEmpty()) {
+            exitWithSavingRoutine(currentRoutine);
         } else {
             exitWithoutSavingRoutine();
         }
     }
 
-    public void closeRoutineOnCloseRequest(WindowEvent event) throws IOException, ClassNotFoundException {
+    public void closeRoutineOnCloseRequest(WindowEvent event) throws IOException {
         Routine currentRoutine = getCurrentRoutineObject();
-        Routine savedRoutine = Routine.deserialize(loader.getDirectory());
+        Optional<Routine> savedRoutine = Routine.deserialize(loader.getDirectory());
 
-        if (!savedRoutine.equals(currentRoutine)) {
+        if (savedRoutine.isPresent() && !savedRoutine.get().equals(currentRoutine)) {
             Optional<ButtonType> result = showUnsavedChangesAlert(title.getText());
 
-            if (result.isPresent()) {
-                if (result.get().equals(EXIT_WITH_SAVING)) {
-                    exitWithSavingRoutine(currentRoutine);
-                }
-
-                if (result.get().equals(EXIT_WITHOUT_SAVING)) {
-                    exitWithoutSavingRoutine();
-                }
-
-                if (result.get().equals(CANCEL)) {
-                    event.consume();
-                }
+            if (result.isPresent() && result.get().equals(EXIT_WITH_SAVING)) {
+                exitWithSavingRoutine(currentRoutine);
             }
+
+            if (result.isPresent() && result.get().equals(EXIT_WITHOUT_SAVING)) {
+                exitWithoutSavingRoutine();
+            }
+
+            if (result.isPresent() && result.get().equals(CANCEL)) {
+                event.consume();
+            }
+
+        } else if (savedRoutine.isEmpty()) {
+            exitWithSavingRoutine(currentRoutine);
         } else {
             exitWithoutSavingRoutine();
         }
@@ -207,10 +213,7 @@ public class RoutineController implements Initializable {
     }
 
     private void exitWithSavingRoutine(Routine routine) throws IOException {
-        loader.setRoutine(routine);
-        loader.getButton().setText(routine.getTitle());
-
-        Routine.serialize(loader.getDirectory(), routine);
+        saveRoutine(routine);
         AppUtils.writeRoutineProperties(properties, stage);
 
         stage.close();
@@ -271,31 +274,30 @@ public class RoutineController implements Initializable {
     }
 
     @FXML
-    private void quitProgram(ActionEvent event) throws IOException, ClassNotFoundException {
+    private void quitProgram(ActionEvent event) throws IOException {
         Routine currentRoutine = getCurrentRoutineObject();
-        Routine savedRoutine = Routine.deserialize(loader.getDirectory());
+        Optional<Routine> savedRoutine = Routine.deserialize(loader.getDirectory());
 
-        if (!savedRoutine.equals(currentRoutine)) {
+        if (savedRoutine.isPresent() && !savedRoutine.get().equals(currentRoutine)) {
             Optional<ButtonType> result = showUnsavedChangesAlert(title.getText());
-            if (result.isPresent()) {
-                if (result.get().equals(EXIT_WITH_SAVING)) {
-                    exitWithSavingApp(currentRoutine);
-                }
 
-                if (result.get().equals(EXIT_WITHOUT_SAVING)) {
-                    exitWithoutSavingApp();
-                }
+            if (result.isPresent() && result.get().equals(EXIT_WITH_SAVING)) {
+                exitWithSavingApp(currentRoutine);
             }
+
+            if (result.isPresent() && result.get().equals(EXIT_WITHOUT_SAVING)) {
+                exitWithoutSavingApp();
+            }
+
+        } else if (savedRoutine.isEmpty()) {
+            exitWithSavingApp(currentRoutine);
         } else {
             exitWithoutSavingApp();
         }
     }
 
     private void exitWithSavingApp(Routine routine) throws IOException {
-        loader.setRoutine(routine);
-        loader.getButton().setText(routine.getTitle());
-
-        Routine.serialize(loader.getDirectory(), routine);
+        saveRoutine(routine);
         AppUtils.writeRoutineProperties(properties, stage);
         Platform.exit();
     }

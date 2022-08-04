@@ -129,8 +129,8 @@ public class Controller implements Initializable {
         stage.setOnCloseRequest(event -> {
             try {
                 controller.closeRoutineOnCloseRequest(event);
-            } catch (IOException | ClassNotFoundException ex) {
-                throw new RuntimeException(ex);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
             }
         });
     }
@@ -154,11 +154,7 @@ public class Controller implements Initializable {
         ArrayList<Routine> routines = new ArrayList<>();
 
         for (File file : files) {
-            try {
-                routines.add(Routine.deserialize(file.getName()));
-            } catch (IOException | ClassNotFoundException e) {
-                routines.add(null);
-            }
+            routines.add(Routine.deserialize(file.getName()).orElse(null));
         }
 
         return routines;
