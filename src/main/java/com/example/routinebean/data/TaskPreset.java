@@ -1,8 +1,10 @@
 package com.example.routinebean.data;
 
 import com.example.routinebean.utils.AppUtils;
+import com.example.routinebean.utils.ColorUtils;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 
 import java.io.File;
@@ -27,13 +29,21 @@ public class TaskPreset {
 
     public static void toJson(String directory, ArrayList<TaskPreset> taskPresets) throws IOException {
         try (FileWriter writer = new FileWriter(jsonDirectory(directory))) {
+            taskPresets.removeIf(taskPreset -> taskPreset.getName() == null);
+            taskPresets.removeIf(taskPreset -> ColorUtils.isRgbaNotValid(taskPreset.color));
+
             new GsonBuilder().setPrettyPrinting().create().toJson(taskPresets, writer);
         }
     }
 
-    public static ArrayList<TaskPreset> fromJson(String directory) throws IOException {
+    public static ArrayList<TaskPreset> fromJson(String directory) throws IOException, JsonSyntaxException {
         try (FileReader reader = new FileReader(jsonDirectory(directory))) {
-            return new Gson().fromJson(reader, new TypeToken<ArrayList<TaskPreset>>(){}.getType());
+            ArrayList<TaskPreset> taskPresets = new Gson().fromJson(reader, new TypeToken<ArrayList<TaskPreset>>(){}.getType());
+
+            taskPresets.removeIf(taskPreset -> taskPreset.getName() == null);
+            taskPresets.removeIf(taskPreset -> ColorUtils.isRgbaNotValid(taskPreset.color));
+
+            return taskPresets;
         }
     }
 

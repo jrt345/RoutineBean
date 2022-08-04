@@ -4,31 +4,45 @@ import javafx.scene.paint.Color;
 
 public class ColorUtils {
 
-    private static int RGBToInt(double val) {
+    private static final String rgbaRegexPattern = "^(rgba\\()" +
+            "\\b([01]?[0-9][0-9]?|2[0-4][0-9]|25[0-5])," +
+            "\\b([01]?[0-9][0-9]?|2[0-4][0-9]|25[0-5])," +
+            "\\b([01]?[0-9][0-9]?|2[0-4][0-9]|25[0-5])," +
+            "[0-1]\\.?\\d*\\)$";
+
+    public static boolean isRgbaNotValid(String rgba) {
+        if (rgba != null) {
+            return !rgba.matches(rgbaRegexPattern);
+        }
+
+        return true;
+    }
+
+    private static int rgbToInt(double val) {
         return (int) (Math.round((val)*255));
     }
 
-    public static String colorToRGBA(Color color) {
+    public static String colorToRgba(Color color) {
         double red = color.getRed();
         double green = color.getGreen();
         double blue = color.getBlue();
         double opacity = color.getOpacity();
 
-        return "rgba(" + RGBToInt(red) + ","+ RGBToInt(green) + ","+ RGBToInt(blue) + ","+ opacity + ")";
+        return "rgba(" + rgbToInt(red) + ","+ rgbToInt(green) + ","+ rgbToInt(blue) + ","+ opacity + ")";
     }
 
-    private static double intToRGB(int val) {
+    private static double intToRgb(int val) {
         return val/255.0;
     }
 
-    public static Color RGBAToColor(String RGBA) {
-        String[] stringsRGBA = RGBA.replaceAll("[a-z()]", "").split(",");
-        double[] doublesRGBA = new double[3];
+    public static Color rgbaToColor(String rgba) {
+        String[] stringsRgba = rgba.replaceAll("[a-z()]", "").split(",");
+        double[] doublesRgba = new double[3];
 
         for (int i = 0; i < 3; i++) {
-            doublesRGBA[i] = intToRGB(Integer.parseInt(stringsRGBA[i]));
+            doublesRgba[i] = intToRgb(Integer.parseInt(stringsRgba[i]));
         }
 
-        return new Color(doublesRGBA[0], doublesRGBA[1], doublesRGBA[2], Double.parseDouble(stringsRGBA[3]));
+        return new Color(doublesRgba[0], doublesRgba[1], doublesRgba[2], Double.parseDouble(stringsRgba[3]));
     }
 }

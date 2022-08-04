@@ -21,7 +21,7 @@ public class Routine implements Serializable {
         String[][] colorsArray = new String[24][7];
         for (int i = 0; i < 7; i++) {
             for (int j = 0; j < 24; j++) {
-                colorsArray[j][i] = ColorUtils.colorToRGBA(Color.WHITE);
+                colorsArray[j][i] = ColorUtils.colorToRgba(Color.WHITE);
             }
         }
         return colorsArray;

@@ -9,6 +9,7 @@ import com.example.routinebean.properties.RoutineProperties;
 import com.example.routinebean.utils.AppUtils;
 import com.example.routinebean.utils.ColorUtils;
 import com.example.routinebean.utils.UpdateManager;
+import com.google.gson.JsonSyntaxException;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -131,7 +132,7 @@ public class RoutineController implements Initializable {
         for (int i = 0; i < 24; i++) {
             for (int j = 0; j < 7; j++) {
                 tasks[i][j] = routineTextFields[i][j].getText();
-                backgroundColors[i][j] = ColorUtils.colorToRGBA(routineTextFields[i][j].backgroundColor);
+                backgroundColors[i][j] = ColorUtils.colorToRgba(routineTextFields[i][j].backgroundColor);
             }
         }
 
@@ -337,7 +338,7 @@ public class RoutineController implements Initializable {
         for (int i = 0; i < 24; i++) {
             for (int j = 0; j < 7; j++) {
                 routineTextFields[i][j].setText(routine.getTasks()[i][j]);
-                routineTextFields[i][j].setBackgroundColor(ColorUtils.RGBAToColor(routine.getBackgroundColors()[i][j]));
+                routineTextFields[i][j].setBackgroundColor(ColorUtils.rgbaToColor(routine.getBackgroundColors()[i][j]));
             }
         }
     }
@@ -400,7 +401,7 @@ public class RoutineController implements Initializable {
 
     @FXML
     private void saveTaskPreset(ActionEvent event) throws IOException {
-        TaskPreset taskPreset = new TaskPreset(taskTextField.getText(), ColorUtils.colorToRGBA(taskColorPicker.getValue()));
+        TaskPreset taskPreset = new TaskPreset(taskTextField.getText(), ColorUtils.colorToRgba(taskColorPicker.getValue()));
 
         if (isNewTaskPreset(taskPreset)) {
             taskPresetHBox.getChildren().add(generateTaskPresetButton(taskPreset));
@@ -436,7 +437,7 @@ public class RoutineController implements Initializable {
         taskPresetButton.setContextMenu(new ContextMenu(delete));
         taskPresetButton.setOnMouseClicked(event -> {
             taskTextField.setText(taskPreset.getName());
-            taskColorPicker.setValue(ColorUtils.RGBAToColor(taskPreset.getColor()));
+            taskColorPicker.setValue(ColorUtils.rgbaToColor(taskPreset.getColor()));
         });
 
 
@@ -575,7 +576,7 @@ public class RoutineController implements Initializable {
                     taskPresetArrayList.add(taskPreset);
                 }
             }
-        } catch (IOException e) {
+        } catch (IOException | JsonSyntaxException e) {
             try {
                 TaskPreset.toJson(loader.getDirectory(), taskPresetArrayList);
             } catch (IOException ex) {
@@ -604,7 +605,7 @@ public class RoutineController implements Initializable {
                 });
 
                 saveTask.setOnAction(event -> {
-                    TaskPreset taskPreset = new TaskPreset(textField.getText(), ColorUtils.colorToRGBA(textField.backgroundColor));
+                    TaskPreset taskPreset = new TaskPreset(textField.getText(), ColorUtils.colorToRgba(textField.backgroundColor));
 
                     if (isNewTaskPreset(taskPreset)) {
                         taskPresetHBox.getChildren().add(generateTaskPresetButton(taskPreset));
@@ -680,7 +681,7 @@ public class RoutineController implements Initializable {
 
         private void setBackgroundColor(Color backgroundColor) {
             this.backgroundColor = backgroundColor;
-            setStyle("-fx-background-color: " + ColorUtils.colorToRGBA(backgroundColor) + "; -fx-border-color: black;");
+            setStyle("-fx-background-color: " + ColorUtils.colorToRgba(backgroundColor) + "; -fx-border-color: black;");
         }
     }
 
