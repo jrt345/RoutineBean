@@ -28,21 +28,6 @@ public class App extends Application {
         }
     }
 
-    private static AppProperties loadProperties() {
-        try {
-            return AppProperties.load();
-        } catch (IOException | NullPointerException | NumberFormatException e) {
-            AppProperties appProperties = new AppProperties();
-
-            try {
-                AppProperties.write(appProperties);
-                return AppProperties.load();
-            } catch (IOException ex) {
-                throw new RuntimeException(ex);
-            }
-        }
-    }
-
     @Override
     public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("routineBean.fxml"));
@@ -54,7 +39,7 @@ public class App extends Application {
         stage.getIcons().add(AppUtils.ICON);
 
         AppUtils.setHostServices(getHostServices());
-        AppProperties properties = loadProperties();
+        AppProperties properties = AppProperties.load().orElse(new AppProperties());
         properties.setStageSize(stage);
 
         stage.show();

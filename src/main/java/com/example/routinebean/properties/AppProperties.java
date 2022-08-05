@@ -3,6 +3,7 @@ package com.example.routinebean.properties;
 import javafx.stage.Stage;
 
 import java.io.*;
+import java.util.Optional;
 import java.util.Properties;
 
 public class AppProperties {
@@ -25,7 +26,7 @@ public class AppProperties {
         this.checkForUpdate = checkForUpdate;
     }
 
-    public static AppProperties load() throws IOException, NullPointerException, NumberFormatException {
+    public static Optional<AppProperties> load() {
         try (InputStream inputStream = new FileInputStream(PROPERTIES)) {
             Properties properties = new Properties();
             properties.load(inputStream);
@@ -34,7 +35,9 @@ public class AppProperties {
             double height = Double.parseDouble(properties.getProperty("main-window-height"));
             boolean checkForUpdates = Boolean.parseBoolean(properties.getProperty("check-for-update"));
 
-            return new AppProperties(width, height, checkForUpdates);
+            return Optional.of(new AppProperties(width, height, checkForUpdates));
+        } catch (IOException | NullPointerException | NumberFormatException e) {
+            return Optional.empty();
         }
     }
 
