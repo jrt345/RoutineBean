@@ -117,7 +117,7 @@ public class Controller implements Initializable {
         stage.setScene(scene);
         stage.getIcons().add(AppUtils.ICON);
 
-        RoutineProperties properties = AppUtils.loadRoutineProperties(loader.getDirectory());
+        RoutineProperties properties = RoutineProperties.load(loader.getDirectory()).orElse(new RoutineProperties(loader.getDirectory()));
         controller.setProperties(properties);
         properties.setStageSize(stage);
 
