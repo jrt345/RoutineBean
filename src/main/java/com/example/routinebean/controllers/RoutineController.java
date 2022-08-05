@@ -34,10 +34,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Optional;
-import java.util.ResourceBundle;
+import java.util.*;
 
 public class RoutineController implements Initializable {
 
@@ -567,6 +564,23 @@ public class RoutineController implements Initializable {
         dayToggleButtons[day].setSelected(true);
     }
 
+    private void setWeeklyTaskInputs(int time) {
+        for (ToggleButton dayToggleButton : dayToggleButtons) {
+            dayToggleButton.setSelected(true);
+        }
+
+        if (Arrays.stream(routineTextFields[time]).allMatch(s -> s.equals(routineTextFields[time][0]))) {
+            taskTextField.setText(routineTextFields[time][0].getText());
+            taskColorPicker.setValue(routineTextFields[time][0].backgroundColor);
+        } else {
+            taskTextField.setText("");
+            taskColorPicker.setValue(Color.WHITE);
+        }
+
+        firstHour.getSelectionModel().select(time);
+        secondHour.getSelectionModel().select(time);
+    }
+
     public void loadTaskPresetData() {
         try {
             ArrayList<TaskPreset> taskPresetsFromJson = TaskPreset.fromJson(loader.getDirectory());
@@ -633,7 +647,12 @@ public class RoutineController implements Initializable {
         }
 
         for (int i = 0; i < 24; i++) {
-            stringsHours[i] = ((Label) routineGrid.getChildren().get(i + 8)).getText();
+            int index = i;
+            Label hourLabel = (Label) routineGrid.getChildren().get(i + 8);
+            hourLabel.setOnMouseClicked(event -> {
+                setWeeklyTaskInputs(index);
+            });
+            stringsHours[i] = hourLabel.getText();
         }
 
         firstHour.setItems(FXCollections.observableList(Arrays.asList(stringsHours)));
@@ -683,6 +702,17 @@ public class RoutineController implements Initializable {
         private void setBackgroundColor(Color backgroundColor) {
             this.backgroundColor = backgroundColor;
             setStyle("-fx-background-color: " + ColorUtils.colorToRgba(backgroundColor) + "; -fx-border-color: black;");
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+
+            RoutineTextField that = (RoutineTextField) o;
+
+            if (!Objects.equals(getText(), that.getText())) return false;
+            return Objects.equals(backgroundColor, that.backgroundColor);
         }
     }
 
