@@ -605,43 +605,51 @@ public class RoutineController implements Initializable {
         }
     }
 
+    private void saveTask(RoutineTextField textField) {
+        TaskPreset taskPreset = new TaskPreset(textField.getText(), ColorUtils.colorToRgba(textField.backgroundColor));
+
+        if (isNewTaskPreset(taskPreset)) {
+            taskPresetHBox.getChildren().add(generateTaskPresetButton(taskPreset));
+            taskPresetArrayList.add(taskPreset);
+
+            try {
+                TaskPreset.toJson(loader.getDirectory(), taskPresetArrayList);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
+
+    private void deleteTask(RoutineTextField textField) {
+        textField.setText("");
+        textField.setBackgroundColor(Color.WHITE);
+
+        updateMemento();
+    }
+
+    private void deleteWeeklyTasks(int time) {
+        for (RoutineTextField routineTextField : routineTextFields[time]) {
+            routineTextField.setText("");
+            routineTextField.setBackgroundColor(Color.WHITE);
+        }
+
+        updateMemento();
+    }
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         for (int i = 0; i < 24; i++) {
             for (int j = 0; j < 7; j++) {
                 RoutineTextField textField = new RoutineTextField();
 
-                ContextMenu contextMenu = new ContextMenu();
                 MenuItem delete = new MenuItem("Delete");
                 MenuItem saveTask = new MenuItem("Save Task");
+                delete.setOnAction(event -> deleteTask(textField));
+                saveTask.setOnAction(event -> saveTask(textField));
+                textField.setContextMenu(new ContextMenu(delete, saveTask));
 
                 int time = i;
                 int day = j;
-                delete.setOnAction(event -> {
-                    textField.setText("");
-                    textField.setBackgroundColor(Color.WHITE);
-
-                    updateMemento();
-                });
-
-                saveTask.setOnAction(event -> {
-                    TaskPreset taskPreset = new TaskPreset(textField.getText(), ColorUtils.colorToRgba(textField.backgroundColor));
-
-                    if (isNewTaskPreset(taskPreset)) {
-                        taskPresetHBox.getChildren().add(generateTaskPresetButton(taskPreset));
-                        taskPresetArrayList.add(taskPreset);
-                        try {
-                            TaskPreset.toJson(loader.getDirectory(), taskPresetArrayList);
-                        } catch (IOException e) {
-                            throw new RuntimeException(e);
-                        }
-                    }
-                });
-
-
-                contextMenu.getItems().setAll(delete, saveTask);
-                textField.setContextMenu(contextMenu);
-
                 textField.setOnMouseClicked(event -> setTaskInputs(textField.getText(), time, day));
                 textField.setOnKeyPressed(event -> setTaskInputs(textField.getText(), time, day));
                 textField.setOnKeyReleased(event -> updateMemento());
@@ -654,9 +662,12 @@ public class RoutineController implements Initializable {
         for (int i = 0; i < 24; i++) {
             int index = i;
             Label hourLabel = (Label) routineGrid.getChildren().get(i + 8);
-            hourLabel.setOnMouseClicked(event -> {
-                setWeeklyTaskInputs(index);
-            });
+            hourLabel.setOnMouseClicked(event -> setWeeklyTaskInputs(index));
+
+            MenuItem deleteRow = new MenuItem("Delete Row");
+            deleteRow.setOnAction(event -> deleteWeeklyTasks(index));
+            hourLabel.setContextMenu(new ContextMenu(deleteRow));
+
             stringsHours[i] = hourLabel.getText();
         }
 
