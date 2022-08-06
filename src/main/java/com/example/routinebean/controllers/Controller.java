@@ -14,6 +14,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import org.apache.commons.io.FileUtils;
 
 import java.io.File;
 import java.io.IOException;
@@ -214,15 +215,29 @@ public class Controller implements Initializable {
     }
 
     private void duplicateRoutine(RoutineLoader loader) {
-        String directory = AppUtils.filterFolderName(loader.getDirectory().concat(" - Copy"));
+        String duplicateDirectory = AppUtils.filterFolderName(loader.getDirectory().concat(" - Copy"));
 
-        Routine routine = new Routine(loader.getRoutine().getTitle().concat(" - Copy"),
-                loader.getRoutine().getTasks(), loader.getRoutine().getBackgroundColors());
+        try {
+            File original = AppUtils.createRoutineFile(loader.getDirectory());
+            File duplicate = AppUtils.createRoutineFile(duplicateDirectory);
 
-        boolean isRoutineDuplicated = AppUtils.createNewRoutine(directory, routine);
+            FileUtils.copyDirectory(original, duplicate);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
 
-        if (isRoutineDuplicated) {
-            RoutineLoader duplicatedLoader = generateRoutineLoader(directory, routine);
+        Optional<Routine> duplicateRoutine = Routine.deserialize(duplicateDirectory);
+
+        if (duplicateRoutine.isPresent()) {
+            duplicateRoutine.get().setTitle(duplicateRoutine.get().getTitle().concat(" - Copy"));
+
+            try {
+                Routine.serialize(duplicateDirectory, duplicateRoutine.get());
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+
+            RoutineLoader duplicatedLoader = generateRoutineLoader(duplicateDirectory, duplicateRoutine.get());
 
             loaders.add(0, duplicatedLoader);
             routineVBox.getChildren().add(0, duplicatedLoader.getButton());
