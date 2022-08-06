@@ -247,27 +247,13 @@ public class Controller implements Initializable {
     private void deleteRoutine(RoutineLoader loader) {
         Optional<ButtonType> result = showDeleteRoutineAlert(loader.getRoutine().getTitle());
 
-        if (result.isPresent()) {
-            if (result.get().equals(ButtonType.OK)) {
-                File file = AppUtils.createRoutineFile(loader.getDirectory());
-                File[] fileContents = file.listFiles(File::isFile);
-
-                if (fileContents != null) {
-                    Boolean[] areFileContentsDeleted = new Boolean[fileContents.length];
-
-                    for (int i = 0;i < fileContents.length;i++) {
-                        areFileContentsDeleted[i] = fileContents[i].delete();
-                    }
-
-                    if (!(Arrays.asList(areFileContentsDeleted).contains(false))){
-                        boolean isRoutineDeleted = file.delete();
-
-                        if (isRoutineDeleted) {
-                            routineVBox.getChildren().remove(loader.getButton());
-                            loaders.remove(loader);
-                        }
-                    }
-                }
+        if (result.isPresent() && result.get().equals(ButtonType.OK)) {
+            try {
+                FileUtils.deleteDirectory(AppUtils.createRoutineFile(loader.getDirectory()));
+                routineVBox.getChildren().remove(loader.getButton());
+                loaders.remove(loader);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
             }
         }
     }
