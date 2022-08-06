@@ -171,16 +171,11 @@ public class RoutineController implements Initializable {
 
             if (result.isPresent() && result.get().equals(EXIT_WITH_SAVING)) {
                 exitWithSavingRoutine(currentRoutine);
-            }
-
-            if (result.isPresent() && result.get().equals(EXIT_WITHOUT_SAVING)) {
+            } else if (result.isPresent() && result.get().equals(EXIT_WITHOUT_SAVING)) {
                 exitWithoutSavingRoutine();
-            }
-
-            if (result.isPresent() && result.get().equals(CANCEL)) {
+            } else {
                 event.consume();
             }
-
         } else if (savedRoutine.isEmpty()) {
             exitWithSavingRoutine(currentRoutine);
         } else {
