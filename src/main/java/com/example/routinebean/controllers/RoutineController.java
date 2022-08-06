@@ -9,6 +9,7 @@ import com.example.routinebean.utils.AppUtils;
 import com.example.routinebean.utils.ColorUtils;
 import com.example.routinebean.utils.UpdateManager;
 import com.google.gson.JsonSyntaxException;
+import javafx.animation.FadeTransition;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -28,6 +29,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 import javafx.stage.WindowEvent;
+import javafx.util.Duration;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -76,6 +78,9 @@ public class RoutineController implements Initializable {
     private MenuItem redoButton;
 
     @FXML
+    private Label savedLabel;
+
+    @FXML
     private TextField titleTextField;
 
     @FXML
@@ -115,6 +120,11 @@ public class RoutineController implements Initializable {
 
         if (savedRoutine.isPresent() && !savedRoutine.get().equals(currentRoutine) || savedRoutine.isEmpty()) {
             saveRoutine(currentRoutine);
+
+            savedLabel.setOpacity(1.0);
+            FadeTransition fadeTransition = new FadeTransition(Duration.seconds(2.5), savedLabel);
+            fadeTransition.setToValue(0.0);
+            fadeTransition.play();
         }
     }
 
@@ -664,6 +674,8 @@ public class RoutineController implements Initializable {
         closeButton.setAccelerator(KeyCombination.keyCombination("Ctrl+W"));
         undoButton.setAccelerator(KeyCombination.keyCombination("Ctrl+Z"));
         redoButton.setAccelerator(KeyCombination.keyCombination("Ctrl+Y"));
+
+        savedLabel.setOpacity(0.0);
 
         undoButton.setDisable(true);
         redoButton.setDisable(true);

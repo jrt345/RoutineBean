@@ -15,40 +15,45 @@
                                 <Font name="Segoe UI" size="50.0" />
                             </font>
                         </Label>
-                  <MenuBar id="loaderMenuBar" layoutX="-9.0" layoutY="2.0" AnchorPane.bottomAnchor="70.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                    <menus>
-                      <Menu mnemonicParsing="false" text="File">
-                        <items>
-                              <MenuItem fx:id="saveButton" mnemonicParsing="false" onAction="#saveRoutine" text="Save" />
-                              <MenuItem fx:id="closeButton" mnemonicParsing="false" onAction="#closeRoutine" text="Close Window" />
-                              <SeparatorMenuItem mnemonicParsing="false" />
-                              <MenuItem mnemonicParsing="false" onAction="#openExplorer" text="Open in Explorer" />
-                              <SeparatorMenuItem mnemonicParsing="false" />
-                              <Menu mnemonicParsing="false" text="Export...">
-                                <items>
-                                  <MenuItem mnemonicParsing="false" onAction="#exportToCSV" text="Export to CSV" />
-                                </items>
+                  <StackPane AnchorPane.bottomAnchor="70.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                     <children>
+                        <MenuBar id="loaderMenuBar">
+                          <menus>
+                            <Menu mnemonicParsing="false" text="File">
+                              <items>
+                                    <MenuItem fx:id="saveButton" mnemonicParsing="false" onAction="#saveRoutine" text="Save" />
+                                    <MenuItem fx:id="closeButton" mnemonicParsing="false" onAction="#closeRoutine" text="Close Window" />
+                                    <SeparatorMenuItem mnemonicParsing="false" />
+                                    <MenuItem mnemonicParsing="false" onAction="#openExplorer" text="Open in Explorer" />
+                                    <SeparatorMenuItem mnemonicParsing="false" />
+                                    <Menu mnemonicParsing="false" text="Export...">
+                                      <items>
+                                        <MenuItem mnemonicParsing="false" onAction="#exportToCSV" text="Export to CSV" />
+                                      </items>
+                                    </Menu>
+                                    <SeparatorMenuItem mnemonicParsing="false" />
+                                    <MenuItem mnemonicParsing="false" onAction="#quitProgram" text="Quit" />
+                              </items>
+                            </Menu>
+                              <Menu mnemonicParsing="false" text="Edit">
+                                 <items>
+                                    <MenuItem fx:id="undoButton" mnemonicParsing="false" onAction="#undoChange" text="Undo" />
+                                    <MenuItem fx:id="redoButton" mnemonicParsing="false" onAction="#redoChange" text="Redo" />
+                                    <SeparatorMenuItem mnemonicParsing="false" />
+                                    <MenuItem mnemonicParsing="false" onAction="#clearRoutine" text="Clear Routine" />
+                                 </items>
                               </Menu>
-                              <SeparatorMenuItem mnemonicParsing="false" />
-                              <MenuItem mnemonicParsing="false" onAction="#quitProgram" text="Quit" />
-                        </items>
-                      </Menu>
-                        <Menu mnemonicParsing="false" text="Edit">
-                           <items>
-                              <MenuItem fx:id="undoButton" mnemonicParsing="false" onAction="#undoChange" text="Undo" />
-                              <MenuItem fx:id="redoButton" mnemonicParsing="false" onAction="#redoChange" text="Redo" />
-                              <SeparatorMenuItem mnemonicParsing="false" />
-                              <MenuItem mnemonicParsing="false" onAction="#clearRoutine" text="Clear Routine" />
-                           </items>
-                        </Menu>
-                      <Menu mnemonicParsing="false" text="Help">
-                        <items>
-                          <MenuItem mnemonicParsing="false" onAction="#checkForUpdate" text="Check for Update..." />
-                              <MenuItem mnemonicParsing="false" onAction="#openAboutBox" text="About" />
-                        </items>
-                      </Menu>
-                    </menus>
-                  </MenuBar>
+                            <Menu mnemonicParsing="false" text="Help">
+                              <items>
+                                <MenuItem mnemonicParsing="false" onAction="#checkForUpdate" text="Check for Update..." />
+                                    <MenuItem mnemonicParsing="false" onAction="#openAboutBox" text="About" />
+                              </items>
+                            </Menu>
+                          </menus>
+                        </MenuBar>
+                        <Label fx:id="savedLabel" text="Changes saved" StackPane.alignment="CENTER" />
+                     </children>
+                  </StackPane>
                     </children>
                 </AnchorPane>
             </top>
