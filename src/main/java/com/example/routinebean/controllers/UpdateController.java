@@ -4,7 +4,6 @@ import com.example.routinebean.properties.AppProperties;
 import com.example.routinebean.utils.AppUtils;
 import com.example.routinebean.utils.UpdateManager;
 import javafx.application.Platform;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -35,14 +34,14 @@ public class UpdateController implements Initializable {
     private Label newUpdateInfoLabel;
 
     @FXML
-    private void download(ActionEvent event) {
+    private void download() {
         ((Stage) downloadButton.getScene().getWindow()).close();
 
         AppUtils.openUrlInBrowser("https://github.com/jrt345/RoutineBean/releases/latest");
     }
 
     @FXML
-    private void ignore(ActionEvent event) throws IOException {
+    private void ignore() throws IOException {
         if (properties != null) {
             properties.setCheckForUpdate(false);
             AppProperties.write(properties);
@@ -52,14 +51,14 @@ public class UpdateController implements Initializable {
     }
 
     @FXML
-    private void learnMore(ActionEvent event) {
+    private void learnMore() {
         ((Stage) downloadButton.getScene().getWindow()).close();
 
         AppUtils.openUrlInBrowser("https://github.com/jrt345/RoutineBean/releases/latest");
     }
 
     @FXML
-    private void remindLater(ActionEvent event) {
+    private void remindLater() {
         ((Stage) downloadButton.getScene().getWindow()).close();
     }
 

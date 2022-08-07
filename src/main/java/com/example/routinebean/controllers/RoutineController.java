@@ -13,14 +13,12 @@ import javafx.animation.FadeTransition;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCombination;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
@@ -114,7 +112,7 @@ public class RoutineController implements Initializable {
     private GridPane routineGrid;
 
     @FXML
-    private void saveRoutine(ActionEvent event) throws IOException {
+    private void saveRoutine() throws IOException {
         Routine currentRoutine = getCurrentRoutineObject();
         Optional<Routine> savedRoutine = Routine.deserialize(loader.getDirectory());
 
@@ -150,7 +148,7 @@ public class RoutineController implements Initializable {
     }
 
     @FXML
-    private void closeRoutine(ActionEvent event) throws IOException {
+    private void closeRoutine() throws IOException {
         Routine currentRoutine = getCurrentRoutineObject();
         Optional<Routine> savedRoutine = Routine.deserialize(loader.getDirectory());
 
@@ -230,12 +228,12 @@ public class RoutineController implements Initializable {
     }
 
     @FXML
-    private void openExplorer(ActionEvent event) {
+    private void openExplorer() {
         AppUtils.openDirectory(AppUtils.createRoutineFile(loader.getDirectory()));
     }
 
     @FXML
-    private void exportToCSV(ActionEvent event) throws FileNotFoundException {
+    private void exportToCSV() throws FileNotFoundException {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setInitialDirectory(AppUtils.ROUTINES_DIRECTORY);
         fileChooser.setInitialFileName(getCurrentRoutineObject().getTitle().concat(".csv"));
@@ -276,7 +274,7 @@ public class RoutineController implements Initializable {
     }
 
     @FXML
-    private void quitProgram(ActionEvent event) throws IOException {
+    private void quitProgram() throws IOException {
         Routine currentRoutine = getCurrentRoutineObject();
         Optional<Routine> savedRoutine = Routine.deserialize(loader.getDirectory());
 
@@ -310,7 +308,7 @@ public class RoutineController implements Initializable {
     }
 
     @FXML
-    private void undoChange(ActionEvent event) {
+    private void undoChange() {
         if(currentRoutineIndex > 1) {
             currentRoutineIndex--;
             loadRoutine(originator.restoreFromMemento(caretaker.getMemento(currentRoutineIndex - 1)));
@@ -322,7 +320,7 @@ public class RoutineController implements Initializable {
     }
 
     @FXML
-    private void redoChange(ActionEvent event) {
+    private void redoChange() {
         if(savedRoutinesIndex > currentRoutineIndex) {
             currentRoutineIndex++;
             Routine routine = originator.restoreFromMemento(caretaker.getMemento(currentRoutineIndex - 1));
@@ -374,7 +372,7 @@ public class RoutineController implements Initializable {
     }
 
     @FXML
-    private void clearRoutine(ActionEvent event) {
+    private void clearRoutine() {
         for (int i = 0; i < 24; i++) {
             for (int j = 0; j < 7; j++) {
                 routineTextFields[i][j].setText("");
@@ -386,24 +384,24 @@ public class RoutineController implements Initializable {
     }
 
     @FXML
-    private void openAboutBox(ActionEvent event) throws IOException {
+    private void openAboutBox() throws IOException {
         AppUtils.openAboutBox();
     }
 
     @FXML
-    private void checkForUpdate(ActionEvent event) throws IOException {
+    private void checkForUpdate() throws IOException {
         if (UpdateManager.isUpdateAvailable()) {
             UpdateManager.showUpdateDialog();
         }
     }
 
     @FXML
-    private void setTitle(KeyEvent event) {
+    private void setTitle() {
         title.setText(titleTextField.getText());
     }
 
     @FXML
-    private void saveTaskPreset(ActionEvent event) throws IOException {
+    private void saveTaskPreset() throws IOException {
         TaskPreset taskPreset = new TaskPreset(taskTextField.getText(), ColorUtils.colorToRgba(taskColorPicker.getValue()));
 
         if (isNewTaskPreset(taskPreset)) {
@@ -455,12 +453,12 @@ public class RoutineController implements Initializable {
     }
 
     @FXML
-    private void selectSingleHour(ActionEvent event) {
+    private void selectSingleHour() {
         secondHour.setValue(firstHour.getValue());
     }
 
     @FXML
-    private void selectAllButtons(ActionEvent event) {
+    private void selectAllButtons() {
         Boolean[] buttonSelected = new Boolean[7];
 
         for (int i = 0; i < 7; i++) {
@@ -479,17 +477,17 @@ public class RoutineController implements Initializable {
     }
 
     @FXML
-    public void switchToAdd(ActionEvent event) {
+    public void switchToAdd() {
         addDeleteButton.setText("Add");
     }
 
     @FXML
-    public void switchToDelete(ActionEvent event) {
+    public void switchToDelete() {
         addDeleteButton.setText("Delete");
     }
 
     @FXML
-    public void updateRoutineTasks(ActionEvent event) {
+    public void updateRoutineTasks() {
         String task = taskTextField.getText();
         Color color = taskColorPicker.getValue();
 

@@ -1,7 +1,6 @@
 package com.example.routinebean.controllers;
 
 import com.example.routinebean.utils.AppUtils;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
@@ -12,12 +11,12 @@ public class AboutBoxController {
     private Button okButton;
 
     @FXML
-    private void closeAboutBox(ActionEvent event) {
+    private void closeAboutBox() {
         ((Stage) okButton.getScene().getWindow()).close();
     }
 
     @FXML
-    private void openLink(ActionEvent event) {
+    private void openLink() {
         AppUtils.openUrlInBrowser("https://www.gnu.org/licenses/gpl-3.0.en.html");
     }
 }

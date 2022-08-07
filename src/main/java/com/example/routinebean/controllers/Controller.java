@@ -5,7 +5,6 @@ import com.example.routinebean.data.Routine;
 import com.example.routinebean.properties.RoutineProperties;
 import com.example.routinebean.utils.AppUtils;
 import com.example.routinebean.utils.UpdateManager;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -32,7 +31,7 @@ public class Controller implements Initializable {
     private Button updateButton;
 
     @FXML
-    private void newRoutine(ActionEvent event) {
+    private void newRoutine() {
         TextInputDialog textDialog = new TextInputDialog("Routine");
         textDialog.setTitle("New Routine");
         textDialog.setHeaderText("Routine Name:");
@@ -137,17 +136,17 @@ public class Controller implements Initializable {
     }
 
     @FXML
-    private void openGithub(ActionEvent event) {
+    private void openGithub() {
         AppUtils.openUrlInBrowser("https://github.com/jrt345/RoutineBean");
     }
 
     @FXML
-    public void openAboutBox(ActionEvent event) throws IOException {
+    public void openAboutBox() throws IOException {
         AppUtils.openAboutBox();
     }
 
     @FXML
-    private void updateApp(ActionEvent event) throws IOException {
+    private void updateApp() throws IOException {
         UpdateManager.showUpdateDialog();
     }
 
