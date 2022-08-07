@@ -24,6 +24,10 @@ public class RoutineProperties {
     }
 
     public static Optional<RoutineProperties> load(String directory) {
+        if (directory == null) {
+            return Optional.empty();
+        }
+
         try (InputStream inputStream = new FileInputStream(propertiesFile(directory))) {
             Properties properties = new Properties();
             properties.load(inputStream);
@@ -39,6 +43,10 @@ public class RoutineProperties {
     }
 
     public static void write(RoutineProperties routineProperties) throws IOException {
+        if (routineProperties == null) {
+            throw new NullPointerException();
+        }
+
         try (OutputStream outputStream = new FileOutputStream(propertiesFile(routineProperties.directory))) {
             Properties properties = new Properties();
             properties.setProperty("routine-window-width", String.valueOf(routineProperties.width));
@@ -80,5 +88,38 @@ public class RoutineProperties {
 
     public void setHeight(double height) {
         this.height = height;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        RoutineProperties that = (RoutineProperties) o;
+
+        if (Double.compare(that.width, width) != 0) return false;
+        if (Double.compare(that.height, height) != 0) return false;
+        return directory.equals(that.directory);
+    }
+
+    @Override
+    public int hashCode() {
+        int result;
+        long temp;
+        result = directory.hashCode();
+        temp = Double.doubleToLongBits(width);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        temp = Double.doubleToLongBits(height);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "RoutineProperties{" +
+                "directory='" + directory + '\'' +
+                ", width=" + width +
+                ", height=" + height +
+                '}';
     }
 }

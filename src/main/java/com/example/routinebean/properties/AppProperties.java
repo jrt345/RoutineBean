@@ -42,6 +42,10 @@ public class AppProperties {
     }
 
     public static void write(AppProperties appProperties) throws IOException {
+        if (appProperties == null) {
+            throw new NullPointerException();
+        }
+
         try (OutputStream os = new FileOutputStream(PROPERTIES)) {
             Properties properties = new Properties();
             properties.setProperty("main-window-width", String.valueOf(appProperties.width));
@@ -84,5 +88,38 @@ public class AppProperties {
 
     public void setCheckForUpdate(boolean checkForUpdate) {
         this.checkForUpdate = checkForUpdate;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        AppProperties that = (AppProperties) o;
+
+        if (Double.compare(that.width, width) != 0) return false;
+        if (Double.compare(that.height, height) != 0) return false;
+        return checkForUpdate == that.checkForUpdate;
+    }
+
+    @Override
+    public int hashCode() {
+        int result;
+        long temp;
+        temp = Double.doubleToLongBits(width);
+        result = (int) (temp ^ (temp >>> 32));
+        temp = Double.doubleToLongBits(height);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        result = 31 * result + (checkForUpdate ? 1 : 0);
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "AppProperties{" +
+                "width=" + width +
+                ", height=" + height +
+                ", checkForUpdate=" + checkForUpdate +
+                '}';
     }
 }
