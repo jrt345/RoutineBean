@@ -1,4 +1,5 @@
 module com.example.routinebean {
+    requires jdk.crypto.ec;
     requires javafx.controls;
     requires javafx.fxml;
     requires com.google.gson;
