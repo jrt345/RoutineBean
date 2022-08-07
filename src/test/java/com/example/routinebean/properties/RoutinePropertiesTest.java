@@ -7,6 +7,9 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.NullSource;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import java.io.IOException;
 import java.util.Optional;
@@ -39,16 +42,16 @@ class RoutinePropertiesTest {
         assertThrows(IOException.class, () -> RoutineProperties.write(new RoutineProperties("</>")));
     }
 
-
     @Test @DisplayName("Load, present RoutineProperties optional")
     void loadPresentRoutineProperties() {
         assertEquals(Optional.of(properties), RoutineProperties.load(DIRECTORY));
     }
 
-    @Test @DisplayName("Load, empty RoutineProperties optional")
-    void loadEmptyRoutineProperties() {
-        assertEquals(Optional.empty(), RoutineProperties.load(null));
-        assertEquals(Optional.empty(), RoutineProperties.load("</>"));
+    @ParameterizedTest @NullSource @ValueSource(strings = {"</>"})
+    @DisplayName("Load, empty RoutineProperties optional")
+    void loadEmptyRoutineProperties(String directory) {
+        assertEquals(Optional.empty(), RoutineProperties.load(directory));
+        assertEquals(Optional.empty(), RoutineProperties.load(directory));
     }
 
     @AfterAll

@@ -8,6 +8,9 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.NullSource;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import java.io.IOException;
 import java.util.Optional;
@@ -23,15 +26,10 @@ class RoutineTest {
     @BeforeAll
     static void beforeAll() {
         String[][] tasks = new String[24][7];
-        for (int i = 0; i < 24; i++) {
-            for (int j = 0; j < 7; j++) {
-                tasks[i][j] = "Test";
-            }
-        }
-
         String[][] backgroundColors = new String[24][7];
         for (int i = 0; i < 24; i++) {
             for (int j = 0; j < 7; j++) {
+                tasks[i][j] = "Test";
                 backgroundColors[i][j] = ColorUtils.colorToRgba(Color.BLUE);
             }
         }
@@ -41,34 +39,27 @@ class RoutineTest {
         AppUtils.createNewRoutine("JUnit 5 Routine Test", routine);
     }
 
-    @Test
-    @DisplayName("Serialize throws NullPointerException")
+    @Test @DisplayName("Serialize throws NullPointerException")
     void serializeNullArgs() {
         assertThrows(NullPointerException.class, () -> Routine.serialize(null, null));
     }
 
-    @Test
-    @DisplayName("Serialize throws IOException")
+    @Test @DisplayName("Serialize throws IOException")
     void serializeInvalidArgs() {
         assertThrows(IOException.class, () -> Routine.serialize("</>", new Routine()));
     }
 
-    @Test
-    @DisplayName("Deserialize, present routine optional")
+    @Test @DisplayName("Deserialize, present routine optional")
     void deserializePresentRoutine() {
-        Optional<Routine> optionalRoutine = Routine.deserialize(DIRECTORY);
-
-        assertEquals(Optional.of(routine), optionalRoutine);
+        assertEquals(Optional.of(routine), Routine.deserialize(DIRECTORY));
     }
 
-    @Test
+    @ParameterizedTest @NullSource
+    @ValueSource(strings = {"</>"})
     @DisplayName("Deserialize, empty routine optional")
-    void deserializeEmptyRoutine() {
-        Optional<Routine> nullDirectoryOptionalRoutine = Routine.deserialize(null);
-        assertEquals(Optional.empty(), nullDirectoryOptionalRoutine);
-
-        Optional<Routine> nonExistentDirectoryOptionalRoutine = Routine.deserialize("</>");
-        assertEquals(Optional.empty(), nonExistentDirectoryOptionalRoutine);
+    void deserializeEmptyRoutine(String directory) {
+        assertEquals(Optional.empty(), Routine.deserialize(directory));
+        assertEquals(Optional.empty(), Routine.deserialize(directory));
     }
 
     @AfterAll

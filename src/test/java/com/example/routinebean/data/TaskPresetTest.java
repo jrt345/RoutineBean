@@ -35,32 +35,27 @@ class TaskPresetTest {
         }
     }
 
-    @Test
-    @DisplayName("toJson throws NullPointerException")
+    @Test @DisplayName("toJson throws NullPointerException")
     void serializeToJsonNullArgs() {
         assertThrows(NullPointerException.class, () -> TaskPreset.toJson(null, null));
     }
 
-    @Test
-    @DisplayName("toJson throws IoException")
+    @Test @DisplayName("toJson throws IoException")
     void serializeToJsonInvalidArgs() {
         assertThrows(IOException.class, () -> TaskPreset.toJson("</>", new ArrayList<>()));
     }
 
-    @Test
-    @DisplayName("Get TaskPresets from Json")
+    @Test @DisplayName("Get TaskPresets from Json")
     void deserializeFromJson() throws IOException {
         assertEquals(taskPresets, TaskPreset.fromJson(DIRECTORY));
     }
 
-    @Test
-    @DisplayName("fromJson throws NullPointerException")
+    @Test @DisplayName("fromJson throws NullPointerException")
     void deserializeFromNullJson() {
         assertThrows(NullPointerException.class, () -> TaskPreset.fromJson(null));
     }
 
-    @Test
-    @DisplayName("fromJson throws IOException")
+    @Test @DisplayName("fromJson throws IOException")
     void deserializeFromInvalidJson() {
         assertThrows(IOException.class, () -> TaskPreset.fromJson("</>"));
     }
