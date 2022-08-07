@@ -23,11 +23,15 @@ public class TaskPreset {
         this.color = color;
     }
 
-    public static File jsonDirectory(String directory) {
+    private static File jsonDirectory(String directory) {
         return new File(AppUtils.ROUTINES_DIRECTORY, new File(directory, "taskPresets.json").getPath());
     }
 
     public static void toJson(String directory, ArrayList<TaskPreset> taskPresets) throws IOException {
+        if (directory == null || taskPresets == null) {
+            throw new NullPointerException();
+        }
+
         try (FileWriter writer = new FileWriter(jsonDirectory(directory))) {
             taskPresets.removeIf(taskPreset -> taskPreset.getName() == null);
             taskPresets.removeIf(taskPreset -> ColorUtils.isRgbaNotValid(taskPreset.color));
@@ -37,6 +41,10 @@ public class TaskPreset {
     }
 
     public static ArrayList<TaskPreset> fromJson(String directory) throws IOException, JsonSyntaxException {
+        if (directory == null) {
+            throw new NullPointerException();
+        }
+
         try (FileReader reader = new FileReader(jsonDirectory(directory))) {
             ArrayList<TaskPreset> taskPresets = new Gson().fromJson(reader, new TypeToken<ArrayList<TaskPreset>>(){}.getType());
 
