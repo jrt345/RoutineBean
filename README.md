@@ -7,7 +7,7 @@
   <a href="https://opensource.org/licenses/GPL-3.0"><img src="https://img.shields.io/github/license/jrt345/gamblescramble"/></a>
 </p>
 
-RoutineBean is a routine building desktop app that can easily create a weekly routine. It features a grid UI with each cell representing a specific hour and day of the week. Multiple cells can easily be modifed using the quick add feature, saving time. 
+RoutineBean is a routine building desktop app that can easily create a weekly routine. It features a grid UI with each cell representing a specific hour and day of the week. Multiple cells can easily be modified using the quick add feature, saving time. 
 
 ## Getting Started
 
@@ -26,8 +26,12 @@ git clone https://github.com/jrt345/RoutineBean.git
 
 ## Built With
 
+
 * [JavaFX](https://openjfx.io/) - GUI Library
+* [JUnit 5](https://junit.org/junit5/) - Unit Testing
 * [Maven](https://maven.apache.org/) - Dependency Management
+* [Apache Commons IO](https://commons.apache.org/proper/commons-io/) - IO Utilities Library
+* [Gson](https://github.com/google/gson) - Json Serialization/Deserialization Library
 * [SceneBuilder](https://gluonhq.com/products/scene-builder/) - Used to create and design JavaFX UIs
 
 ## Versioning
