@@ -47,12 +47,20 @@ public class Routine implements Serializable {
     }
 
     public static void serialize(String directory, Routine routine) throws IOException {
+        if (directory == null || routine == null) {
+            throw new NullPointerException();
+        }
+
         try (FileOutputStream fileOut = new FileOutputStream(serializedRoutine(directory)); ObjectOutputStream out = new ObjectOutputStream(fileOut)) {
             out.writeObject(routine);
         }
     }
 
     public static Optional<Routine> deserialize(String directory) {
+        if (directory == null) {
+            return Optional.empty();
+        }
+
         try (FileInputStream fileIn = new FileInputStream(serializedRoutine(directory)); ObjectInputStream in = new ObjectInputStream(fileIn)) {
             return Optional.ofNullable((Routine) in.readObject());
         } catch (IOException | ClassNotFoundException e) {
